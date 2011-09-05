@@ -5,4 +5,5 @@
     <string name="enter_journey">start journey</string>
     <string name="list_journeys">my journeys</string>
     <string name="list_receipts">my receipts</string>
+    <string name="list_contacts">contacts</string>
 </resources>
