@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
-    <string name="app_name">Inovex App</string>
-    <string name="enter_receipt">enter receipt</string>
-    <string name="enter_journey">start journey</string>
-    <string name="list_journeys">my journeys</string>
-    <string name="list_receipts">my receipts</string>
-</resources>

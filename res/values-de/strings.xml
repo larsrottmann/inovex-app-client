@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
-    <string name="app_name">Inovex App</string>
-    <string name="enter_receipt">Erfasse Beleg</string>
-    <string name="enter_journey">Erfasse Reise</string>
-    <string name="list_journeys">Meine Reisen</string>
-    <string name="list_receipts">Meine Belege</string>
-</resources>
