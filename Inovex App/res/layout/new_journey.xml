@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent" android:layout_height="match_parent">
+	<ScrollView 
+		android:id="@+id/scrollView" 
+		android:layout_width="match_parent" 
+		android:layout_height="match_parent" 
+		android:layout_alignParentTop="true">
+		<RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+		<TextView 
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/description" 
+			android:id="@+id/descriptionLabel">
+		</TextView>
+		<AutoCompleteTextView 
+			android:id="@+id/textViewDescription"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/description"
+			android:layout_below="@+id/descriptionLabel">
+			<requestFocus></requestFocus>
+		</AutoCompleteTextView>
+		<TextView 
+			android:id="@+id/startLabel"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/starting_place" 
+			android:layout_below="@+id/textViewDescription">
+		</TextView>
+		<AutoCompleteTextView 
+			android:id="@+id/textViewStart"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/starting_place" android:layout_below="@+id/startLabel"
+			android:layout_alignParentLeft="true">
+		</AutoCompleteTextView>
+		<TextView 
+			android:id="@+id/destinationLabel"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/destination" 
+			android:layout_below="@+id/textViewStart">
+		</TextView>
+		<AutoCompleteTextView
+		 	android:id="@+id/textViewDestination"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/destination" 
+			android:layout_below="@+id/destinationLabel">
+		</AutoCompleteTextView>
+		<RadioGroup android:id="@+id/radioGroupType"
+			android:orientation="horizontal" 
+			android:layout_width="wrap_content" android:layout_height="wrap_content" 
+			android:layout_below="@+id/textViewDestination">
+			<RadioButton 
+				android:id="@+id/radioArrival"
+				android:layout_height="wrap_content" 
+				android:layout_width="wrap_content" 
+				android:text="@string/arrival"
+				android:checked="true">
+			</RadioButton>
+			<RadioButton android:id="@+id/radioContinuation"
+				android:layout_height="wrap_content" 
+				android:layout_width="wrap_content"
+				android:text="@string/continuation_of_journey">
+			</RadioButton>
+			<RadioButton android:id="@+id/radioReturn"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:text="@string/return_journey">
+			</RadioButton>
+		</RadioGroup>
+		<DatePicker android:id="@+id/datePicker"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_below="@+id/radioGroupType">
+		</DatePicker>
+		<Button 
+			android:id="@+id/buttonOk"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:text="@string/ok" 
+			android:layout_centerHorizontal="true"
+			android:layout_below="@+id/datePicker">
+		</Button>
+		</RelativeLayout>
+	</ScrollView>
+</RelativeLayout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    <TextView 
+	    android:id="@+id/textViewType" 
+	    android:textAppearance="?android:attr/textAppearanceMedium" 
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content" 
+	    android:text="type" 
+	    android:layout_alignParentTop="true"
+	    android:layout_alignParentLeft="true">
+    </TextView>
+    <TextView 
+    	android:id="@+id/textViewDate" 
+    	android:textAppearance="?android:attr/textAppearanceMedium" 
+    	android:layout_width="wrap_content" 
+    	android:layout_height="wrap_content" 
+    	android:text="date"
+    	android:layout_alignParentTop="true" 
+    	android:layout_alignParentRight="true">
+    </TextView>
+    <LinearLayout 
+    	android:id="@+id/startDestinationContainer" 
+    	android:layout_width="match_parent" 
+    	android:layout_height="wrap_content" 
+    	android:layout_below="@+id/textViewType"> 
+    	<TextView 
+	    	android:id="@+id/textViewStart" 
+	    	android:textAppearance="?android:attr/textAppearanceMedium" 
+	    	android:layout_width="wrap_content" 
+	    	android:layout_height="wrap_content" 
+	    	android:text="date"
+	    	android:layout_alignParentTop="true" 
+	    	android:layout_alignParentRight="true">
+	    </TextView>
+    </LinearLayout>
+  
+    
+</RelativeLayout>
