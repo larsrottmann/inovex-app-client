@@ -21,4 +21,9 @@
     <string name="journey_start_time">departure</string>
     <string name="label_receipt_button">show\nreceipts</string>
     <string name="list_times">my times</string>
+    <string name="project">project</string>
+    <string name="work_start_time">start time</string>
+    <string name="work_end_time">end time</string>
+    <string name="work_total_time">total time</string>
+    <string name="work_time">00:00</string>
 </resources>
