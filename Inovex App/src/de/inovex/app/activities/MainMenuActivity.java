@@ -29,6 +29,7 @@ public class MainMenuActivity extends Activity {
 		setContentView(R.layout.main);
 		initButton(this, NewReceiptActivity.class, R.id.button_enter_receipt);
 		initButton(this, NewJourneyActivity.class, R.id.button_enter_journey);
+		initButton(this, NewTimeActivity.class, R.id.button_enter_time);
 		initButton(this, ListJourneyActivity.class, R.id.button_list_journeys);
 		initButton(this, ListReceiptActivity.class, R.id.button_list_receipts);
 		initButton(this, ListContactsActivity.class, R.id.button_list_contacts);

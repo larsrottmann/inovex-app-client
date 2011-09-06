@@ -3,6 +3,7 @@
     <string name="app_name">Inovex App</string>
     <string name="enter_receipt">enter receipt</string>
     <string name="enter_journey">enter journey</string>
+    <string name="enter_time">enter time</string>
     <string name="list_journeys">my journeys</string>
     <string name="list_receipts">my receipts</string>
     <string name="list_contacts">contacts</string>
