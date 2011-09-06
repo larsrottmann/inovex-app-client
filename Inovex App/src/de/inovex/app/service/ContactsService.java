@@ -57,7 +57,15 @@ public class ContactsService extends IntentService {
 			}
 		});
 
-		insertNewContact(null, null, "neu neu", "220011929");
+		synchronized (this) {
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		insertNewContact(null, null, "neu neu22", "124");
+		getContentResolver().notifyChange(ContactsContract.Contacts.CONTENT_URI, null);
 	}
 
 	@Override
