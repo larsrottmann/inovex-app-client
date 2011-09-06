@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="defaultTextStyle">
+    <item name="android:textColor">#ffAAAAAA</item>
+    <item name="android:paddingLeft">3dip</item>
+    <item name="android:paddingTop">2dip</item>
+    <item name="android:paddingBottom">2dip</item>
+  </style>
+  <style name="DateButton" parent="style/defaultView"> 
+    <item name="android:layout_width">0dip</item>
+    <item name="android:layout_weight">2</item>
+  </style>  
+  <style name="TimeButton" parent="style/defaultView"> 
+    <item name="android:layout_width">0dip</item>
+    <item name="android:layout_weight">1</item>
+  </style>   
+  <style name="Label" parent="style/defaultView"> 
+    <item name="android:textSize">16dip</item>
+    <item name="android:singleLine">true</item>   
+    <item name="android:layout_marginBottom">-4dip</item>
+    <item name="android:layout_marginTop">4dip</item>
+  </style>     
+  <style name="defaultView"> 
+    <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    <item name="android:textColor">#ffAAAAAA</item>
+    <item name="android:paddingLeft">8dip</item>
+    <item name="android:paddingRight">8dip</item>
+    <item name="android:paddingTop">2dip</item>
+    <item name="android:paddingBottom">2dip</item>
+    <item name="android:layout_marginLeft">10dip</item>
+    <item name="android:layout_marginRight">10dip</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+  </style>
+  <style name="InovexAppTheme" parent="android:Theme.Light.NoTitleBar">
+   <item name="android:textColor">#ff111111</item>
+ </style> 
+ <style name="DocumentThumbnail">
+    <item name="android:shadowColor">#000000</item>
+    <item name="android:shadowDx">2</item>
+    <item name="android:shadowDy">2</item>
+    <item name="android:shadowRadius">2</item>
+ </style>
+  
+</resources>

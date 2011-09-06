@@ -36,7 +36,7 @@ public class NewReceiptActivity extends Activity {
 		mDescriptionTextView = (AutoCompleteTextView) findViewById(R.id.textViewDescription);
 		mDestinationTextView = (AutoCompleteTextView) findViewById(R.id.textViewDestination);
 		mStartTextView = (AutoCompleteTextView) findViewById(R.id.textViewStart);
-		mJourneyDatePicker = (DatePicker) findViewById(R.id.datePicker);
+		//mJourneyDatePicker = (DatePicker) findViewById(R.id.datePicker);
 		mJourneyTypeRadioGroup = (RadioGroup) findViewById(R.id.radioGroupType);
 
 		Button b = (Button) findViewById(R.id.buttonOk);
