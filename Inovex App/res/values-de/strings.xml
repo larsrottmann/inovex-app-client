@@ -19,4 +19,9 @@
     <string name="receipt">Beleg</string>
     <string name="journey_end_time">Ankunft</string>
     <string name="journey_start_time">Abfahrt</string>
+    <string name="project">Projekt</string>
+    <string name="work_start_time">Anfanzszeit</string>
+    <string name="work_end_time">Endzeit</string>
+    <string name="work_total_time">Gesamtzeit</string>
+    <string name="work_time">00:00</string>
 </resources>
