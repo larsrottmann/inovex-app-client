@@ -17,4 +17,6 @@
     <string name="to">to</string>
     <string name="from">from</string>
     <string name="receipt">receipt</string>
+    <string name="journey_end_time">arrival</string>
+    <string name="journey_start_time">departure</string>
 </resources>

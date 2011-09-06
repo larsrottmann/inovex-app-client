@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="50dip"
+	android:background="@drawable/titlebar_background"
+	>
+        <ImageButton android:id="@+id/imageButtonNewContent"
+			android:src="@drawable/create_new_content"
+  			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:layout_alignParentRight="true"
+			android:background="@drawable/titlebar_button"        	
+		/>
+        <ImageView android:id="@+id/imageViewLogo" android:layout_margin="0dip" android:src="@drawable/inovex_logo_ohne_rahmen" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"></ImageView>
+
+</RelativeLayout>

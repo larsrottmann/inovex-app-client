@@ -17,4 +17,6 @@
     <string name="to">nach</string>
     <string name="from">von</string>
     <string name="receipt">Beleg</string>
+    <string name="journey_end_time">Ankunft</string>
+    <string name="journey_start_time">Abfahrt</string>
 </resources>
