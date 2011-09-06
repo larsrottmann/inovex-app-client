@@ -19,6 +19,8 @@
     <string name="receipt">Beleg</string>
     <string name="journey_end_time">Ankunft</string>
     <string name="journey_start_time">Abfahrt</string>
+    <string name="label_receipt_button">Zeige\nBelege</string>
+    <string name="list_times">Meine Zeiten</string>
     <string name="project">Projekt</string>
     <string name="work_start_time">Anfanzszeit</string>
     <string name="work_end_time">Endzeit</string>
