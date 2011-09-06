@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="horizontal"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
-  <DatePickButton 
+  android:layout_height="wrap_content">
+  <Button 
   	android:id="@+id/buttonDate"
   	android:text="28/08/2011"  
  	style="@style/DateButton"> 	  	
-  </DatePickButton>
-  <TimePickButton 
-  	android:id="@+id/buttontime"
+  </Button>
+  <Button 
+  	android:id="@+id/buttonTime"
   	android:text="14:35"  
  	style="@style/TimeButton"> 	  	
-  </TimePickButton>    
+  </Button>    
 </LinearLayout>
+</merge>

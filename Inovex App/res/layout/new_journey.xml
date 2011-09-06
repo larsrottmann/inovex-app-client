@@ -73,13 +73,12 @@
 				android:visibility="gone"
 				android:layout_below="@+id/radioGroupType">
 			</Button>
-			<include 
-				layout="@layout/date_time_picker" 
+			<de.inovex.app.views.DateTimePicker
 				android:id="@+id/dateTimePicker" 
-				android:layout_width="match_parent" 
-				android:layout_height="wrap_content" 
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
 				android:layout_below="@+id/buttonPickJourney" >
-			</include>
+			</de.inovex.app.views.DateTimePicker>
 		</RelativeLayout>
 	</ScrollView>
 	<Button 
