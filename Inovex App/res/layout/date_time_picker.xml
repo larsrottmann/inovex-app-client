@@ -4,15 +4,14 @@
   android:orientation="horizontal"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
-  <Button 
+  <DatePickButton 
   	android:id="@+id/buttonDate"
   	android:text="28/08/2011"  
  	style="@style/DateButton"> 	  	
-  </Button>
-  <Button 
+  </DatePickButton>
+  <TimePickButton 
   	android:id="@+id/buttontime"
   	android:text="14:35"  
  	style="@style/TimeButton"> 	  	
-  </Button>
-    
+  </TimePickButton>    
 </LinearLayout>
