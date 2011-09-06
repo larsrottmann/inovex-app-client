@@ -11,7 +11,7 @@
 		android:layout_alignParentBottom="true"
 		android:layout_marginRight="6dip"
 		android:src="@drawable/icon" />
-	<TextView  
+	<TextView
 		android:id="@+id/contacts_item_details"
 		android:layout_width="fill_parent"
 		android:layout_height="26dip" 
@@ -22,7 +22,7 @@
 		android:ellipsize="marquee"
 		android:text="Pforzheim, AD" />
 	<TextView
-	android:id="@+id/contacts_item_title"
+		android:id="@+id/contacts_item_title"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/contacts_item_image"
@@ -31,5 +31,6 @@
 		android:layout_above="@id/contacts_item_details"
 		android:layout_alignWithParentIfMissing="true"
 		android:gravity="center_vertical"
-		android:text="Jonas Gehring (jogehring)" />
+		android:text="Jonas Gehring (jogehring)"
+		android:textStyle="bold" />
 </RelativeLayout>

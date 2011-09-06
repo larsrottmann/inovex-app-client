@@ -35,9 +35,9 @@ public class ListContactsActivity extends Activity {
 
 	private void loadContacts() {
 		Cursor cursor = getContentResolver().query(
-				ContactsContract.Contacts.CONTENT_URI
+				ContactsContract.Data.CONTENT_URI
 				, null // projection
-				, null // selection
+				, ContactsContract.Data.MIMETYPE+"='"+ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE+"' AND "+ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID+"="+ContactsService.getInovexGroupId(getContentResolver()) // selection
 				, null // selectionArgs
 				, null // sortOrder
 		);
@@ -45,36 +45,27 @@ public class ListContactsActivity extends Activity {
 
 		while (cursor.moveToNext()) {
 			Log.i(TAG, "---------------- entry ---------------");
-			Log.i(TAG, "DisplayName:         "+cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
-			Log.i(TAG, "IN_VISIBLE_GROUP:    "+cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.IN_VISIBLE_GROUP)));
-			// data
-			Cursor cursor2 = getContentResolver().query(
-					ContactsContract.Data.CONTENT_URI
-					, null
-					, ContactsContract.Data.CONTACT_ID+"="+cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts._ID))
-					, null
-					, null
-			);
-			while (cursor2.moveToNext()) {
-				Log.i(TAG, "   MIMETYPE:      "+cursor2.getString(cursor2.getColumnIndex(ContactsContract.Data.MIMETYPE)));
-				Log.i(TAG, "   DISPLAY_NAME:      "+cursor2.getString(cursor2.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)));
-			}
-			// RawContact
-			cursor2 = getContentResolver().query(
-					ContactsContract.RawContacts.CONTENT_URI
-					, null
-					, ContactsContract.RawContacts.CONTACT_ID+"="+cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts._ID))
-					, null
-					, null
-			);
-			while (cursor2.moveToNext()) {
-				Log.i(TAG, "   ACCOUNT_TYPE:      "+cursor2.getString(cursor2.getColumnIndex(ContactsContract.RawContacts.ACCOUNT_TYPE)));
-				Log.i(TAG, "   ACCOUNT_NAME:      "+cursor2.getString(cursor2.getColumnIndex(ContactsContract.RawContacts.ACCOUNT_NAME)));
-			}
+			Log.i(TAG, "DisplayName:         "+cursor.getString(cursor.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)));
 			Log.i(TAG, "--------------------------------------");
 		}
 		cursor.moveToFirst();
 		((CursorAdapter) listContacts.getAdapter()).changeCursor(cursor);
+	}
+
+	private void loadGroups() {
+		Cursor cursor = getContentResolver().query(
+				ContactsContract.Groups.CONTENT_URI
+				, null // projection
+				, null // selection
+				, null // selectionArgs
+				, null // sortOrder
+		);
+		while (cursor.moveToNext()) {
+			Log.i(TAG, "---------------- group ---------------");
+			Log.i(TAG, "Title:         "+cursor.getString(cursor.getColumnIndex(ContactsContract.Groups.TITLE)));
+			Log.i(TAG, "Notes:    "+cursor.getString(cursor.getColumnIndex(ContactsContract.Groups.NOTES)));
+			Log.i(TAG, "--------------------------------------");
+		}
 	}
 
 	@Override
@@ -89,5 +80,6 @@ public class ListContactsActivity extends Activity {
 		startService(serviceIntent);
 
 		loadContacts();
+		loadGroups();
 	}
 }

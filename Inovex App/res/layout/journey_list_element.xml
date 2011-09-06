@@ -3,6 +3,16 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
+  
+	<Button 
+		android:id="@+id/button_show_receipts"
+		android:drawableTop="@drawable/receipt_icon"
+ 		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true"
+		android:textSize="13dip"
+		android:text="@string/label_receipt_button"	/>
     <TextView 
     	android:id="@+id/textViewDate" 
     	android:textAppearance="?android:attr/textAppearanceMedium" 
@@ -10,7 +20,7 @@
     	android:layout_height="wrap_content" 
     	android:text="date"
     	android:layout_alignParentTop="true" 
-    	android:layout_alignParentLeft="true">
+    	android:layout_toRightOf="@+id/button_show_receipts">
     </TextView>
     <TextView 
 	    android:id="@+id/textViewType" 
@@ -25,55 +35,42 @@
     	android:id="@+id/startDestinationContainer" 
     	android:layout_width="match_parent" 
     	android:layout_height="wrap_content" 
+    	android:layout_toRightOf="@+id/button_show_receipts"
     	android:layout_below="@+id/textViewType"> 
-    	<LinearLayout 
-	    	android:layout_width="0dip" 
-	    	android:layout_height="wrap_content" 
-	    	android:layout_weight="1"> 
+
 	    	<TextView 
-		    	android:id="@+id/textViewStartLabel" 
+		    	android:id="@+id/textview_start" 
 		    	android:textAppearance="?android:attr/textAppearanceMedium" 
-		    	android:layout_width="wrap_content" 
+		    	android:layout_width="0dip" 
 		    	android:layout_height="wrap_content" 
-		    	android:text="@string/from"
-		    	android:layout_alignParentRight="true">
-		    </TextView>
-	    	<TextView 
-		    	android:id="@+id/textViewStart" 
-		    	android:textAppearance="?android:attr/textAppearanceMedium" 
-		    	android:layout_width="match_parent" 
-		    	android:layout_height="wrap_content" 
-		    	android:paddingLeft="4dip"
+		    	android:layout_weight="8"
+		    	android:layout_gravity="center_vertical"
+		    	android:text="düsseldorf"
 		    	android:gravity="center_horizontal"
-		    	android:text="start">
+		    >
 		    </TextView>
-		</LinearLayout>
-		<LinearLayout 
-	    	android:layout_width="0dip" 
-	    	android:layout_height="wrap_content" 
-	    	android:layout_weight="1"> 
+		    <ImageView 
+		    	android:id="@+id/imageViewArrow"
+		    	android:src="@drawable/ic_menu_forward"
+		    	android:layout_weight="1"
+		    	android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    />
 	    	<TextView 
-		    	android:id="@+id/textViewDestinationLabel" 
+		    	android:id="@+id/textview_destination"
 		    	android:textAppearance="?android:attr/textAppearanceMedium" 
-		    	android:layout_width="wrap_content" 
+		    	android:layout_gravity="center_vertical"
+		    	android:layout_width="0dip" 
 		    	android:layout_height="wrap_content" 
-		    	android:text="@string/to"
-		    	android:layout_alignParentRight="true">
-		    </TextView>
-	    	<TextView 
-		    	android:id="@+id/textViewDestination" 
-		    	android:textAppearance="?android:attr/textAppearanceMedium" 
-		    	android:layout_width="match_parent" 
+		    	android:layout_weight="8"
 		    	android:gravity="center_horizontal"
-		    	android:layout_height="wrap_content" 
-		    	android:paddingLeft="4dip"
-		    	android:text="destination">
+		    	android:text="pforzheim">
 		    </TextView>
-		</LinearLayout>
     </LinearLayout>
 	<TextView 
     	android:id="@+id/textViewDescription" 
     	android:layout_below="@+id/startDestinationContainer"
+    	android:layout_toRightOf="@+id/button_show_receipts"
     	android:textAppearance="?android:attr/textAppearanceMedium" 
     	android:layout_width="match_parent" 
     	android:layout_height="wrap_content" 

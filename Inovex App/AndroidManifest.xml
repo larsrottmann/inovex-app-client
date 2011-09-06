@@ -30,7 +30,8 @@
         <activity android:name=".activities.NewReceiptActivity"
                   android:theme="@style/InovexAppTheme"
          />
-        <activity android:name=".activities.contacts.ListContactsActivity" />
+        <activity android:name=".activities.contacts.ListContactsActivity"
+        	android:theme="@style/InovexAppTheme" />
         <provider
             android:name=".provider.InovexContentProvider"
             android:authorities="de.inovex.app" />
