@@ -9,8 +9,8 @@ public class JourneyViewHolder {
 	public JourneyViewHolder(View view) {
 		type = (TextView) view.findViewById(R.id.textViewType);
 		date = (TextView) view.findViewById(R.id.textViewDate);
-		start = (TextView) view.findViewById(R.id.textViewStart);
-		destination = (TextView) view.findViewById(R.id.textViewDestination);
+		start = (TextView) view.findViewById(R.id.textview_start);
+		destination = (TextView) view.findViewById(R.id.textview_destination);
 		description = (TextView) view.findViewById(R.id.textViewDescription);
 	}
 	

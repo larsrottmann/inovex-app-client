@@ -19,4 +19,6 @@
     <string name="receipt">Beleg</string>
     <string name="journey_end_time">Ankunft</string>
     <string name="journey_start_time">Abfahrt</string>
+    <string name="label_receipt_button">Zeige\nBelege</string>
+    <string name="list_times">Meine Zeiten</string>
 </resources>

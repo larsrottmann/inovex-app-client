@@ -19,4 +19,6 @@
     <string name="receipt">receipt</string>
     <string name="journey_end_time">arrival</string>
     <string name="journey_start_time">departure</string>
+    <string name="label_receipt_button">show\nreceipts</string>
+    <string name="list_times">my times</string>
 </resources>
