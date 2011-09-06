@@ -21,22 +21,24 @@ import de.inovex.app.provider.InovexContentProvider.Types;
 
 public class NewReceiptActivity extends Activity {
 
+	
+	
 	private AutoCompleteTextView mDescriptionTextView;
 	private AutoCompleteTextView mDestinationTextView;
 	private AutoCompleteTextView mStartTextView;
-	private DatePicker mJourneyDatePicker;
 	private RadioGroup mJourneyTypeRadioGroup;
-
+	private Button mDatePickButton;
+	private Button mTimePickButton;
+	private Button mJourneyPickButton;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_journey);
 
 		mDescriptionTextView = (AutoCompleteTextView) findViewById(R.id.textViewDescription);
 		mDestinationTextView = (AutoCompleteTextView) findViewById(R.id.textViewDestination);
 		mStartTextView = (AutoCompleteTextView) findViewById(R.id.textViewStart);
-		mJourneyDatePicker = (DatePicker) findViewById(R.id.datePicker);
+		//mJourneyDatePicker = (DatePicker) findViewById(R.id.datePicker);
 		mJourneyTypeRadioGroup = (RadioGroup) findViewById(R.id.radioGroupType);
 
 		Button b = (Button) findViewById(R.id.buttonOk);
@@ -67,10 +69,10 @@ public class NewReceiptActivity extends Activity {
 		default:
 			// TODO error handling
 		}
-		int month = mJourneyDatePicker.getMonth();
-		int day = mJourneyDatePicker.getDayOfMonth();
-		int year = mJourneyDatePicker.getYear();
-		Date date = new Date(year, month, day);
+//		int month = mJourneyDatePicker.getMonth();
+//		int day = mJourneyDatePicker.getDayOfMonth();
+//		int year = mJourneyDatePicker.getYear();
+		Date date = new Date(0, 0, 0);
 		int parentId = -1;
 		try {
 			saveJourney(start, dest, type, desc, date, parentId);
