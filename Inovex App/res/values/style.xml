@@ -22,7 +22,7 @@
   </style>     
   <style name="defaultView"> 
     <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-    <item name="android:textColor">#ffAAAAAA</item>
+    <item name="android:textColor">#ff333333</item>
     <item name="android:paddingLeft">8dip</item>
     <item name="android:paddingRight">8dip</item>
     <item name="android:paddingTop">2dip</item>
