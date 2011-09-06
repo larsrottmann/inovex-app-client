@@ -13,4 +13,7 @@
     <string name="destination">destination</string>
     <string name="continuation_of_journey">continuation</string>
     <string name="error_saving_journey">error saving your journey</string>
+    <string name="to">to</string>
+    <string name="from">from</string>
+    <string name="receipt">receipt</string>
 </resources>

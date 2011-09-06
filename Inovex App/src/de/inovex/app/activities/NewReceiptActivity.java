@@ -14,10 +14,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-import de.inovex.R;
-import de.inovex.app.contentproviders.InovexContentProvider;
-import de.inovex.app.contentproviders.InovexContentProvider.Columns;
-import de.inovex.app.contentproviders.InovexContentProvider.Types;
+import de.inovex.app.R;
+import de.inovex.app.provider.InovexContentProvider;
+import de.inovex.app.provider.InovexContentProvider.Columns;
+import de.inovex.app.provider.InovexContentProvider.Types;
 
 public class NewReceiptActivity extends Activity {
 
@@ -43,6 +43,7 @@ public class NewReceiptActivity extends Activity {
 		b.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				save();
+				finish();
 			}
 		});
 
