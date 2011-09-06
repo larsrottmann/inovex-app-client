@@ -2,8 +2,19 @@
 <resources>
     <string name="app_name">Inovex App</string>
     <string name="enter_receipt">enter receipt</string>
-    <string name="enter_journey">start journey</string>
+    <string name="enter_journey">enter journey</string>
     <string name="list_journeys">my journeys</string>
     <string name="list_receipts">my receipts</string>
     <string name="list_contacts">contacts</string>
+    <string name="starting_place">starting_place</string>
+    <string name="description">description</string>
+    <string name="return_journey">return journey</string>
+    <string name="arrival">arrival</string>
+    <string name="ok">Ok</string>
+    <string name="destination">destination</string>
+    <string name="continuation_of_journey">continuation</string>
+    <string name="error_saving_journey">error saving your journey</string>
+    <string name="to">to</string>
+    <string name="from">from</string>
+    <string name="receipt">receipt</string>
 </resources>

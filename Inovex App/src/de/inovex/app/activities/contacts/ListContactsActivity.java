@@ -1,47 +1,16 @@
 package de.inovex.app.activities.contacts;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
-import android.content.ContentProviderOperation;
-import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
-import de.inovex.R;
+import de.inovex.app.R;
+import de.inovex.app.service.ContactsService;
 
 public class ListContactsActivity extends Activity {
 	private static final String TAG = "ListContactsActivity";
-
-	private void insertNewContact(String email, String accountName, String displayName, String phoneNumber){
-		ContentResolver cr = getContentResolver();
-
-		ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
-		ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
-			.withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, email)
-			.withValue(ContactsContract.RawContacts.ACCOUNT_NAME, accountName)
-			.build());
-		ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-			.withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-			.withValue(ContactsContract.Data.MIMETYPE,
-					ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-			.withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, displayName)
-			.build());
-		ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-			.withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-			.withValue(ContactsContract.Data.MIMETYPE,
-					ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-			.withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber)
-			.withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
-			.build());
-
-		try {
-			cr.applyBatch(ContactsContract.AUTHORITY, ops);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	private void loadContacts() {
 		Cursor cursor = getContentResolver().query(
@@ -52,7 +21,34 @@ public class ListContactsActivity extends Activity {
 				, null // sortOrder
 		);
 		while (cursor.moveToNext()) {
-			Log.i(TAG, "entry: "+cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
+			Log.i(TAG, "---------------- entry ---------------");
+			Log.i(TAG, "DisplayName:         "+cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
+			Log.i(TAG, "IN_VISIBLE_GROUP:    "+cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.IN_VISIBLE_GROUP)));
+			// data
+			Cursor cursor2 = getContentResolver().query(
+					ContactsContract.Data.CONTENT_URI
+					, null
+					, ContactsContract.Data.CONTACT_ID+"="+cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts._ID))
+					, null
+					, null
+			);
+			while (cursor2.moveToNext()) {
+				Log.i(TAG, "   MIMETYPE:      "+cursor2.getString(cursor2.getColumnIndex(ContactsContract.Data.MIMETYPE)));
+				Log.i(TAG, "   DISPLAY_NAME:      "+cursor2.getString(cursor2.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)));
+			}
+			// RawContact
+			cursor2 = getContentResolver().query(
+					ContactsContract.RawContacts.CONTENT_URI
+					, null
+					, ContactsContract.RawContacts.CONTACT_ID+"="+cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts._ID))
+					, null
+					, null
+			);
+			while (cursor2.moveToNext()) {
+				Log.i(TAG, "   ACCOUNT_TYPE:      "+cursor2.getString(cursor2.getColumnIndex(ContactsContract.RawContacts.ACCOUNT_TYPE)));
+				Log.i(TAG, "   ACCOUNT_NAME:      "+cursor2.getString(cursor2.getColumnIndex(ContactsContract.RawContacts.ACCOUNT_NAME)));
+			}
+			Log.i(TAG, "--------------------------------------");
 		}
 	}
 
@@ -60,6 +56,10 @@ public class ListContactsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contacts);
+
+		// import
+		Intent serviceIntent = new Intent(this, ContactsService.class);
+		startService(serviceIntent);
 
 		loadContacts();
 	}

@@ -1,8 +1,9 @@
-package de.inovex.app.contentproviders;
+package de.inovex.app.provider;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import de.inovex.app.R;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -24,20 +25,36 @@ public class InovexContentProvider extends ContentProvider {
 	private static final String AUTHORITY = "de.inovex.app";
 
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+	public static final Uri CONTENT_URI_JOURNEYS = Uri.parse("content://" + AUTHORITY+ "/journeys");
 
 	public static class Types {
 		public static final String JOURNEY_START = "0";
 		public static final String JOURNEY_END = "1";
 		public static final String JOURNEY_CONTINUATION = "2";
 		public static final String RECEIPT = "10";
+		
+		public static CharSequence getDisplayStringFromType(Context context, String type){
+			if (type.equals(JOURNEY_START)){
+				return context.getText(R.string.arrival);
+			} else if (type.equals(JOURNEY_END)){
+				return context.getText(R.string.return_journey);				
+			} else if (type.equals(JOURNEY_CONTINUATION)){
+				return context.getText(R.string.continuation_of_journey);				
+			} else if (type.equals(RECEIPT)){
+				return context.getText(R.string.receipt);				
+			}
+			return null;
+		}
 
 	}
+	
 
 	public static class Columns {
 
 		public static final String ID = "_id";
 		public static final String PARENT_ID = "parent_id";
 		public static final String CREATED = "created";
+		public static final String DATE = "date";
 		public static final String DESCRIPTION = "description";
 		public static final String START_LOCATION = "start_location";
 		public static final String DESTINATION = "destination";
@@ -50,9 +67,11 @@ public class InovexContentProvider extends ContentProvider {
 	private static final int JOURNEYS = 1;
 	private static final int RECEIPT = 2;
 	private static final int RECEIPTS = 3;
+	private static final int ANY = 666;
 
 	static {
 		sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+		sUriMatcher.addURI(AUTHORITY,"*",ANY);
 		sUriMatcher.addURI(AUTHORITY, "journeys/#", JOURNEY);
 		sUriMatcher.addURI(AUTHORITY, "journeys", JOURNEYS);
 		sUriMatcher.addURI(AUTHORITY, "receipts/#", RECEIPT);
@@ -62,10 +81,10 @@ public class InovexContentProvider extends ContentProvider {
 	private static class DBHelper extends SQLiteOpenHelper {
 
 		private static final String TABLE_NAME = "data";
-		private static final int DATABASE_VERSION = 0;
+		private static final int DATABASE_VERSION = 1;
 
 		private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " (" + Columns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + Columns.PARENT_ID + " INTEGER DEFAULT -1, "
-				+ Columns.CREATED + " INTEGER, " + Columns.IMAGE_PATH_URI + " TEXT, " + Columns.START_LOCATION + " TEXT, " + Columns.DESTINATION + " TEXT, " + Columns.DESCRIPTION + " TEXT, "
+				+ Columns.CREATED + " INTEGER, " + Columns.IMAGE_PATH_URI + " TEXT, " + Columns.DATE + " INTEGER, " + Columns.START_LOCATION + " TEXT, " + Columns.DESTINATION + " TEXT, " + Columns.DESCRIPTION + " TEXT, "
 				+ Columns.TYPE + " TEXT );";
 
 		private static final String DATABASE_NAME = "inovex_app";
@@ -101,18 +120,23 @@ public class InovexContentProvider extends ContentProvider {
 		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 		qb.setTables(DBHelper.TABLE_NAME);
 		String limit = null;
+		if (selectionArgs==null){
+			selectionArgs = new String[]{};
+		}
 		List<String> args = Arrays.asList(selectionArgs);
 		int type = sUriMatcher.match(uri);
 
 		switch (type) {
-		case JOURNEY:
-		case JOURNEYS:
-		case RECEIPT:
-		case RECEIPTS:
-			selection = modifySelectionForType(uri, selection, args, type);
-			break;
-		default:
-			throw new IllegalArgumentException("Unknown URI " + uri);
+			case JOURNEY:
+			case JOURNEYS:
+			case RECEIPT:
+			case RECEIPTS:
+				selection = modifySelectionForType(uri, selection, args, type);
+				break;
+			case ANY:
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown URI " + uri);
 		}
 
 		// If no sort order is specified use the default
@@ -175,6 +199,9 @@ public class InovexContentProvider extends ContentProvider {
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		if (selectionArgs==null){
+			selectionArgs = new String[]{};
+		}
 		List<String> args = Arrays.asList(selectionArgs);
 		int count = 0;
 		int type = sUriMatcher.match(uri);
@@ -185,7 +212,8 @@ public class InovexContentProvider extends ContentProvider {
 		case RECEIPT:
 		case JOURNEY:
 			selection = modifySelectionForType(uri, selection, args, type);
-
+			break;
+		case ANY:
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -201,6 +229,9 @@ public class InovexContentProvider extends ContentProvider {
 	@Override
 	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		if (selectionArgs==null){
+			selectionArgs = new String[]{};
+		}
 		List<String> args = Arrays.asList(selectionArgs);
 		int count = 0;
 		int type = sUriMatcher.match(uri);
@@ -210,6 +241,8 @@ public class InovexContentProvider extends ContentProvider {
 		case RECEIPT:
 		case JOURNEY:
 			selection = modifySelectionForType(uri, selection, args, type);
+			break;
+		case ANY:
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);

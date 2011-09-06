@@ -5,4 +5,15 @@
     <string name="enter_journey">Erfasse Reise</string>
     <string name="list_journeys">Meine Reisen</string>
     <string name="list_receipts">Meine Belege</string>
+    <string name="starting_place">Startort</string>
+    <string name="description">Beschreibung</string>
+    <string name="return_journey">Rückreise</string>
+    <string name="arrival">Anreise</string>
+    <string name="ok">Ok</string>
+    <string name="destination">Zielort</string>
+    <string name="continuation_of_journey">Weiterreise</string>
+    <string name="error_saving_journey">Fehler beim Speichern der Reise</string>
+    <string name="to">nach</string>
+    <string name="from">von</string>
+    <string name="receipt">Beleg</string>
 </resources>
