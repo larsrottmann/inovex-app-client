@@ -32,6 +32,7 @@
         <provider
             android:name=".provider.InovexContentProvider"
             android:authorities="de.inovex.app" />
+        <activity android:name=".activities.NewTimeActivity" android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
         
 
     </application>
