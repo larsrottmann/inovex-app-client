@@ -8,6 +8,13 @@
 		layout="@layout/title_bar" 
 		android:id="@+id/titleBar"
 	/>
+	    	        	<Button android:text="@string/list_contacts"  
+    		android:id="@+id/button_list_contacts"
+    		android:layout_width="match_parent" 
+    		android:layout_marginTop="10dip"
+    		android:drawableLeft="@drawable/ic_menu_contacts"
+    		android:layout_height="wrap_content" />
+	
        <LinearLayout 
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"

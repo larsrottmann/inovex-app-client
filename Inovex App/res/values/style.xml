@@ -20,6 +20,12 @@
     <item name="android:layout_marginBottom">-4dip</item>
     <item name="android:layout_marginTop">4dip</item>
   </style>     
+  <style name="defaultLayout"> 
+    <item name="android:paddingLeft">5dip</item>
+    <item name="android:paddingRight">5dip</item>
+    <item name="android:paddingTop">8dip</item>
+    <item name="android:paddingBottom">4dip</item>  
+  </style>
   <style name="defaultView"> 
     <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     <item name="android:textColor">#ff333333</item>
