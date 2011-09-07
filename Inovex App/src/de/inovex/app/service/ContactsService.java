@@ -231,7 +231,6 @@ public class ContactsService extends IntentService {
 								, ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE
 						}
 				);
-
 			}
 			ops.add(builder
 					.withValue(ContactsContract.CommonDataKinds.Organization.COMPANY, "inovex GmbH")
