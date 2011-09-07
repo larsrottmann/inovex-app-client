@@ -2,31 +2,31 @@
 	{
 		"givenName" : "Alexander",
 		"familyName" : "Gabert",
-		"code" : "alga",
+		"symbol" : "alga",
 		"lob" : "BI",
 		"location" : "Pforzheim"
 	}, {
 		"givenName" : "Andreas",
 		"familyName" : "Friedel",
-		"code" : "afri",
+		"symbol" : "afri",
 		"lob" : "AD",
 		"location" : "Pforzheim"
 	}, {
 		"givenName" : "Frank",
 		"familyName" : "Grimm",
-		"code" : "fgri",
+		"symbol" : "fgri",
 		"lob" : "AD",
 		"location" : "Pforzheim"
 	}, {
 		"givenName" : "Khalid",
 		"familyName" : "Maslouhy",
-		"code" : "khma",
+		"symbol" : "khma",
 		"lob" : "BI",
 		"location" : "Köln"
 	}, {
 		"givenName" : "Max",
 		"familyName" : "Wippert",
-		"code" : "mawi",
+		"symbol" : "mawi",
 		"lob" : "AD",
 		"location" : "Köln"
 	}
