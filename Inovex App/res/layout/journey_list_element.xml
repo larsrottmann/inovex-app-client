@@ -14,7 +14,7 @@
 		android:textSize="13dip"
 		android:text="@string/label_receipt_button"	/>
     <TextView 
-    	android:id="@+id/textViewDate" 
+    	android:id="@+id/textview_date" 
     	android:textAppearance="?android:attr/textAppearanceMedium" 
     	android:layout_width="wrap_content" 
     	android:layout_height="wrap_content" 
@@ -23,7 +23,7 @@
     	android:layout_toRightOf="@+id/button_show_receipts">
     </TextView>
     <TextView 
-	    android:id="@+id/textViewType" 
+	    android:id="@+id/textview_type" 
 	    android:textAppearance="?android:attr/textAppearanceMedium" 
 	    android:layout_width="wrap_content" 
 	    android:layout_height="wrap_content" 
@@ -32,14 +32,14 @@
 	    android:layout_alignParentRight="true">
     </TextView>
     <LinearLayout 
-    	android:id="@+id/startDestinationContainer" 
+    	android:id="@+id/layout_container" 
     	android:layout_width="match_parent" 
     	android:layout_height="wrap_content" 
     	android:layout_toRightOf="@+id/button_show_receipts"
-    	android:layout_below="@+id/textViewType"> 
+    	android:layout_below="@+id/textview_type"> 
 
 	    	<TextView 
-		    	android:id="@+id/textview_start" 
+		    	android:id="@+id/textview_start_place" 
 		    	android:textAppearance="?android:attr/textAppearanceMedium" 
 		    	android:layout_width="0dip" 
 		    	android:layout_height="wrap_content" 
@@ -50,7 +50,7 @@
 		    >
 		    </TextView>
 		    <ImageView 
-		    	android:id="@+id/imageViewArrow"
+		    	android:id="@+id/imageview_arrow"
 		    	android:src="@drawable/ic_menu_forward"
 		    	android:layout_weight="1"
 		    	android:layout_width="wrap_content"
@@ -68,8 +68,8 @@
 		    </TextView>
     </LinearLayout>
 	<TextView 
-    	android:id="@+id/textViewDescription" 
-    	android:layout_below="@+id/startDestinationContainer"
+    	android:id="@+id/textview_description" 
+    	android:layout_below="@+id/layout_container"
     	android:layout_toRightOf="@+id/button_show_receipts"
     	android:textAppearance="?android:attr/textAppearanceMedium" 
     	android:layout_width="match_parent" 

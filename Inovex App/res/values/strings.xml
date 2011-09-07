@@ -28,4 +28,17 @@
     <string name="work_total_time">total time</string>
     <string name="work_time">00:00</string>
     <string name="company_name">inovex</string>
+    <string name="sum_of_receipts">receipt sum</string>
+    <string name="open_tasks">open tasks</string>
+    <string name="time_recording">record your time!</string>
+    <string name="in_time">in</string>
+    <string name="out_time">out</string>
+    <string name="total_time_month">working time</string>
+    <string name="total_time">total</string>
+    <string name="check_in">check in now</string>
+    <string name="check_out">check out now</string>
+    <string name="journey_recording">manage your journeys</string>
+    <string name="new_return_journey">new return journey</string>
+    <string name="new_continuation_journey">continue journey</string>
+    <string name="finish_journey">finish journey</string>
 </resources>

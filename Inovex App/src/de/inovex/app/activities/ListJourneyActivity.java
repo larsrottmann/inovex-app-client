@@ -15,6 +15,7 @@ public class ListJourneyActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.journey_list);
 		mAdapter = new JourneyAdapter(this);
 		setListAdapter(mAdapter);		
 		ImageButton b = (ImageButton) findViewById(R.id.imagebutton_new_content);
