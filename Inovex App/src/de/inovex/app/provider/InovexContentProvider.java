@@ -26,6 +26,7 @@ public class InovexContentProvider extends ContentProvider {
 
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 	public static final Uri CONTENT_URI_JOURNEYS = Uri.parse("content://" + AUTHORITY+ "/journeys");
+	public static final Uri CONTENT_URI_TIMES = Uri.parse("content://" + AUTHORITY+ "/times");
 
 	public static class Types {
 		public static final String JOURNEY_START = "0";
@@ -60,6 +61,9 @@ public class InovexContentProvider extends ContentProvider {
 		public static final String DESTINATION = "destination";
 		public static final String IMAGE_PATH_URI = "image_uri";
 		public static final String TYPE = "type";
+		public static final String START_DATE = "start_date";
+		public static final String END_DATE = "end_date";
+		public static final String PROJECT = "project";
 	}
 
 	private static final UriMatcher sUriMatcher;

@@ -7,71 +7,71 @@
 		android:layout_alignParentTop="true" 
 	/>
 	<ScrollView 
-		android:id="@+id/timeScrollView" 
+		android:id="@+id/scrollView" 
 		android:layout_width="match_parent" 
 		android:layout_height="wrap_content" 
 		android:layout_below="@+id/titleBar">
 		<RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="right">
 			<TextView 
-				android:id="@+id/timeDescriptionLabel"
+				android:id="@+id/descriptionLabel"
 				style="@style/Label"
 				android:layout_alignParentTop="true"
 				android:text="@string/description" >
 			</TextView>
 			<AutoCompleteTextView 
-				android:id="@+id/timeDescriptionTextView"
+				android:id="@+id/textViewDescription"
 				style="@style/defaultView"
 				android:text="@string/description"
-				android:layout_below="@+id/timeDescriptionLabel">
+				android:layout_below="@+id/descriptionLabel">
 				<requestFocus></requestFocus>
 			</AutoCompleteTextView>
 			<TextView 
-				android:id="@+id/timeProjectLabel"
+				android:id="@+id/projectLabel"
 				style="@style/Label"
 				android:text="@string/project"
-				android:layout_below="@+id/timeDescriptionTextView">
+				android:layout_below="@+id/textViewDescription">
 			</TextView>
 			<AutoCompleteTextView 
-				android:id="@+id/timeProjectTextView"
+				android:id="@+id/textViewProject"
 				style="@style/defaultView"
 				android:text="@string/project"
-				android:layout_below="@+id/timeProjectLabel">
+				android:layout_below="@+id/projectLabel">
 			</AutoCompleteTextView>
 			<TextView 
-				android:id="@+id/timeStartTextView"
+				android:id="@+id/startTimeLabel"
 				style="@style/Label"
 				android:text="@string/work_start_time" 
-				android:layout_below="@+id/timeProjectTextView">
+				android:layout_below="@+id/textViewProject">
 			</TextView>
 			<de.inovex.app.views.DateTimePicker
-				android:id="@+id/timeStartDateTimePicker" 
+				android:id="@+id/dateTimePickerStartTime" 
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_below="@+id/timeStartTextView" >
+				android:layout_below="@+id/startTimeLabel" >
 			</de.inovex.app.views.DateTimePicker>
 			<TextView 
-				android:id="@+id/timeEndTextView"
+				android:id="@+id/endTimeLabel"
 				style="@style/Label"
 				android:text="@string/work_end_time" 
-				android:layout_below="@+id/timeStartDateTimePicker">
+				android:layout_below="@+id/dateTimePickerStartTime">
 			</TextView>
 			<de.inovex.app.views.DateTimePicker
-				android:id="@+id/timeEndDateTimePicker" 
+				android:id="@+id/dateTimePickerEndTime" 
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_below="@+id/timeEndTextView" >
+				android:layout_below="@+id/endTimeLabel" >
 			</de.inovex.app.views.DateTimePicker>
 			<TextView 
-				android:id="@+id/timeTotalLabel"
+				android:id="@+id/totalTimeLabel"
 				style="@style/Label"
 				android:text="@string/work_total_time"
-				android:layout_below="@+id/timeEndDateTimePicker">
+				android:layout_below="@+id/dateTimePickerEndTime">
 			</TextView>
 			<TextView 
-				android:id="@+id/timeTotalValue"
+				android:id="@+id/textViewTotalTime"
 				style="@style/Label"
 				android:text="@string/work_time" 
-				android:layout_below="@+id/timeTotalLabel">
+				android:layout_below="@+id/totalTimeLabel">
 			</TextView>
 		</RelativeLayout>
 	</ScrollView>
@@ -81,6 +81,6 @@
 			android:text="@string/ok" 
 			android:layout_width="match_parent"
 			android:layout_centerHorizontal="true"
-			android:layout_below="@+id/timeScrollView">
+			android:layout_below="@+id/scrollView">
 	</Button>
 </RelativeLayout>
