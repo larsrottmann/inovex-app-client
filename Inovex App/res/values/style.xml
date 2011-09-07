@@ -32,9 +32,16 @@
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
   </style>
-  <style name="InovexAppTheme" parent="android:Theme.Light.NoTitleBar">
-   <item name="android:textColor">#ff111111</item>
+  <style name="InovexAppTheme" parent="android:Theme.NoTitleBar">
+   <item name="android:textColor">#ffdddddd</item>
+ </style>
+  <style name="InovexLogoText">
+    <item name="android:textColor">#ff111111</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:typeface">monospace</item>
+    <item name="android:textSize">20dip</item>
  </style> 
+  
  <style name="DocumentThumbnail">
     <item name="android:shadowColor">#000000</item>
     <item name="android:shadowDx">2</item>
