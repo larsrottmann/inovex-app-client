@@ -71,36 +71,63 @@ public class ContactsService extends IntentService {
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> allContacts = mapper.readValue(is, List.class);
-		Log.i(TAG, "contacts: "+allContacts.size());
+		for (Map<String, Object> contact : allContacts) {
+			insertNewContact(
+					(String) contact.get("givenName")
+					, (String) contact.get("familyName")
+					, (String) contact.get("symbol")
+					, (String) contact.get("lob")
+					, (String) contact.get("location")
+			);
+		}
 	}
 
-	private void insertNewContact(String email, String accountName, String displayName, String phoneNumber){
+	private void insertNewContact(String givenName, String familyName, String symbol, String lob, String location){
 		ContentResolver cr = getContentResolver();
+
+		String displayName = givenName+' '+familyName+" ("+symbol+')';
+		// TODO pruefen ob er schon existiert
+		// TODO änderungen
 
 		ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
 
 		// account
 		ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
-			.withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, email)
-			.withValue(ContactsContract.RawContacts.ACCOUNT_NAME, accountName)
+			.withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null) // TODO auto-detect
+			.withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null) // auto-detect
 			.build());
 
-		// display name
+		// display given family name
 		ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-			.withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-			.withValue(ContactsContract.Data.MIMETYPE,
-					ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-			.withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, displayName)
-			.build());
+				.withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+				.withValue(ContactsContract.Data.MIMETYPE,
+						ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+				.withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, displayName)
+				.withValue(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, givenName)
+				.withValue(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME, familyName)
+				.build());
+
+		// symbol, lob, location, company
+		ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+				.withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+				.withValue(ContactsContract.Data.MIMETYPE,
+						ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
+				.withValue(ContactsContract.CommonDataKinds.Organization.COMPANY, "inovex GmbH")
+				.withValue(ContactsContract.CommonDataKinds.Organization.DEPARTMENT, lob)
+				.withValue(ContactsContract.CommonDataKinds.Organization.SYMBOL, symbol)
+				.withValue(ContactsContract.CommonDataKinds.Organization.TYPE, ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
+				.withValue(ContactsContract.CommonDataKinds.Organization.OFFICE_LOCATION, location)
+				.build());
 
 		// phone number
-		ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+		/*ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
 				.withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
 				.withValue(ContactsContract.Data.MIMETYPE,
 						ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
 				.withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber)
 				.withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
 				.build());
+				*/
 
 		// inovex group
 		ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
@@ -110,6 +137,7 @@ public class ContactsService extends IntentService {
 				.withValue(ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, getInovexGroupId(getContentResolver()))
 				.build());
 
+		Log.i(TAG, "inserting new contact: "+displayName);
 		try {
 			cr.applyBatch(ContactsContract.AUTHORITY, ops);
 		} catch (Exception e) {
@@ -136,11 +164,11 @@ public class ContactsService extends IntentService {
 		}
 
 		try {
-			importContacts();
+			//importContacts();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//insertNewContact(null, null, "neu neu33", "1245");
+
 		getContentResolver().notifyChange(ContactsContract.Contacts.CONTENT_URI, null);
 	}
 
