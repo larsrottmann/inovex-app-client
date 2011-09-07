@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape   xmlns:android="http://schemas.android.com/apk/res/android">
+<shape   xmlns:android="http://schemas.android.com/apk/res/android">          
+          <!-- 
+            <solid android:color="#ffffff"/>
+            -->
             <gradient
-                android:startColor="@color/grey5"
+                android:startColor="#ffffff"
                 android:endColor="@color/grey6"
                 android:angle="90" />
+                -->
+		<stroke android:width="2dip" android:color="@color/inovex_dark_grey" />
             <padding
                 android:left="0dp"
                 android:top="0dp"

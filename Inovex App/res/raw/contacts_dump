@@ -1,0 +1,33 @@
+[
+	{
+		"givenName" : "Alexander",
+		"familyName" : "Gabert",
+		"symbol" : "alga",
+		"lob" : "BI",
+		"location" : "Pforzheim"
+	}, {
+		"givenName" : "Andreas",
+		"familyName" : "Friedel",
+		"symbol" : "afri",
+		"lob" : "AD",
+		"location" : "Pforzheim"
+	}, {
+		"givenName" : "Frank",
+		"familyName" : "Grimm",
+		"symbol" : "fgri",
+		"lob" : "AD",
+		"location" : "Pforzheim"
+	}, {
+		"givenName" : "Khalid",
+		"familyName" : "Maslouhy",
+		"symbol" : "khma",
+		"lob" : "BI",
+		"location" : "Köln"
+	}, {
+		"givenName" : "Max",
+		"familyName" : "Wippert",
+		"symbol" : "mawi",
+		"lob" : "AD",
+		"location" : "Köln"
+	}
+]

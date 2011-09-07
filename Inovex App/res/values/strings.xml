@@ -6,6 +6,7 @@
     <string name="enter_time">enter time</string>
     <string name="list_journeys">my journeys</string>
     <string name="list_receipts">my receipts</string>
+    <string name="list_contacts">contacts</string>
     <string name="starting_place">starting_place</string>
     <string name="description">description</string>
     <string name="return_journey">return journey</string>
@@ -26,4 +27,5 @@
     <string name="work_end_time">end time</string>
     <string name="work_total_time">total time</string>
     <string name="work_time">00:00</string>
+    <string name="company_name">inovex</string>
 </resources>
