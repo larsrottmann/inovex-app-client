@@ -4,6 +4,36 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
+    	<include 
+		layout="@layout/title_bar" 
+		android:id="@+id/titleBar"
+	/>
+    	<Button android:text="@string/list_contacts"  
+    		android:id="@+id/button_list_contacts"
+    		android:layout_width="match_parent" 
+    		android:layout_marginTop="10dip"
+    		android:drawableLeft="@drawable/ic_menu_camera"
+    		android:layout_height="wrap_content" />
+	
+       <LinearLayout 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal">
+    	<Button android:text="@string/list_times"  
+    		android:id="@+id/button_list_times"
+    		android:layout_width="wrap_content" 
+    		android:drawableLeft="@drawable/time_icon"
+    		android:layout_weight="1"
+    		android:layout_height="wrap_content">
+	    </Button>
+	    <Button android:text="@string/enter_time" 
+	    		android:id="@+id/button_enter_time"
+	    		android:layout_width="wrap_content" 
+	    		android:drawableLeft="@drawable/create_new_content"
+	    		android:layout_weight="1"
+	    		android:layout_height="wrap_content">
+	    </Button>
+    </LinearLayout>
     <LinearLayout 
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"
@@ -60,10 +90,5 @@
 	    		android:layout_weight="1"
 	    		android:layout_height="wrap_content">
 	    </Button>
-    	<Button android:text="@string/list_contacts"
-    		android:id="@+id/button_list_contacts"
-    		android:layout_width="wrap_content" 
-    		android:layout_height="wrap_content"
-    		android:drawableLeft="@drawable/create_new_content" />
     </LinearLayout>
 </LinearLayout>
