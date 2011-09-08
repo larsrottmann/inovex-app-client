@@ -47,4 +47,5 @@
     <string name="start">start</string>
     <string name="starting_point">starting point</string>
     <string name="current_time">now!</string>
+    <string name="error_saving_time">error saving your time</string>
 </resources>

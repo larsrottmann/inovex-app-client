@@ -46,4 +46,5 @@
     <string name="start">Start</string>
     <string name="starting_point">Startort</string>
     <string name="current_time">Jetzt!</string>
+    <string name="error_saving_time">Fehler beim Speichern der Zeit</string>
 </resources>

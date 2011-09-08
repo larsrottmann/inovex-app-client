@@ -33,11 +33,14 @@
          />
         <activity android:name=".activities.contacts.ListContactsActivity"
         	android:theme="@style/InovexAppTheme" />
+        <activity android:name=".activities.NewTimeActivity" 
+			android:theme="@style/InovexAppTheme"></activity>
+        <activity android:name=".activities.ListTimeActivity" 
+			android:theme="@style/InovexAppTheme"></activity>
         <provider
             android:name=".provider.InovexContentProvider"
             android:authorities="de.inovex.app" />
         <service android:name=".service.ContactsService"></service>
-        <activity android:name=".activities.NewTimeActivity" android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
         
     </application>
 </manifest>

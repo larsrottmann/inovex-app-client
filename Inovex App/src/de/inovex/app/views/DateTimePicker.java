@@ -21,4 +21,8 @@ public class DateTimePicker extends RelativeLayout {
 		
 	}
 
+	public long getTime() {
+		//TODO: implement
+		return System.currentTimeMillis();
+	}
 }
