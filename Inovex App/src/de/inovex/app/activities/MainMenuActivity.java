@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.WebView;
 import android.widget.Button;
 import de.inovex.app.R;
-import de.inovex.app.activities.contacts.ListContactsActivity;
 
 public class MainMenuActivity extends Activity {
 	private void initButton(final Context c, final Class<?> cls, int id){

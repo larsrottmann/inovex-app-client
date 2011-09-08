@@ -91,7 +91,7 @@ public class InovexContentProvider extends ContentProvider {
 	private static class DBHelper extends SQLiteOpenHelper {
 
 		private static final String TABLE_NAME = "data";
-		private static final int DATABASE_VERSION = 3;
+		private static final int DATABASE_VERSION = 4;
 
 		private static final String 
 			TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " (" 
@@ -99,13 +99,11 @@ public class InovexContentProvider extends ContentProvider {
 					+ Columns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ Columns.PARENT_ID + " INTEGER DEFAULT -1, "
 				    + Columns.CREATED + " INTEGER, "
-					+ Columns.IMAGE_PATH_URI + " TEXT, "
 				    + Columns.START_DATE + " INTEGER, "
 					+ Columns.END_DATE + " INTEGER, "
 				    + Columns.START_LOCATION + " TEXT, "
 					+ Columns.DESTINATION + " TEXT, "
 				    + Columns.DESCRIPTION + " TEXT, "
-				    + Columns.CREATED + " INTEGER, " 
 				    + Columns.IMAGE_PATH_URI + " TEXT, "
 				    + Columns.PROJECT + " TEXT, "
 				    + Columns.TYPE + " INTEGER );";
