@@ -48,4 +48,7 @@
     <string name="starting_point">starting point</string>
     <string name="current_time">now!</string>
     <string name="error_saving_time">error saving your time</string>
+    <string name="search_label">Search</string>
+    <string name="search_results_for">Search results for \'%s\':</string>
+    <string name="show_all">Show All</string>
 </resources>
