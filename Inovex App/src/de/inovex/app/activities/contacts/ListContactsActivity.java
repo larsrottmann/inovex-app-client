@@ -7,11 +7,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
@@ -59,6 +61,30 @@ public class ListContactsActivity extends Activity {
 
 				TextView tvDetails = (TextView) view.findViewById(R.id.contacts_item_details);
 				tvDetails.setText(lob+", "+location);
+
+				// photo
+				oCur = getContentResolver().query(
+						ContactsContract.Data.CONTENT_URI
+						, null // projection
+						, ContactsContract.Data.MIMETYPE+"= ? AND "+ContactsContract.Data.CONTACT_ID+"= ?" // selection
+						, new String[] { // selectionArgs
+							ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE
+							, cursor.getString(cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID))
+						}
+						, null // sortOrder
+				);
+				ImageView imgView = (ImageView) view.findViewById(R.id.contacts_item_image);
+				if (oCur.moveToFirst()) {
+					byte[] data = oCur.getBlob(oCur.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO));
+					if (data != null && data.length > 0) {
+						imgView.setImageBitmap(BitmapFactory.decodeByteArray(data, 0, data.length));
+					} else {
+						imgView.setImageResource(R.drawable.ic_contact_picture);
+					}
+				} else {
+					imgView.setImageResource(R.drawable.ic_contact_picture);
+				}
+				oCur.close();
 			}
 		});
 	}

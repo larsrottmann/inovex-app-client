@@ -1,5 +1,6 @@
 package de.inovex.app.service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ public class ContactsService extends IntentService {
 		static final int UPDATE_STRUCTURED_NAME = 		2;
 		static final int UPDATE_ORGANIZATION = 			4;
 		static final int INSERT_GROUP_MEMBERSHIP = 		8;
+		static final int INSERT_PHOTO = 				16;
+		static final int UPDATE_PHOTO =					32;
 	}
 
 	static private final String TAG = "ContactsService";
@@ -73,7 +76,7 @@ public class ContactsService extends IntentService {
 		super(TAG);
 	}
 
-	private int checkImportOperations(Cursor cursorOrganization, String givenName, String familyName, String symbol, String lob, String location) {
+	private int checkImportOperations(Cursor cursorOrganization, String givenName, String familyName, String symbol, String lob, String location, String photoMD5) {
 		if (cursorOrganization.moveToFirst()) {
 			int r = 0;
 			int contactId = cursorOrganization.getInt(cursorOrganization.getColumnIndex(ContactsContract.CommonDataKinds.Organization.CONTACT_ID));
@@ -133,11 +136,47 @@ public class ContactsService extends IntentService {
 					r |= ImportContactOperations.UPDATE_STRUCTURED_NAME;
 				}
 			}
+
+			// check for photo
+			if (photoMD5 != null) {
+				cursor = getContentResolver().query(
+						ContactsContract.Data.CONTENT_URI
+						, null // projection
+						, ContactsContract.Data.MIMETYPE+"= ? AND "+ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID+"= ?" // selection
+						, new String[] { // selectionArgs
+							ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE
+							, String.valueOf(contactId)
+						}
+						, null // sortOrder
+				);
+				if (cursor.moveToFirst()) {
+					String curPhotoMD5 = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Photo.SYNC1)); // im SYNC1 feld wird die md5 gespeichert
+					if (!photoMD5.equals(curPhotoMD5)) {
+						r |= ImportContactOperations.UPDATE_PHOTO;
+					}
+				} else {
+					r |= ImportContactOperations.INSERT_PHOTO;
+				}
+			}
+
 			return r;
 		} else {
 			// alles insert
-			return ImportContactOperations.INSERT_GROUP_MEMBERSHIP | ImportContactOperations.INSERT_RAW_CONTACT;
+			return ImportContactOperations.INSERT_GROUP_MEMBERSHIP | ImportContactOperations.INSERT_RAW_CONTACT | ImportContactOperations.INSERT_PHOTO;
 		}
+	}
+
+	private byte[] getBytesFromInputStream(InputStream is) throws IOException {
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+
+		int b;
+		while ((b = is.read()) != -1) {
+			outStream.write(b);
+		}
+		byte[] r = outStream.toByteArray();
+		outStream.close();
+
+		return r;
 	}
 
 	private void importContacts() throws JsonParseException, JsonMappingException, IOException {
@@ -153,11 +192,12 @@ public class ContactsService extends IntentService {
 					, (String) contact.get("symbol")
 					, (String) contact.get("lob")
 					, (String) contact.get("location")
+					, (String) contact.get("photoMD5")
 			);
 		}
 	}
 
-	private void insertUpdateContact(String givenName, String familyName, String symbol, String lob, String location){
+	private void insertUpdateContact(String givenName, String familyName, String symbol, String lob, String location, String photoMD5) {
 		// bestehenden finden
 		ContentResolver cr = getContentResolver();
 		Cursor cursor = cr.query(
@@ -175,7 +215,7 @@ public class ContactsService extends IntentService {
 		if (cursor.moveToFirst()) {
 			rawContactId = cursor.getInt(cursor.getColumnIndex(ContactsContract.Data.RAW_CONTACT_ID));
 		}
-		operations = checkImportOperations(cursor, givenName, familyName, symbol, lob, location);
+		operations = checkImportOperations(cursor, givenName, familyName, symbol, lob, location, photoMD5);
 
 		if (operations == 0) return;
 
@@ -259,6 +299,41 @@ public class ContactsService extends IntentService {
 							ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE)
 					.withValue(ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, getInovexGroupId(getContentResolver()))
 					.build());
+		}
+
+		// photo
+		if ((operations & (ImportContactOperations.INSERT_PHOTO | ImportContactOperations.UPDATE_PHOTO)) > 0) {
+			InputStream is = getResources().openRawResource(R.raw.testimg);
+			try {
+				byte[] photoData = getBytesFromInputStream(is);
+
+				Builder builder;
+				if ((operations & ImportContactOperations.INSERT_PHOTO) > 0) {
+					builder = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+						.withValue(ContactsContract.Data.MIMETYPE,
+							ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE);
+					if ((operations & ImportContactOperations.INSERT_RAW_CONTACT) > 0) {
+						builder.withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0);
+					} else {
+						builder.withValue(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
+					}
+				} else {
+					builder = ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI);
+					builder.withSelection(
+							ContactsContract.Data.RAW_CONTACT_ID+"=? AND "+ContactsContract.Data.MIMETYPE+"=?"
+							, new String[] {
+									String.valueOf(rawContactId)
+									, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE
+							}
+					);
+				}
+				ops.add(builder
+						.withValue(ContactsContract.CommonDataKinds.Photo.PHOTO, photoData)
+						.withValue(ContactsContract.CommonDataKinds.Photo.SYNC1, photoMD5)
+						.build());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 
 		Log.i(TAG, "inserting/updating contact: "+displayName);

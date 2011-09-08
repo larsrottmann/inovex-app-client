@@ -4,7 +4,8 @@
 		"familyName" : "Gabert",
 		"symbol" : "alga",
 		"lob" : "BI",
-		"location" : "Pforzheim"
+		"location" : "Pforzheim",
+		"photoMD5" : "xxmxmxkslwls"
 	}, {
 		"givenName" : "Andreas",
 		"familyName" : "Friedel",
