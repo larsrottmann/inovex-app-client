@@ -7,11 +7,11 @@ import de.inovex.app.R;
 public class JourneyViewHolder {
 	
 	public JourneyViewHolder(View view) {
-		type = (TextView) view.findViewById(R.id.textViewType);
-		date = (TextView) view.findViewById(R.id.textViewDate);
-		start = (TextView) view.findViewById(R.id.textview_start);
+		type = (TextView) view.findViewById(R.id.textview_type);
+		date = (TextView) view.findViewById(R.id.textview_date);
+		start = (TextView) view.findViewById(R.id.textview_start_place);
 		destination = (TextView) view.findViewById(R.id.textview_destination);
-		description = (TextView) view.findViewById(R.id.textViewDescription);
+		description = (TextView) view.findViewById(R.id.textview_description);
 	}
 	
 	TextView type;

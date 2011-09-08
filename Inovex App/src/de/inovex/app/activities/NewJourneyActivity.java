@@ -3,6 +3,7 @@ package de.inovex.app.activities;
 import java.util.Date;
 
 import de.inovex.app.R;
+import de.inovex.app.provider.DataUtilities;
 import de.inovex.app.provider.InovexContentProvider;
 import de.inovex.app.provider.InovexContentProvider.Columns;
 import de.inovex.app.provider.InovexContentProvider.Types;
@@ -73,31 +74,13 @@ public class NewJourneyActivity extends Activity {
 		Date date = new Date(0, 0, 0);
 		int parentId = -1;
 		try {
-			saveJourney(start, dest, type, desc, date, parentId);
+			DataUtilities.saveJourney(this,start, dest, type, desc, date, parentId);
 		} catch (RemoteException e) {
 			Toast.makeText(this, getText(R.string.error_saving_journey), Toast.LENGTH_LONG);
 			e.printStackTrace();
 		}
 	}
 
-	private Uri saveJourney(String start, String destination, String type, String description, Date date, int parentId) throws RemoteException {
-		ContentProviderClient client = null;
-		try {
-			ContentValues v = null;
-			v = new ContentValues();
-			v.put(Columns.START_LOCATION, start);
-			v.put(Columns.DESTINATION, destination);
-			v.put(Columns.DESCRIPTION, description);
-			v.put(Columns.TYPE, type);
-			v.put(Columns.DATE, date.getTime());
-			v.put(Columns.PARENT_ID, parentId);
 
-			client = getContentResolver().acquireContentProviderClient(InovexContentProvider.CONTENT_URI);
-			return client.insert(InovexContentProvider.CONTENT_URI, v);
-		} finally {
-			if (client != null) {
-				client.release();
-			}
-		}
-	}
+
 }

@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Inovex App</string>
     <string name="enter_receipt">Erfasse Beleg</string>
-    <string name="enter_journey">Erfasse Reise</string>
+    <string name="enter_journey">starte neue Reise</string>
     <string name="enter_time">Erfasse Zeit</string>
     <string name="list_journeys">Meine Reisen</string>
     <string name="list_receipts">Meine Belege</string>
@@ -27,4 +27,24 @@
     <string name="work_total_time">Gesamtzeit</string>
     <string name="work_time">00:00</string>
     <string name="company_name">inovex</string>
+    <string name="sum_of_receipts">Belegsaldo</string>
+    <string name="open_tasks">Offene Aufgaben</string>
+    <string name="time_recording">Erfasse deine Zeit!</string>
+    <string name="in_time">Start</string>
+    <string name="out_time">Ende</string>
+    <string name="total_time_month">arbeitszeit</string>
+    <string name="total_time">Gesamt</string>
+    <string name="check_in">check in</string>
+    <string name="check_out">jetzt auschecken</string>
+    <string name="journey_recording">Erfasse eine Reise</string>
+    <string name="new_return_journey">neue Rückreise</string>
+    <string name="new_continuation_journey">neue Weiterreise</string>
+    <string name="finish_journey">beende Reise</string>
+    <string name="data_is_ok">Alle deine Zeit- und Reiseerfassungen ist aktuell und konsistent!</string>
+    <string name="manage_records">Datenübersicht</string>
+    <string name="end_journey">beende Reise</string>
+    <string name="start">Start</string>
+    <string name="starting_point">Startort</string>
+    <string name="current_time">Jetzt!</string>
+    <string name="error_saving_time">Fehler beim Speichern der Zeit</string>
 </resources>

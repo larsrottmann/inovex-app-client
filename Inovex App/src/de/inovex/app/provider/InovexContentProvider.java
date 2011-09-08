@@ -1,5 +1,6 @@
 package de.inovex.app.provider;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,12 +27,14 @@ public class InovexContentProvider extends ContentProvider {
 
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 	public static final Uri CONTENT_URI_JOURNEYS = Uri.parse("content://" + AUTHORITY+ "/journeys");
+	public static final Uri CONTENT_URI_TIMES = Uri.parse("content://" + AUTHORITY+ "/times");
 
 	public static class Types {
 		public static final String JOURNEY_START = "0";
 		public static final String JOURNEY_END = "1";
 		public static final String JOURNEY_CONTINUATION = "2";
 		public static final String RECEIPT = "10";
+		public static final String TIME = "20";
 		
 		public static CharSequence getDisplayStringFromType(Context context, String type){
 			if (type.equals(JOURNEY_START)){
@@ -42,6 +45,8 @@ public class InovexContentProvider extends ContentProvider {
 				return context.getText(R.string.continuation_of_journey);				
 			} else if (type.equals(RECEIPT)){
 				return context.getText(R.string.receipt);				
+			} else if (type.equals(TIME)){
+				return context.getText(R.string.work_time);
 			}
 			return null;
 		}
@@ -54,12 +59,14 @@ public class InovexContentProvider extends ContentProvider {
 		public static final String ID = "_id";
 		public static final String PARENT_ID = "parent_id";
 		public static final String CREATED = "created";
-		public static final String DATE = "date";
+		public static final String END_DATE = "end_date";
+		public static final String START_DATE = "start_date";
 		public static final String DESCRIPTION = "description";
 		public static final String START_LOCATION = "start_location";
 		public static final String DESTINATION = "destination";
 		public static final String IMAGE_PATH_URI = "image_uri";
 		public static final String TYPE = "type";
+		public static final String PROJECT = "project";
 	}
 
 	private static final UriMatcher sUriMatcher;
@@ -67,25 +74,39 @@ public class InovexContentProvider extends ContentProvider {
 	private static final int JOURNEYS = 1;
 	private static final int RECEIPT = 2;
 	private static final int RECEIPTS = 3;
-	private static final int ANY = 666;
+	private static final int TIME = 4;
+	private static final int TIMES = 5;
+	private static final int ANY = -1;
 
 	static {
 		sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		sUriMatcher.addURI(AUTHORITY,"*",ANY);
 		sUriMatcher.addURI(AUTHORITY, "journeys/#", JOURNEY);
 		sUriMatcher.addURI(AUTHORITY, "journeys", JOURNEYS);
 		sUriMatcher.addURI(AUTHORITY, "receipts/#", RECEIPT);
 		sUriMatcher.addURI(AUTHORITY, "receipts", RECEIPTS);
+		sUriMatcher.addURI(AUTHORITY, "times/#", TIME);
+		sUriMatcher.addURI(AUTHORITY, "times", TIMES);
 	}
 
 	private static class DBHelper extends SQLiteOpenHelper {
 
 		private static final String TABLE_NAME = "data";
-		private static final int DATABASE_VERSION = 1;
+		private static final int DATABASE_VERSION = 4;
 
-		private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " (" + Columns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + Columns.PARENT_ID + " INTEGER DEFAULT -1, "
-				+ Columns.CREATED + " INTEGER, " + Columns.IMAGE_PATH_URI + " TEXT, " + Columns.DATE + " INTEGER, " + Columns.START_LOCATION + " TEXT, " + Columns.DESTINATION + " TEXT, " + Columns.DESCRIPTION + " TEXT, "
-				+ Columns.TYPE + " TEXT );";
+		private static final String 
+			TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " (" 
+		
+					+ Columns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ Columns.PARENT_ID + " INTEGER DEFAULT -1, "
+				    + Columns.CREATED + " INTEGER, "
+				    + Columns.START_DATE + " INTEGER, "
+					+ Columns.END_DATE + " INTEGER, "
+				    + Columns.START_LOCATION + " TEXT, "
+					+ Columns.DESTINATION + " TEXT, "
+				    + Columns.DESCRIPTION + " TEXT, "
+				    + Columns.IMAGE_PATH_URI + " TEXT, "
+				    + Columns.PROJECT + " TEXT, "
+				    + Columns.TYPE + " INTEGER );";
 
 		private static final String DATABASE_NAME = "inovex_app";
 
@@ -123,7 +144,7 @@ public class InovexContentProvider extends ContentProvider {
 		if (selectionArgs==null){
 			selectionArgs = new String[]{};
 		}
-		List<String> args = Arrays.asList(selectionArgs);
+		ArrayList<String> args = new ArrayList<String>(Arrays.asList(selectionArgs));
 		int type = sUriMatcher.match(uri);
 
 		switch (type) {
@@ -131,6 +152,8 @@ public class InovexContentProvider extends ContentProvider {
 			case JOURNEYS:
 			case RECEIPT:
 			case RECEIPTS:
+			case TIME:
+			case TIMES:
 				selection = modifySelectionForType(uri, selection, args, type);
 				break;
 			case ANY:
@@ -168,6 +191,10 @@ public class InovexContentProvider extends ContentProvider {
 			return "vnd.android.cursor.dir/vnd.inovex.receipt";
 		case RECEIPTS:
 			return "vnd.android.cursor.item/vnd.ocr.receipts";
+		case TIME:
+			return "vnd.android.cursor.dir/vnd.inovex.time";
+		case TIMES:
+			return "vnd.android.cursor.item/vnd.ocr.times";
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -202,15 +229,17 @@ public class InovexContentProvider extends ContentProvider {
 		if (selectionArgs==null){
 			selectionArgs = new String[]{};
 		}
-		List<String> args = Arrays.asList(selectionArgs);
+		ArrayList<String> args = new ArrayList<String>(Arrays.asList(selectionArgs));
 		int count = 0;
 		int type = sUriMatcher.match(uri);
 
 		switch (type) {
 		case RECEIPTS:
 		case JOURNEYS:
+		case TIMES:
 		case RECEIPT:
 		case JOURNEY:
+		case TIME:
 			selection = modifySelectionForType(uri, selection, args, type);
 			break;
 		case ANY:
@@ -232,14 +261,16 @@ public class InovexContentProvider extends ContentProvider {
 		if (selectionArgs==null){
 			selectionArgs = new String[]{};
 		}
-		List<String> args = Arrays.asList(selectionArgs);
+		ArrayList<String> args = new ArrayList<String>(Arrays.asList(selectionArgs));
 		int count = 0;
 		int type = sUriMatcher.match(uri);
 		switch (type) {
 		case RECEIPTS:
 		case JOURNEYS:
+		case TIMES:
 		case RECEIPT:
 		case JOURNEY:
+		case TIME:
 			selection = modifySelectionForType(uri, selection, args, type);
 			break;
 		case ANY:
@@ -252,19 +283,28 @@ public class InovexContentProvider extends ContentProvider {
 		return count;
 	}
 
-	private String modifySelectionForType(Uri uri, String orgSelection, List<String> list, int type) {
+	private String modifySelectionForType(Uri uri, String orgSelection, ArrayList<String> list, int type) {
 		String selection = "";
+		String id = "";
 		switch (type) {
 		case RECEIPTS:
-			if (orgSelection.length() == 0) {
-				selection = Columns.TYPE + " >=?";
+			if (orgSelection == null) {
+				selection = Columns.TYPE + " =?";
 			} else {
-				selection = orgSelection + " AND " + Columns.TYPE + ">=?";
+				selection = orgSelection + " AND " + Columns.TYPE + "=?";
 			}
 			list.add(Types.RECEIPT);
 			break;
+		case TIMES:
+			if (orgSelection == null) {
+				selection = Columns.TYPE + " =?";
+			} else {
+				selection = orgSelection + " AND " + Columns.TYPE + "=?";
+			}
+			list.add(Types.TIME);
+			break;
 		case JOURNEYS:
-			if (orgSelection.length() == 0) {
+			if (orgSelection == null) {
 				selection = Columns.TYPE + " <?";
 			} else {
 				selection = orgSelection + " AND " + Columns.TYPE + "<?";
@@ -272,8 +312,9 @@ public class InovexContentProvider extends ContentProvider {
 			list.add(Types.RECEIPT);
 			break;
 		case RECEIPT:
+		case TIME:
 		case JOURNEY:
-			String id = uri.getLastPathSegment();
+			id = uri.getLastPathSegment();
 			selection = Columns.ID + "=?";
 			list.add(id);
 			break;

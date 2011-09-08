@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import de.inovex.app.R;
-import de.inovex.app.activities.contacts.ListContactsActivity;
 
 public class MainMenuActivity extends Activity {
 	private void initButton(final Context c, final Class<?> cls, int id){
@@ -27,11 +26,10 @@ public class MainMenuActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		initButton(this, NewReceiptActivity.class, R.id.button_enter_receipt);
-		initButton(this, NewJourneyActivity.class, R.id.button_enter_journey);
-		initButton(this, NewTimeActivity.class, R.id.button_enter_time);
+		initButton(this, ListTimeActivity.class, R.id.button_list_times);
 		initButton(this, ListJourneyActivity.class, R.id.button_list_journeys);
 		initButton(this, ListReceiptActivity.class, R.id.button_list_receipts);
-		initButton(this, ListContactsActivity.class, R.id.button_list_contacts);
+	//	initButton(this, ListContactsActivity.class, R.id.button_list_contacts);
+		
 	}
 }

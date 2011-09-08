@@ -4,18 +4,14 @@
   android:orientation="vertical"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
-      >
-    	<include 
-		layout="@layout/title_bar" 
-		android:id="@+id/titleBar"
-		android:layout_alignParentTop="true"
-	/>
+  <include 
+	layout="@layout/title_bar" 
+	android:id="@+id/titleBar"
+	android:layout_alignParentTop="true"/>
   <ListView 
 	android:id="@android:id/list"
 	android:layout_below="@+id/titleBar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:drawSelectorOnTop="false"/>
-  
-    
 </RelativeLayout>
