@@ -13,6 +13,7 @@
 		android:id="@+id/contacts_search_label"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:gravity="center_horizontal"
 		/>
 	<ListView
 		android:id="@+id/list_contacts"
