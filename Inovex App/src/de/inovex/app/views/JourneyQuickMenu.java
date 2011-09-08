@@ -19,6 +19,7 @@ import android.widget.ViewAnimator;
 import de.inovex.app.R;
 import de.inovex.app.activities.MainMenuActivity;
 import de.inovex.app.adapter.LocationSpinnerAdapter;
+import de.inovex.app.provider.DataUtilities;
 import de.inovex.app.provider.InovexContentProvider;
 import de.inovex.app.provider.InovexContentProvider.Columns;
 import de.inovex.app.provider.InovexContentProvider.Types;
@@ -106,6 +107,9 @@ public class JourneyQuickMenu extends LinearLayout {
 			@Override
 			public void onClick(View v) {
 				
+				long time = mCurrentTime.getTime();
+				String location = mCurrentLocationString;
+				//DataUtilities.saveJourney(getContext(), location, destination, type, description, date, parentId)
 			}
 		});
 	}

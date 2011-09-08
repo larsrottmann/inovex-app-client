@@ -19,4 +19,6 @@
 				android:layout_height="wrap_content"
 				>
 			</de.inovex.app.views.JourneyQuickMenu>
+			
+			
 </LinearLayout>
