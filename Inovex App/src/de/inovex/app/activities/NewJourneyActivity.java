@@ -74,7 +74,7 @@ public class NewJourneyActivity extends Activity {
 		Date date = new Date(0, 0, 0);
 		int parentId = -1;
 		try {
-			DataUtilities.saveJourney(this,start, dest, type, desc, date, parentId);
+			DataUtilities.saveJourney(this,start, dest, type, desc, date,date, parentId);
 		} catch (RemoteException e) {
 			Toast.makeText(this, getText(R.string.error_saving_journey), Toast.LENGTH_LONG);
 			e.printStackTrace();

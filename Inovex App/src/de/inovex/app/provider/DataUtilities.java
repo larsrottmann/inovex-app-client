@@ -2,11 +2,13 @@ package de.inovex.app.provider;
 
 import java.util.Date;
 
+import android.R;
 import android.content.ContentProviderClient;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.widget.Toast;
 import de.inovex.app.provider.InovexContentProvider.Columns;
 
 public class DataUtilities {
@@ -34,7 +36,7 @@ public class DataUtilities {
 	}
 
 	
-	public static Uri saveJourney(Context c, String startLocation, String destination, String type, String description, Date date, int parentId) throws RemoteException {
+	public static Uri saveJourney(Context c, String startLocation, String destination, String type, String description, Date startDate,Date endDate, int parentId) throws RemoteException{
 		ContentProviderClient client = null;
 		try {
 			ContentValues v = null;
@@ -43,7 +45,8 @@ public class DataUtilities {
 			v.put(Columns.DESTINATION, destination);
 			v.put(Columns.DESCRIPTION, description);
 			v.put(Columns.TYPE, Integer.parseInt(type));
-			v.put(Columns.START_DATE, date.getTime());
+			v.put(Columns.START_DATE, startDate.getTime());
+			v.put(Columns.END_DATE, endDate.getTime());
 			v.put(Columns.PARENT_ID, parentId);
 
 			client = c.getContentResolver().acquireContentProviderClient(InovexContentProvider.CONTENT_URI);
