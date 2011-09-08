@@ -1,0 +1,3 @@
+- Leerzeichen aus Ordnernamen entfernen
+- "lib" Verzeichnis löschen, da ant "libs" verwendet
+- sich auf Namenskonvtionen einigen (Klassennamen, Android-IDs, ...)

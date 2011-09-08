@@ -32,7 +32,13 @@
                   android:theme="@style/InovexAppTheme"
          />
         <activity android:name=".activities.contacts.ListContactsActivity"
-        	android:theme="@style/InovexAppTheme" />
+        	android:theme="@style/InovexAppTheme">
+        	<intent-filter>
+				<action android:name="android.intent.action.SEARCH" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+			<meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
+       	</activity>
         <activity android:name=".activities.NewTimeActivity" 
 			android:theme="@style/InovexAppTheme"></activity>
         <activity android:name=".activities.ListTimeActivity" 

@@ -4,30 +4,44 @@
 		"familyName" : "Gabert",
 		"symbol" : "alga",
 		"lob" : "BI",
-		"location" : "Pforzheim"
+		"location" : "Pforzheim",
+		"photoMD5" : "xxmxmxkslwls",
+		"numberMobile" : "0172 83872",
+		"numberWork" : "07231 3191 53",
+		"numberHome" : "07381 83183",
+		"emailAddress" : "a.gaber@inovex.de",
+		"skills" : "java, html"
 	}, {
 		"givenName" : "Andreas",
 		"familyName" : "Friedel",
 		"symbol" : "afri",
 		"lob" : "AD",
-		"location" : "Pforzheim"
+		"emailAddress" : "a.friedel@inovex.de",
+		"location" : "Pforzheim",
+		"skills" : ""
 	}, {
 		"givenName" : "Frank",
 		"familyName" : "Grimm",
 		"symbol" : "fgri",
 		"lob" : "AD",
-		"location" : "Pforzheim"
+		"emailAddress" : "f.grimm@inovex.de",
+		"location" : "Pforzheim",
+		"skills" : ""
 	}, {
 		"givenName" : "Khalid",
 		"familyName" : "Maslouhy",
 		"symbol" : "khma",
 		"lob" : "BI",
-		"location" : "Köln"
+		"emailAddress" : "k.maslouhy@inovex.de",
+		"location" : "Köln",
+		"skills" : ""
 	}, {
 		"givenName" : "Max",
 		"familyName" : "Wippert",
 		"symbol" : "mawi",
 		"lob" : "AD",
-		"location" : "Köln"
+		"emailAddress" : "m.wippert@inovex.de",
+		"location" : "Köln",
+		"skills" : ""
 	}
 ]

@@ -51,4 +51,7 @@
     <string name="start_time">start time</string>
     <string name="end_time">end time</string>
     <string name="end_place">end place</string>
+    <string name="search_label">Search</string>
+    <string name="search_results_for">Search results for \'%s\':</string>
+    <string name="show_all">Show All</string>
 </resources>

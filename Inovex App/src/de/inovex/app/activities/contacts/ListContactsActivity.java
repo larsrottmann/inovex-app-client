@@ -1,17 +1,17 @@
 package de.inovex.app.activities.contacts;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
@@ -59,49 +59,71 @@ public class ListContactsActivity extends Activity {
 
 				TextView tvDetails = (TextView) view.findViewById(R.id.contacts_item_details);
 				tvDetails.setText(lob+", "+location);
+
+				// photo
+				oCur = getContentResolver().query(
+						ContactsContract.Data.CONTENT_URI
+						, null // projection
+						, ContactsContract.Data.MIMETYPE+"= ? AND "+ContactsContract.Data.CONTACT_ID+"= ?" // selection
+						, new String[] { // selectionArgs
+							ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE
+							, cursor.getString(cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID))
+						}
+						, null // sortOrder
+				);
+				ImageView imgView = (ImageView) view.findViewById(R.id.contacts_item_image);
+				if (oCur.moveToFirst()) {
+					byte[] data = oCur.getBlob(oCur.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO));
+					if (data != null && data.length > 0) {
+						imgView.setImageBitmap(BitmapFactory.decodeByteArray(data, 0, data.length));
+					} else {
+						imgView.setImageResource(R.drawable.ic_contact_picture);
+					}
+				} else {
+					imgView.setImageResource(R.drawable.ic_contact_picture);
+				}
+				oCur.close();
 			}
 		});
 	}
 
-	private void loadContacts() {
+	private void loadContacts(String filter) {
+		String selection;
+		String[] selectionArgs;
+		if (filter == null) {
+			selection = ContactsContract.Data.MIMETYPE+"= ? AND "+
+				ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID+"= ?";
+			selectionArgs = new String[] { // selectionArgs
+				ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE
+				, String.valueOf(ContactsService.getInovexGroupId(getContentResolver()))
+			};
+		} else {
+			selection = ContactsContract.Data.MIMETYPE+"= ? AND "+
+				ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID+"= ? AND "+
+				ContactsContract.Data.DISPLAY_NAME+" LIKE ?";
+			selectionArgs = new String[] { // selectionArgs
+				ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE
+				, String.valueOf(ContactsService.getInovexGroupId(getContentResolver()))
+				, "%"+filter+"%"
+			};
+		}
 		Cursor cursor = getContentResolver().query(
 				ContactsContract.Data.CONTENT_URI
 				, null // projection
-				, ContactsContract.Data.MIMETYPE+"= ? AND "+ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID+"= ?" // selection
-				, new String[] { // selectionArgs
-					ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE
-					, String.valueOf(ContactsService.getInovexGroupId(getContentResolver()))
-				}
+				, selection
+				, selectionArgs
 				, null // sortOrder
 		);
 		cursor.setNotificationUri(getContentResolver(), ContactsContract.Contacts.CONTENT_URI);
 
-		Set<Integer> ids = new HashSet<Integer>();
 		while (cursor.moveToNext()) {
 			Log.i(TAG, "---------------- entry ---------------");
 			Log.i(TAG, "DisplayName:         "+cursor.getString(cursor.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)));
 			Log.i(TAG, "--------------------------------------");
-			ids.add(cursor.getInt(cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID)));
 		}
 
 		cursor.moveToFirst();
 		((CursorAdapter) listContacts.getAdapter()).changeCursor(cursor);
-	}
-
-	private void loadGroups() {
-		Cursor cursor = getContentResolver().query(
-				ContactsContract.Groups.CONTENT_URI
-				, null // projection
-				, null // selection
-				, null // selectionArgs
-				, null // sortOrder
-		);
-		while (cursor.moveToNext()) {
-			Log.i(TAG, "---------------- group ---------------");
-			Log.i(TAG, "Title:         "+cursor.getString(cursor.getColumnIndex(ContactsContract.Groups.TITLE)));
-			Log.i(TAG, "Notes:    "+cursor.getString(cursor.getColumnIndex(ContactsContract.Groups.NOTES)));
-			Log.i(TAG, "--------------------------------------");
-		}
 	}
 
 	@Override
@@ -115,7 +137,22 @@ public class ListContactsActivity extends Activity {
 		Intent serviceIntent = new Intent(this, ContactsService.class);
 		startService(serviceIntent);
 
-		loadContacts();
-		loadGroups();
+		// show/hide search ui elements
+		String query = getIntent().getStringExtra("query");
+		TextView searchLabel = (TextView) findViewById(R.id.contacts_search_label);
+		View showAll = findViewById(R.id.contacts_show_all);
+		searchLabel.setVisibility(query==null?View.GONE:View.VISIBLE);
+		showAll.setVisibility(query==null?View.GONE:View.VISIBLE);
+		if (query != null) {
+			searchLabel.setText(getResources().getString(R.string.search_results_for, query));
+			showAll.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent i = new Intent(getBaseContext(), ListContactsActivity.class);
+					startActivity(i);
+				}
+			});
+		}
+		loadContacts(query);
 	}
 }
