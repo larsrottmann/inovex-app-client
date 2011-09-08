@@ -10,6 +10,8 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -31,6 +33,9 @@ public class ListContactsActivity extends Activity {
 		) {
 			@Override
 			public void bindView(View view, Context context, Cursor cursor) {
+				// contact id im tag vom view speichern
+				view.setTag(cursor.getInt(cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID)));
+
 				String displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 
 				// query organization data
@@ -85,6 +90,15 @@ public class ListContactsActivity extends Activity {
 				oCur.close();
 			}
 		});
+		listContacts.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View view, int arg2, long arg3) {
+				Intent intent = new Intent(getBaseContext(), ViewContactActivity.class);
+				intent.putExtra("contactId", (Integer) view.getTag());
+				intent.putExtra("displayName", ((TextView) view.findViewById(R.id.contacts_item_title)).getText());
+				startActivity(intent);
+			}
+		});
 	}
 
 	private void loadContacts(String filter) {
@@ -115,6 +129,7 @@ public class ListContactsActivity extends Activity {
 				, null // sortOrder
 		);
 		cursor.setNotificationUri(getContentResolver(), ContactsContract.Contacts.CONTENT_URI);
+		startManagingCursor(cursor);
 
 		while (cursor.moveToNext()) {
 			Log.i(TAG, "---------------- entry ---------------");
