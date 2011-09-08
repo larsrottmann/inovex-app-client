@@ -8,40 +8,15 @@
 		layout="@layout/title_bar" 
 		android:id="@+id/titleBar"
 	/>
-<include layout="@layout/overview_main_menu"/>
-<include layout="@layout/new_time_main_menu"/>
-<include layout="@layout/new_journey_main_menu"/>
-		   <Button android:text="@string/list_contacts"  
-    		android:id="@+id/button_list_contacts"
-    		android:layout_width="match_parent" 
-    		android:layout_marginTop="10dip"
-    		android:drawableLeft="@drawable/ic_menu_camera"
-    		android:layout_height="wrap_content" />
-	
-	<LinearLayout 
-		android:orientation="horizontal"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
-    	<Button android:text="@string/list_times"  
-    		android:id="@+id/button_list_times"
-    		android:layout_width="wrap_content" 
-    		android:drawableLeft="@drawable/time_icon"
-    		android:layout_weight="1"
-    		style="@style/MainMenuButton">
-    	</Button>
-    	<Button android:text="@string/list_journeys" 
-	    		android:id="@+id/button_list_journeys"
-	    		android:layout_width="wrap_content" 
-	    		android:drawableLeft="@drawable/travel_icon"
-	    		android:layout_weight="1"
-    			style="@style/MainMenuButton">
-	    </Button>
-	    <Button android:text="@string/list_receipts"  
-    		android:id="@+id/button_list_receipts"
-    		android:layout_width="wrap_content" 
-    		android:drawableLeft="@drawable/receipt_icon"
-    		android:layout_weight="1"
-    		style="@style/MainMenuButton">    		
-    	</Button>
-    </LinearLayout>   	
+	<!-- 
+	<include layout="@layout/overview_main_menu"/>
+	<include layout="@layout/new_time_main_menu"/>
+	<include  layout="@layout/manage_data_main_menu"/>
+	-->
+			<de.inovex.app.views.JourneyQuickMenu
+				android:id="@+id/journeyquickmenu" 
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				>
+			</de.inovex.app.views.JourneyQuickMenu>
 </LinearLayout>

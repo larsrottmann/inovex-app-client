@@ -18,7 +18,8 @@ public class JourneyAdapter extends CursorAdapter {
 	
     private static final String[] PROJECTION_IDS_AND_TITLE = new String[] {
         InovexContentProvider.Columns.ID, 
-        InovexContentProvider.Columns.DATE,
+        InovexContentProvider.Columns.START_DATE,
+        InovexContentProvider.Columns.END_DATE,
         InovexContentProvider.Columns.START_LOCATION,
         InovexContentProvider.Columns.DESTINATION,
         InovexContentProvider.Columns.DESCRIPTION,
@@ -26,8 +27,9 @@ public class JourneyAdapter extends CursorAdapter {
     };
 
     private LayoutInflater mInflater;
-    private int mIndexDate;
-    private int mIndexStart;
+    private int mIndexStartDate;
+    private int mIndexEndDate;
+    private int mIndexStartLocation;
     private int mIndexDestination;
     private int mIndexDescription;
     private int mIndexType;
@@ -36,12 +38,13 @@ public class JourneyAdapter extends CursorAdapter {
 	public JourneyAdapter(ListJourneyActivity activity) {
         super(activity, activity.managedQuery(InovexContentProvider.CONTENT_URI_JOURNEYS,
                 PROJECTION_IDS_AND_TITLE,
-                null, null, InovexContentProvider.Columns.DATE + " desc"), true);
+                null, null, InovexContentProvider.Columns.START_DATE + " desc"), true);
 
         final Cursor c = getCursor();
         
-        mIndexDate = c.getColumnIndex(InovexContentProvider.Columns.DATE);
-        mIndexStart = c.getColumnIndex(InovexContentProvider.Columns.START_LOCATION);
+        mIndexStartDate = c.getColumnIndex(InovexContentProvider.Columns.START_DATE);
+        mIndexEndDate = c.getColumnIndex(InovexContentProvider.Columns.END_DATE);
+        mIndexStartLocation = c.getColumnIndex(InovexContentProvider.Columns.START_LOCATION);
         mIndexDestination = c.getColumnIndex(InovexContentProvider.Columns.DESTINATION);
         mIndexDescription = c.getColumnIndex(InovexContentProvider.Columns.DESCRIPTION);
         mIndexType = c.getColumnIndex(InovexContentProvider.Columns.TYPE);
@@ -57,9 +60,9 @@ public class JourneyAdapter extends CursorAdapter {
 		
 		String type = cursor.getString(mIndexType);
 		holder.type.setText(InovexContentProvider.Types.getDisplayStringFromType(context, type));
-		CharSequence formattedDate = DateFormat.format("MMM dd, yyyy h:mmaa", new Date(cursor.getLong(mIndexDate)));
+		CharSequence formattedDate = DateFormat.format("MMM dd, yyyy h:mmaa", new Date(cursor.getLong(mIndexStartDate)));
 		holder.date.setText(formattedDate);
-		holder.start.setText(cursor.getString(mIndexStart));
+		holder.start.setText(cursor.getString(mIndexStartLocation));
 		holder.destination.setText(cursor.getString(mIndexDestination));
 		holder.description.setText(cursor.getString(mIndexDescription));		
 	}

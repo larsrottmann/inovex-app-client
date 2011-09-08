@@ -54,7 +54,8 @@ public class InovexContentProvider extends ContentProvider {
 		public static final String ID = "_id";
 		public static final String PARENT_ID = "parent_id";
 		public static final String CREATED = "created";
-		public static final String DATE = "date";
+		public static final String END_DATE = "end_date";
+		public static final String START_DATE = "start_date";
 		public static final String DESCRIPTION = "description";
 		public static final String START_LOCATION = "start_location";
 		public static final String DESTINATION = "destination";
@@ -81,10 +82,10 @@ public class InovexContentProvider extends ContentProvider {
 	private static class DBHelper extends SQLiteOpenHelper {
 
 		private static final String TABLE_NAME = "data";
-		private static final int DATABASE_VERSION = 1;
+		private static final int DATABASE_VERSION = 2;
 
 		private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " (" + Columns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + Columns.PARENT_ID + " INTEGER DEFAULT -1, "
-				+ Columns.CREATED + " INTEGER, " + Columns.IMAGE_PATH_URI + " TEXT, " + Columns.DATE + " INTEGER, " + Columns.START_LOCATION + " TEXT, " + Columns.DESTINATION + " TEXT, " + Columns.DESCRIPTION + " TEXT, "
+				+ Columns.CREATED + " INTEGER, " + Columns.IMAGE_PATH_URI + " TEXT, " + Columns.START_DATE + " INTEGER, " + Columns.END_DATE + " INTEGER, " + Columns.START_LOCATION + " TEXT, " + Columns.DESTINATION + " TEXT, " + Columns.DESCRIPTION + " TEXT, "
 				+ Columns.TYPE + " TEXT );";
 
 		private static final String DATABASE_NAME = "inovex_app";

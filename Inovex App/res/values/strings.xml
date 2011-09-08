@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Inovex App</string>
     <string name="enter_receipt">enter receipt</string>
-    <string name="enter_journey">enter journey</string>
+    <string name="enter_journey">start new journey</string>
     <string name="enter_time">enter time</string>
     <string name="list_journeys">my journeys</string>
     <string name="list_receipts">my receipts</string>
@@ -38,7 +38,13 @@
     <string name="check_in">check in now</string>
     <string name="check_out">check out now</string>
     <string name="journey_recording">manage your journeys</string>
-    <string name="new_return_journey">new return journey</string>
+    <string name="new_return_journey">start new journey</string>
     <string name="new_continuation_journey">continue journey</string>
     <string name="finish_journey">finish journey</string>
+    <string name="data_is_ok">All your time and journey records are up to date and consistent!</string>
+    <string name="manage_records">data overview</string>
+    <string name="end_journey">end journey</string>
+    <string name="start">start</string>
+    <string name="starting_point">starting point</string>
+    <string name="current_time">now!</string>
 </resources>

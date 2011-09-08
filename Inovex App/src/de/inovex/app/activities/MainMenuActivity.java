@@ -28,8 +28,8 @@ public class MainMenuActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		initButton(this, ListJourneyActivity.class, R.id.button_list_journeys);
-		initButton(this, ListReceiptActivity.class, R.id.button_list_receipts);
+//		initButton(this, ListJourneyActivity.class, R.id.button_list_journeys);
+//		initButton(this, ListReceiptActivity.class, R.id.button_list_receipts);
 	//	initButton(this, ListContactsActivity.class, R.id.button_list_contacts);
 		
 	}
