@@ -75,7 +75,7 @@ public class NewTimeActivity extends Activity {
 			v.put(Columns.DATE, startDate.getTime());
 			v.put(Columns.START_TIME, startDate.getTime());
 			v.put(Columns.END_TIME, endDate.getTime());
-			v.put(Columns.TYPE, type);
+			v.put(Columns.TYPE, Integer.parseInt(type));
 			v.put(Columns.PARENT_ID, parentId);
 
 			client = getContentResolver().acquireContentProviderClient(InovexContentProvider.CONTENT_URI);

@@ -88,7 +88,7 @@ public class NewJourneyActivity extends Activity {
 			v.put(Columns.START_LOCATION, start);
 			v.put(Columns.DESTINATION, destination);
 			v.put(Columns.DESCRIPTION, description);
-			v.put(Columns.TYPE, type);
+			v.put(Columns.TYPE, Integer.parseInt(type));
 			v.put(Columns.DATE, date.getTime());
 			v.put(Columns.PARENT_ID, parentId);
 
