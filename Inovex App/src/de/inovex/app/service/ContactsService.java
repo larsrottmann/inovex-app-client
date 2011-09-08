@@ -24,6 +24,7 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 import de.inovex.app.R;
+import de.inovex.app.provider.contact_contracts.ExtraDataKinds;
 
 public class ContactsService extends IntentService {
 	static private class ImportContactOperations {
@@ -40,6 +41,7 @@ public class ContactsService extends IntentService {
 		static final int INSERT_PHONE_NUMBER_HOME = 	1024;
 		static final int UPDATE_PHONE_NUMBER_HOME = 	2048;
 		static final int UPDATE_EMAIL_ADDRESS = 		4096;
+		static final int UPDATE_INOVEX = 				8192;
 	}
 
 	static private final String TAG = "ContactsService";
@@ -83,7 +85,7 @@ public class ContactsService extends IntentService {
 		super(TAG);
 	}
 
-	private int checkImportOperations(Cursor cursorOrganization, String givenName, String familyName, String symbol, String lob, String location, String photoMD5, String numberMobile, String numberWork, String numberHome, String emailAddress) {
+	private int checkImportOperations(Cursor cursorOrganization, String givenName, String familyName, String symbol, String lob, String location, String photoMD5, String numberMobile, String numberWork, String numberHome, String emailAddress, String skills) {
 		if (cursorOrganization.moveToFirst()) {
 			int r = 0;
 			int contactId = cursorOrganization.getInt(cursorOrganization.getColumnIndex(ContactsContract.CommonDataKinds.Organization.CONTACT_ID));
@@ -268,6 +270,26 @@ public class ContactsService extends IntentService {
 			}
 			cursor.close();
 
+			// check inovex (skills)
+			cursor = getContentResolver().query(
+					ContactsContract.Data.CONTENT_URI
+					, null // projection
+					, ContactsContract.Data.MIMETYPE+"= ? AND "+
+						ContactsContract.Data.CONTACT_ID+"= ?"
+					, new String[] { // selectionArgs
+						ExtraDataKinds.Inovex.CONTENT_ITEM_TYPE
+						, String.valueOf(contactId)
+					}
+					, null // sortOrder
+			);
+			if (cursor.moveToFirst()) {
+				String curSkills = cursor.getString(cursor.getColumnIndex(ExtraDataKinds.Inovex.SKILLS));
+				if (!curSkills.equals(skills)) {
+					r |= ImportContactOperations.UPDATE_INOVEX;
+				}
+			}
+			cursor.close();
+
 			return r;
 		} else {
 			// alles insert
@@ -319,11 +341,12 @@ public class ContactsService extends IntentService {
 					, (String) contact.get("numberWork")
 					, (String) contact.get("numberHome")
 					, (String) contact.get("emailAddress")
+					, (String) contact.get("skills")
 			);
 		}
 	}
 
-	private void insertUpdateContact(String givenName, String familyName, String symbol, String lob, String location, String photoMD5, String numberMobile, String numberWork, String numberHome, String emailAddress) {
+	private void insertUpdateContact(String givenName, String familyName, String symbol, String lob, String location, String photoMD5, String numberMobile, String numberWork, String numberHome, String emailAddress, String skills) {
 		// bestehenden finden
 		ContentResolver cr = getContentResolver();
 		Cursor cursor = cr.query(
@@ -341,7 +364,7 @@ public class ContactsService extends IntentService {
 		if (cursor.moveToFirst()) {
 			rawContactId = cursor.getInt(cursor.getColumnIndex(ContactsContract.Data.RAW_CONTACT_ID));
 		}
-		operations = checkImportOperations(cursor, givenName, familyName, symbol, lob, location, photoMD5, numberMobile, numberWork, numberHome, emailAddress);
+		operations = checkImportOperations(cursor, givenName, familyName, symbol, lob, location, photoMD5, numberMobile, numberWork, numberHome, emailAddress, skills);
 
 		if (operations == 0) return;
 
@@ -572,6 +595,29 @@ public class ContactsService extends IntentService {
 					.build());
 		}
 
+		// inovex extra (skills)
+		if ((operations & (ImportContactOperations.INSERT_RAW_CONTACT | ImportContactOperations.UPDATE_INOVEX)) > 0) {
+			Builder builder;
+			if ((operations & ImportContactOperations.INSERT_RAW_CONTACT) > 0) {
+				builder = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+					.withValue(ContactsContract.Data.MIMETYPE,
+						ExtraDataKinds.Inovex.CONTENT_ITEM_TYPE)
+					.withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0);
+			} else {
+				builder = ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI);
+				builder.withSelection(
+						ContactsContract.Data.RAW_CONTACT_ID+"=? AND "+
+						ContactsContract.Data.MIMETYPE+"=?"
+						, new String[] {
+								String.valueOf(rawContactId)
+								, ExtraDataKinds.Inovex.CONTENT_ITEM_TYPE
+						}
+				);
+			}
+			ops.add(builder
+					.withValue(ExtraDataKinds.Inovex.SKILLS, skills)
+					.build());
+		}
 
 		Log.i(TAG, "inserting/updating contact: "+displayName);
 		try {

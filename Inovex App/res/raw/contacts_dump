@@ -17,27 +17,31 @@
 		"symbol" : "afri",
 		"lob" : "AD",
 		"emailAddress" : "a.friedel@inovex.de",
-		"location" : "Pforzheim"
+		"location" : "Pforzheim",
+		"skills" : ""
 	}, {
 		"givenName" : "Frank",
 		"familyName" : "Grimm",
 		"symbol" : "fgri",
 		"lob" : "AD",
 		"emailAddress" : "f.grimm@inovex.de",
-		"location" : "Pforzheim"
+		"location" : "Pforzheim",
+		"skills" : ""
 	}, {
 		"givenName" : "Khalid",
 		"familyName" : "Maslouhy",
 		"symbol" : "khma",
 		"lob" : "BI",
 		"emailAddress" : "k.maslouhy@inovex.de",
-		"location" : "Köln"
+		"location" : "Köln",
+		"skills" : ""
 	}, {
 		"givenName" : "Max",
 		"familyName" : "Wippert",
 		"symbol" : "mawi",
 		"lob" : "AD",
 		"emailAddress" : "m.wippert@inovex.de",
-		"location" : "Köln"
+		"location" : "Köln",
+		"skills" : ""
 	}
 ]
