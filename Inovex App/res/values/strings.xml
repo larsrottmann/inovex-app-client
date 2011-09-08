@@ -38,7 +38,7 @@
     <string name="check_in">check in now</string>
     <string name="check_out">check out now</string>
     <string name="journey_recording">manage your journeys</string>
-    <string name="new_return_journey">start new journey</string>
+    <string name="new_return_journey">start return journey</string>
     <string name="new_continuation_journey">continue journey</string>
     <string name="finish_journey">finish journey</string>
     <string name="data_is_ok">All your time and journey records are up to date and consistent!</string>
@@ -48,4 +48,7 @@
     <string name="starting_point">starting point</string>
     <string name="current_time">now!</string>
     <string name="error_saving_time">error saving your time</string>
+    <string name="start_time">start time</string>
+    <string name="end_time">end time</string>
+    <string name="end_place">end place</string>
 </resources>

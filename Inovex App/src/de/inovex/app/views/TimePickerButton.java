@@ -6,15 +6,12 @@ import java.util.Date;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnDismissListener;
 import android.database.ContentObserver;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TimePicker;
@@ -24,7 +21,7 @@ public class TimePickerButton extends Button {
 
 	Calendar mCalendar;
     private final static String m12 = "h:mm:ss aa";
-    private final static String m24 = "k:mm:ss";
+    private final static String m24 = "hh:mm:ss";
     private FormatChangeObserver mFormatChangeObserver;
 
     private Runnable mTicker;
@@ -37,7 +34,6 @@ public class TimePickerButton extends Button {
 	private boolean useCustomTime=false;
 	
 	public synchronized void setUseCustomTime(boolean val){
-    	Log.i("ticker","setting useCustomTime to " + val);
 		useCustomTime = val;
 	}
 	public synchronized boolean getUseCustomTime(){
@@ -154,7 +150,6 @@ public class TimePickerButton extends Button {
          */
         mTicker = new Runnable() {
                 public void run() {
-                    Log.i("ticker", "useCustomTime = " + getUseCustomTime());
 
                     if (mTickerStopped) return;
                     if (getUseCustomTime()) return;

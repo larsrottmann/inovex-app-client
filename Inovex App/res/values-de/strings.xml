@@ -47,4 +47,7 @@
     <string name="starting_point">Startort</string>
     <string name="current_time">Jetzt!</string>
     <string name="error_saving_time">Fehler beim Speichern der Zeit</string>
+    <string name="start_time">Abfahrtszeit</string>
+    <string name="end_time">Ankunftszeit</string>
+    <string name="end_place">Ankunftsort</string>
 </resources>

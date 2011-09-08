@@ -16,6 +16,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.graphics.Paint.Join;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
@@ -91,7 +92,7 @@ public class InovexContentProvider extends ContentProvider {
 	private static class DBHelper extends SQLiteOpenHelper {
 
 		private static final String TABLE_NAME = "data";
-		private static final int DATABASE_VERSION = 4;
+		private static final int DATABASE_VERSION = 5;
 
 		private static final String 
 			TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " (" 

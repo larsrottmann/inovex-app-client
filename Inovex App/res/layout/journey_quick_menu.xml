@@ -1,97 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge   xmlns:android="http://schemas.android.com/apk/res/android">
-<LinearLayout
+<RelativeLayout
   android:orientation="vertical"
   android:layout_width="match_parent"
   android:layout_height="wrap_content">
-  <!-- 
-  	<TextView 	
-		android:id="@+id/textview_journey_label"
-		android:text="@string/journey_recording"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:textSize="22dip"
-	/>  
-	-->
-		<ViewAnimator
-				android:id="@+id/viewanimator_new_journey"
-				android:layout_width="fill_parent"
-				android:background="@drawable/main_menu_section_background"
-   			 	android:layout_height="match_parent"> 	
-   			 	<ViewFlipper
-   			 		android:id="@+id/viewflipper_start_journey"
-   			 		android:layout_width="match_parent"
-   			 		android:layout_height="wrap_content" >
-   			 		<RelativeLayout 
-   			 			android:layout_width="match_parent"
-   			 			android:layout_height="wrap_content">
-  				 		<de.inovex.app.views.TimePickerButton
-  				 			android:id="@+id/timepicker_start_time" 
-  				 			android:layout_width="wrap_content" 
-  				 			android:layout_height="wrap_content" 
-  				 			android:layout_alignParentTop="true" 
-  				 			android:layout_alignParentLeft="true">
-  				 		</de.inovex.app.views.TimePickerButton>
-   			 			<Spinner 
-	   			 			android:id="@+id/spinner_pick_location" 
-	   			 			android:layout_height="wrap_content" 
-	   			 			android:layout_width="180dip" 
-	   			 			android:layout_alignParentTop="true" 
-	   			 			android:layout_toRightOf="@+id/timepicker_start_time">
-	   			 		</Spinner>	
-	   			 		<Button 
-							android:id="@+id/button_start_new_journey"
-							android:layout_below="@+id/spinner_pick_location"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:text="@string/enter_journey"
-						/>
-   			 		</RelativeLayout>
-					<LinearLayout 
+
+		<!-- show last or current journey to the user -->
+		<LinearLayout 
+	    	android:id="@+id/layout_container" 
+	    	android:layout_width="match_parent" 
+	    	android:orientation="vertical"
+	    	android:layout_height="wrap_content" 
+	    	android:layout_alignParentTop="true"> 
+	    	<LinearLayout 
+		    	android:layout_width="match_parent"
+	    		android:layout_height="wrap_content" 
+	    		android:orientation="horizontal"
+	    	>
+		    	<TextView 
+		    		android:id="@+id/textView_start_time"
+		    		android:layout_width="0dip"
+		    		android:layout_weight="5"
+		    		android:gravity="center_horizontal"		    		
+		    		android:layout_height="wrap_content"
+		    		android:text="13:45h"/>
+		    	<TextSwitcher 
+			    	android:id="@+id/textSwitcher_type_of_journey"
+			    	android:inAnimation="@android:anim/fade_in"
+					android:outAnimation="@android:anim/fade_out"			    	
+			    	android:layout_width="wrap_content"
+			    	android:layout_weight="1"
+			    	android:layout_height="wrap_content"
+			    >
+			    	 <TextView 
+		 				android:layout_width="match_parent" 
+		 				android:layout_height="match_parent" 
+		 				android:text="Anreise"	 				
+				    	android:gravity="center_horizontal"		    					    	
+		 			/>
+		 			<TextView 
+		 				android:layout_width="match_parent" 
+		 				android:layout_height="match_parent" 
+				    	android:gravity="center_horizontal"		    					    	
+		 				android:text="Rückreise"	 				
+		 			/>
+			    </TextSwitcher>
+		    	<TextView 
+		    		android:id="@+id/textView_end_time"
+		    		android:layout_width="0dip"
+		    		android:gravity="center_horizontal"		    		
+		    		android:layout_weight="5"
+		    		android:layout_height="wrap_content"
+		    		android:text="13:45h"/>
+			</LinearLayout>
+
+	    	<LinearLayout 
+		    	android:layout_width="match_parent"
+	    		android:layout_height="wrap_content" 
+	    		android:orientation="horizontal"
+	    	>
+		    	<TextView 
+			    	android:id="@+id/textview_start_place" 
+			    	android:textAppearance="?android:attr/textAppearanceMedium" 
+			    	android:layout_width="0dip"
+			    	android:layout_weight="5" 
+			    	android:layout_height="wrap_content" 
+		    		android:gravity="center_horizontal"		    		
+			    	android:text="düsseldorf"
+			    />
+			   	<ImageView 
+			    	android:id="@+id/imageview_arrow"
+			    	android:src="@drawable/ic_menu_forward"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_gravity="center_vertical"
+			    />
+			    <TextView 
+			    	android:id="@+id/textview_destination"
+		    		android:gravity="center_horizontal"		    		
+			    	android:textAppearance="?android:attr/textAppearanceMedium" 
+			    	android:layout_weight="5"
+			    	android:layout_width="0dip"
+			    	android:layout_height="wrap_content" 
+			    	android:text="pforzheim">
+			    </TextView>			    
+		    </LinearLayout>
+   		</LinearLayout>
+   		
+   		
+		<RelativeLayout 
+	 		android:layout_below="@+id/layout_container" 
+			android:layout_width="match_parent"
+			android:background="@drawable/main_menu_section_background"
+			android:layout_height="wrap_content"
+			>
+			<!-- allow user to pick date and location  -->
+			<TextSwitcher 
+				android:inAnimation="@android:anim/fade_in"
+				android:outAnimation="@android:anim/fade_out"
+				android:id="@+id/textSwitcher_time_label"
+	 			android:layout_alignParentTop="true" 
+	 			android:layout_alignParentLeft="true"
+	 			android:layout_width="100dip" 
+	 			android:layout_height="wrap_content">
+	 			<TextView 
+	 				android:layout_width="wrap_content" 
+	 				android:layout_height="wrap_content" 
+	 				android:text="start time"	 				
+	 			/>
+	 			<TextView 
+	 				android:layout_width="wrap_content" 
+	 				android:layout_height="wrap_content" 
+	 				android:text="end time"	 				
+	 			/>
+	 		</TextSwitcher>
+	 		<de.inovex.app.views.TimePickerButton
+	 			android:id="@+id/timepicker_start_time"	 		
+	 			android:inAnimation="@android:anim/fade_in"
+				android:outAnimation="@android:anim/fade_out"	 			 
+	 			android:layout_width="100dip" 
+	 			android:layout_height="wrap_content" 
+	 			android:layout_below="@+id/textSwitcher_time_label" 
+	 			android:layout_alignParentLeft="true">
+	 		</de.inovex.app.views.TimePickerButton>	
+	 									
+	 		<TextSwitcher 
+				android:id="@+id/textSwitcher_location_label"
+				android:inAnimation="@android:anim/fade_in"
+				android:outAnimation="@android:anim/fade_out"				
+	 			android:layout_width="wrap_content" 
+	 			android:layout_alignParentTop="true"
+	 			android:layout_toRightOf="@+id/textSwitcher_time_label"
+	 			android:layout_height="wrap_content" >
+	 			<TextView 
+	 				android:text="start place"
+	 				android:layout_width="wrap_content" 
+	 				android:layout_height="wrap_content" 
+
+	 			/>
+	 			<TextView 
+	 				android:text="end place"
+	 				android:layout_width="wrap_content" 
+	 				android:layout_height="wrap_content" 
+	 			/>
+	 		</TextSwitcher>
+	 		
+	 		<Spinner 
+		 			android:id="@+id/spinner_pick_location" 
+		 			android:layout_height="wrap_content" 
+		 			android:layout_width="180dip" 
+		 			android:layout_below="@+id/textSwitcher_location_label" 
+		 			android:layout_toRightOf="@+id/timepicker_start_time">
+		 	</Spinner>
+		 	
+			<ViewAnimator
+					android:id="@+id/viewanimator_new_journey"
+					android:layout_width="fill_parent"
+					android:layout_below="@+id/spinner_pick_location"
+	   			 	android:layout_height="wrap_content"> 	
+	   			 		
+	   			 	<!-- no journey in progress and last journey is a return journey 
+	   			 		- user can start a completly new journey
+	   			 	-->
+				 	<Button 
+						android:id="@+id/button_start_new_journey"
+						android:layout_below="@+id/spinner_pick_location"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-					>
-						<LinearLayout 
-							android:layout_width="0dip"
-							android:layout_height="wrap_content"
-							android:layout_weight="1"
-							android:orientation="horizontal"	
-						>
-							<LinearLayout 
-								android:orientation="vertical"
-								android:layout_width="match_parent"	
-								android:layout_height="match_parent">
-								<TextView 
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:text="@string/start"/>	
-								<TextView 
-									android:id="@+id/textview_start_journey"
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:text="08 Aug - Düsseldorf"/>	
-							</LinearLayout>					
-						</LinearLayout>
-						<Button android:id="@+id/button_end_current_journey"
-							android:layout_width="0dip"
-							android:layout_weight="1"
-							android:layout_height="wrap_content"
-							android:text="@string/end_journey"/>
-					</LinearLayout>   			 		
-   			 	</ViewFlipper>
-	
-   			 	<LinearLayout
-   			 		android:layout_width="match_parent"
-   			 		android:layout_height="match_parent"
-   			 		android:orientation="vertical">  
-   			 		<TextView 
-   			 			android:id="@+id/textview_first_journey"
-   			 			android:layout_width="match_parent"
-   			 			android:layout_height="30dip"
-   			 			android:text="Aug 08 - Düsseldorf -> Karlsruhe"/>
-					<LinearLayout 
-						android:layout_width="fill_parent"
-	   				 	android:layout_height="match_parent"
+						android:text="@string/enter_journey"
+					/>
+	   			 	<!-- no journey in progress and last journey is no return journey 
+	   			 		user can start either a return journey or a continuation journey	
+	   			 	-->
+	 			 	<LinearLayout 
+	   				 	android:layout_below="@+id/spinner_pick_location"   				 	
+						android:layout_width="match_parent"
+	   				 	android:layout_height="wrap_content"
 	   				 	android:orientation="horizontal"> 
 						<Button 
 							android:id="@+id/button_start_return_journey"
@@ -108,23 +192,20 @@
 							android:text="@string/new_continuation_journey"
 						/>
 					</LinearLayout>
-				</LinearLayout>
-				<LinearLayout
-   			 		android:layout_width="match_parent"
-   			 		android:layout_height="match_parent"
-   			 		android:orientation="vertical">
-					<TextView 	
-						android:text="@string/finish_journey"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:textSize="22dip"
-					/>    
+	   			 	<!-- journey in progress 
+	   			 		user can finish the journey in progress
+	   			 	-->
+					<LinearLayout
+	   			 		android:layout_width="match_parent"
+	   			 		android:layout_height="wrap_content"
+	   			 		android:orientation="vertical">
 						<Button 
 							android:id="@+id/button_finish_journey"
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
-	   			 			android:text="Aug 08 continuation: Düsseldorf -> Karlsruhe"/>						
-				</LinearLayout>   
-    		</ViewAnimator>
-</LinearLayout>
+	   			 			android:text="@string/finish_journey"/>						
+					</LinearLayout>   
+	    		</ViewAnimator>
+	    	</RelativeLayout>
+	</RelativeLayout>
 </merge>
