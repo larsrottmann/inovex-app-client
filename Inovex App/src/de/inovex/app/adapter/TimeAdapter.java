@@ -18,27 +18,27 @@ public class TimeAdapter extends CursorAdapter {
 
 	private static final String[] PROJECTION_IDS_AND_TITLE = new String[] {
         InovexContentProvider.Columns.ID, 
-        InovexContentProvider.Columns.START_DATE,
-        InovexContentProvider.Columns.END_DATE,
-        InovexContentProvider.Columns.DESCRIPTION,
-        InovexContentProvider.Columns.PROJECT
+        InovexContentProvider.Columns.DATE,
+        InovexContentProvider.Columns.START_TIME,
+        InovexContentProvider.Columns.END_TIME,
+        InovexContentProvider.Columns.DESCRIPTION
 	};
 
     private LayoutInflater mInflater;
-    private int mIndexStartDate;
-    private int mIndexEndDate;
+    private int mIndexDate;
+    private int mIndexStartTime;
+    private int mIndexEndTime;
     private int mIndexDescription;
-    private int mIndexProject;
 
 	public TimeAdapter(ListTimeActivity activity) {
 		super(activity, activity.managedQuery(InovexContentProvider.CONTENT_URI_TIMES, PROJECTION_IDS_AND_TITLE, null,
-				null, InovexContentProvider.Columns.START_DATE + " desc"), true);
+				null, InovexContentProvider.Columns.DATE + " desc"), true);
 
 		final Cursor c = getCursor();
-        mIndexStartDate = c.getColumnIndex(InovexContentProvider.Columns.START_DATE);
-        mIndexEndDate = c.getColumnIndex(InovexContentProvider.Columns.END_DATE);
+        mIndexDate = c.getColumnIndex(InovexContentProvider.Columns.DATE);
+        mIndexStartTime = c.getColumnIndex(InovexContentProvider.Columns.START_TIME);
+        mIndexEndTime = c.getColumnIndex(InovexContentProvider.Columns.END_TIME);
         mIndexDescription = c.getColumnIndex(InovexContentProvider.Columns.DESCRIPTION);
-        mIndexProject = c.getColumnIndex(InovexContentProvider.Columns.PROJECT);
 
         mInflater = LayoutInflater.from(activity);
 	}
@@ -46,13 +46,13 @@ public class TimeAdapter extends CursorAdapter {
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 		TimeViewHolder holder = (TimeViewHolder) view.getTag();
-		CharSequence formattedDate = DateFormat.format("MMM dd, yyyy", new Date(cursor.getLong(mIndexStartDate)));
+		CharSequence formattedDate = DateFormat.format("MMM dd, yyyy", new Date(cursor.getLong(mIndexDate)));
 		holder.date.setText(formattedDate);
-		CharSequence formattedStartTime = DateFormat.format("h:mmaa", new Date(cursor.getLong(mIndexStartDate)));
+		CharSequence formattedStartTime = DateFormat.format("h:mmaa", new Date(cursor.getLong(mIndexStartTime)));
 		holder.startTime.setText(formattedStartTime);
-		CharSequence formattedEndTime = DateFormat.format("h:mmaa", new Date(cursor.getLong(mIndexEndDate)));
+		CharSequence formattedEndTime = DateFormat.format("h:mmaa", new Date(cursor.getLong(mIndexEndTime)));
 		holder.endTime.setText(formattedEndTime);
-		CharSequence formattedTotalTime = DateFormat.format("h:mmaa", new Date(cursor.getLong(mIndexEndDate) - cursor.getLong(mIndexStartDate)));
+		CharSequence formattedTotalTime = DateFormat.format("h:mmaa", new Date(cursor.getLong(mIndexEndTime) - cursor.getLong(mIndexStartTime)));
 		holder.totalTime.setText(formattedTotalTime);
 		holder.description.setText(cursor.getString(mIndexDescription));		
 	}

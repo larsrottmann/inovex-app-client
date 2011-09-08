@@ -41,4 +41,5 @@
     <string name="new_return_journey">new return journey</string>
     <string name="new_continuation_journey">continue journey</string>
     <string name="finish_journey">finish journey</string>
+    <string name="error_saving_time">error saving your time</string>
 </resources>

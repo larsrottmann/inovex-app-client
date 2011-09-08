@@ -40,4 +40,5 @@
     <string name="new_return_journey">neue Rückreise</string>
     <string name="new_continuation_journey">neue Weiterreise</string>
     <string name="finish_journey">beende Reise</string>
+    <string name="error_saving_time">Fehler beim Speichern der Zeit</string>
 </resources>
