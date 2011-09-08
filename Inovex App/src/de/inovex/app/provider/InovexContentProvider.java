@@ -1,5 +1,6 @@
 package de.inovex.app.provider;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -75,11 +76,10 @@ public class InovexContentProvider extends ContentProvider {
 	private static final int RECEIPTS = 3;
 	private static final int TIME = 4;
 	private static final int TIMES = 5;
-	private static final int ANY = 666;
+	private static final int ANY = -1;
 
 	static {
 		sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		sUriMatcher.addURI(AUTHORITY,"*",ANY);
 		sUriMatcher.addURI(AUTHORITY, "journeys/#", JOURNEY);
 		sUriMatcher.addURI(AUTHORITY, "journeys", JOURNEYS);
 		sUriMatcher.addURI(AUTHORITY, "receipts/#", RECEIPT);
@@ -146,7 +146,7 @@ public class InovexContentProvider extends ContentProvider {
 		if (selectionArgs==null){
 			selectionArgs = new String[]{};
 		}
-		List<String> args = Arrays.asList(selectionArgs);
+		ArrayList<String> args = new ArrayList<String>(Arrays.asList(selectionArgs));
 		int type = sUriMatcher.match(uri);
 
 		switch (type) {
@@ -154,8 +154,6 @@ public class InovexContentProvider extends ContentProvider {
 			case JOURNEYS:
 			case RECEIPT:
 			case RECEIPTS:
-				selection = modifySelectionForType(uri, selection, args, type);
-				break;
 			case TIME:
 			case TIMES:
 				selection = modifySelectionForType(uri, selection, args, type);
@@ -233,7 +231,7 @@ public class InovexContentProvider extends ContentProvider {
 		if (selectionArgs==null){
 			selectionArgs = new String[]{};
 		}
-		List<String> args = Arrays.asList(selectionArgs);
+		ArrayList<String> args = new ArrayList<String>(Arrays.asList(selectionArgs));
 		int count = 0;
 		int type = sUriMatcher.match(uri);
 
@@ -242,8 +240,6 @@ public class InovexContentProvider extends ContentProvider {
 		case JOURNEYS:
 		case TIMES:
 		case RECEIPT:
-			selection = modifySelectionForType(uri, selection, args, type);
-			break;
 		case JOURNEY:
 		case TIME:
 			selection = modifySelectionForType(uri, selection, args, type);
@@ -267,7 +263,7 @@ public class InovexContentProvider extends ContentProvider {
 		if (selectionArgs==null){
 			selectionArgs = new String[]{};
 		}
-		List<String> args = Arrays.asList(selectionArgs);
+		ArrayList<String> args = new ArrayList<String>(Arrays.asList(selectionArgs));
 		int count = 0;
 		int type = sUriMatcher.match(uri);
 		switch (type) {
@@ -275,8 +271,6 @@ public class InovexContentProvider extends ContentProvider {
 		case JOURNEYS:
 		case TIMES:
 		case RECEIPT:
-			selection = modifySelectionForType(uri, selection, args, type);
-			break;
 		case JOURNEY:
 		case TIME:
 			selection = modifySelectionForType(uri, selection, args, type);
@@ -291,12 +285,12 @@ public class InovexContentProvider extends ContentProvider {
 		return count;
 	}
 
-	private String modifySelectionForType(Uri uri, String orgSelection, List<String> list, int type) {
+	private String modifySelectionForType(Uri uri, String orgSelection, ArrayList<String> list, int type) {
 		String selection = "";
 		String id = "";
 		switch (type) {
 		case RECEIPTS:
-			if (orgSelection.length() == 0) {
+			if (orgSelection == null) {
 				selection = Columns.TYPE + " =?";
 			} else {
 				selection = orgSelection + " AND " + Columns.TYPE + "=?";
@@ -304,7 +298,7 @@ public class InovexContentProvider extends ContentProvider {
 			list.add(Types.RECEIPT);
 			break;
 		case TIMES:
-			if (orgSelection.length() == 0) {
+			if (orgSelection == null) {
 				selection = Columns.TYPE + " =?";
 			} else {
 				selection = orgSelection + " AND " + Columns.TYPE + "=?";
@@ -312,7 +306,7 @@ public class InovexContentProvider extends ContentProvider {
 			list.add(Types.TIME);
 			break;
 		case JOURNEYS:
-			if (orgSelection.length() == 0) {
+			if (orgSelection == null) {
 				selection = Columns.TYPE + " <?";
 			} else {
 				selection = orgSelection + " AND " + Columns.TYPE + "<?";
