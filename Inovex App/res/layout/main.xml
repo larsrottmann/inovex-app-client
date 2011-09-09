@@ -8,8 +8,11 @@
 		layout="@layout/title_bar" 
 		android:id="@+id/titleBar"
 	/>
-	<include layout="@layout/time_quick_menu"/>
-
+	<de.inovex.app.views.TimeQuickMenu
+		android:id="@+id/timequickmenu" 
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+	/>
 	<de.inovex.app.views.JourneyQuickMenu
 		android:id="@+id/journeyquickmenu" 
 		android:layout_width="match_parent"
