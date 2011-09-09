@@ -16,8 +16,18 @@
         	android:layout_alignParentLeft="true"
         	style="@style/InovexLogoText"
         	android:text="@string/company_name"		/>
+        	
+        <ImageButton 
+      		android:id="@+id/button_list_contacts"
+  			android:scaleType="center"
+    		android:layout_width="wrap_content" 
+    		android:layout_alignParentRight="true"
+    		android:src="@drawable/ic_menu_contacts"
+    		android:background="@drawable/titlebar_button"        	    		
+    		android:layout_height="wrap_content" />
 
-        <ImageButton android:id="@+id/imagebutton_new_content"
+        <ImageButton 
+        	android:id="@+id/imagebutton_new_content"
 			android:src="@drawable/create_new_content_titlebar"
 			android:layout_marginBottom="4dip"
 			android:layout_marginLeft="3dip"
@@ -25,7 +35,7 @@
   			android:visibility="gone"
   			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true"
+			android:layout_toRightOf="@+id/button_list_contacts"
 			android:background="@drawable/titlebar_button"        	
 		/>
 

@@ -68,7 +68,7 @@ public class JourneyAdapter extends CursorAdapter {
 		holder.endDate.setText(formattedDate);		
 		holder.destination.setText(cursor.getString(mIndexDestination));
 		String descr = cursor.getString(mIndexDescription);
-		if (descr!=null && !descr.isEmpty()) {
+		if (descr!=null && descr.length()!=0) {
 			holder.description.setVisibility(View.VISIBLE);
 			holder.description.setText(descr);		
 		} else {

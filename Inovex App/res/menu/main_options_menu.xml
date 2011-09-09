@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/list_journeys"
+          android:icon="@drawable/travel_icon"
+          android:title="@string/list_journeys" />
+    <item android:id="@+id/list_times"
+          android:icon="@drawable/time_icon"
+          android:title="@string/list_times" />
+    <item android:id="@+id/list_receipts"
+          android:icon="@drawable/receipt_icon"
+          android:title="@string/list_receipts" />
+</menu>
