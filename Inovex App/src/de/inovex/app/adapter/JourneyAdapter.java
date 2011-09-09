@@ -33,6 +33,7 @@ public class JourneyAdapter extends CursorAdapter {
     private int mIndexDestination;
     private int mIndexDescription;
     private int mIndexType;
+    private int mIndexId;
     
 
 	public JourneyAdapter(ListJourneyActivity activity) {
@@ -48,7 +49,7 @@ public class JourneyAdapter extends CursorAdapter {
         mIndexDestination = c.getColumnIndex(InovexContentProvider.Columns.DESTINATION);
         mIndexDescription = c.getColumnIndex(InovexContentProvider.Columns.DESCRIPTION);
         mIndexType = c.getColumnIndex(InovexContentProvider.Columns.TYPE);
-        
+        mIndexId = c.getColumnIndex(InovexContentProvider.Columns.ID);
         mInflater = LayoutInflater.from(activity);
 
 	}
@@ -86,4 +87,12 @@ public class JourneyAdapter extends CursorAdapter {
         return view;
 	}
 
+//	@Override
+//	public Object getItem(int position) {
+//		Cursor c = getCursor();
+//		c.moveToPosition(position);
+//		int id = c.getInt(mIndexId);
+//		Uri
+//		return super.getItem(position);
+//	}
 }

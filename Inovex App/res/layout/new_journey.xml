@@ -19,40 +19,40 @@
 				android:text="@string/description" >
 			</TextView>
 			<AutoCompleteTextView 
-				android:id="@+id/textViewDescription"
+				android:id="@+id/textView_description"
 				style="@style/defaultView"
 				android:text="@string/description"
 				android:layout_below="@+id/descriptionLabel">
-				<requestFocus></requestFocus>
 			</AutoCompleteTextView>
 			<TextView 
 				android:id="@+id/startLabel"
 				style="@style/Label"
 				android:text="@string/starting_place" 
-				android:layout_below="@+id/textViewDescription">
+				android:layout_below="@+id/textView_description">
 			</TextView>
-			<AutoCompleteTextView 
-				android:id="@+id/textViewStart"
+			<Spinner 
+				android:id="@+id/spinner_pick_start_location"
 				style="@style/defaultView"
 				android:text="@string/starting_place" 
 				android:layout_below="@+id/startLabel">
-			</AutoCompleteTextView>
+			</Spinner>
 			<TextView 
 				android:id="@+id/destinationLabel"
 				style="@style/Label"
 				android:text="@string/destination" 
-				android:layout_below="@+id/textViewStart">
+				android:layout_below="@+id/spinner_pick_start_location">
 			</TextView>
-			<AutoCompleteTextView
-			 	android:id="@+id/textViewDestination"
+			<Spinner
+			 	android:id="@+id/spinner_pick_end_location"
 				style="@style/defaultView"
 				android:text="@string/destination" 
 				android:layout_below="@+id/destinationLabel">
-			</AutoCompleteTextView>
+			</Spinner>
 			<RadioGroup android:id="@+id/radioGroupType"
 				android:orientation="horizontal" 
-				android:layout_width="wrap_content" android:layout_height="wrap_content" 
-				android:layout_below="@+id/textViewDestination">
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				android:layout_below="@+id/spinner_pick_end_location">
 				<RadioButton 
 					android:id="@+id/radioArrival"
 					android:layout_height="wrap_content" 
@@ -85,7 +85,7 @@
 				android:layout_below="@+id/buttonPickJourney">
 			</TextView>
 			<de.inovex.app.views.DateTimePicker
-				android:id="@+id/dateTimePickerStart" 
+				android:id="@+id/dateTimePicker_start_time" 
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_below="@+id/textViewStartTime" >
@@ -94,10 +94,10 @@
 				android:id="@+id/textViewEndTime"
 				style="@style/Label"
 				android:text="@string/journey_end_time" 
-				android:layout_below="@+id/dateTimePickerStart">
+				android:layout_below="@+id/dateTimePicker_start_time">
 			</TextView>
 			<de.inovex.app.views.DateTimePicker
-				android:id="@+id/dateTimePickerEnd" 
+				android:id="@+id/dateTimePicker_end_time" 
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_below="@+id/textViewEndTime" >

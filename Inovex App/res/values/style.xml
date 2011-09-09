@@ -28,7 +28,6 @@
   </style>
   <style name="defaultView"> 
     <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-    <item name="android:textColor">#ff333333</item>
     <item name="android:paddingLeft">8dip</item>
     <item name="android:paddingRight">8dip</item>
     <item name="android:paddingTop">2dip</item>
@@ -39,7 +38,6 @@
     <item name="android:layout_height">wrap_content</item>
   </style>
   <style name="InovexAppTheme" parent="android:Theme.NoTitleBar">
-<!--    <item name="android:textColor">#ff222222</item>-->
  </style>
   <style name="InovexLogoText">
     <item name="android:textColor">#ff111111</item>
