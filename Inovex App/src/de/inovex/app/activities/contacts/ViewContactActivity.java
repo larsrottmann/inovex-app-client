@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
@@ -30,6 +29,14 @@ public class ViewContactActivity extends Activity {
 				TextView tvTitle = (TextView) view.findViewById(R.id.view_contact_item_title);
 				TextView tvDetails = (TextView) view.findViewById(R.id.view_contact_item_details);
 
+				View btnCall = view.findViewById(R.id.view_contact_item_call);
+				View btnSms = view.findViewById(R.id.view_contact_item_sms);
+				View btnEmail = view.findViewById(R.id.view_contact_item_email);
+
+				btnCall.setVisibility(View.GONE);
+				btnSms.setVisibility(View.GONE);
+				btnEmail.setVisibility(View.GONE);
+
 				String mimetype = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.MIMETYPE));
 				if (mimetype.equals(ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)) {
 					// Organization
@@ -40,7 +47,27 @@ public class ViewContactActivity extends Activity {
 					);
 				} else if (mimetype.equals(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)) {
 					// Phone
-					//TODO tel, sms buttons
+					final String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+					btnCall.setVisibility(View.VISIBLE);
+					btnCall.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent intent = new Intent(Intent.ACTION_CALL);
+							intent.setData(Uri.parse("tel:"+number));
+							startActivity(intent);
+						}
+					});
+					btnSms.setVisibility(View.VISIBLE);
+					btnSms.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+							sendIntent.setData(Uri.parse("sms:"+number));
+							startActivity(sendIntent);
+						}
+					});
+
 					String type;
 					switch (cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))) {
 					case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
@@ -56,10 +83,22 @@ public class ViewContactActivity extends Activity {
 						type = "";
 					}
 					tvTitle.setText("Call "+type);
-					tvDetails.setText(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+					tvDetails.setText(number);
 				} else if (mimetype.equals(ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)) {
 					// Email
-					//TODO email button
+					final String emailAddress = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+
+					btnEmail.setVisibility(View.VISIBLE);
+					btnEmail.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent emailIntent = new Intent(Intent.ACTION_SEND);
+							emailIntent.setType("message/rfc822");
+							emailIntent.putExtra(Intent.EXTRA_EMAIL, emailAddress);
+							startActivity(Intent.createChooser(emailIntent, "Select email application"));
+						}
+					});
+
 					String type;
 					switch (cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE))) {
 					case ContactsContract.CommonDataKinds.Email.TYPE_WORK:
@@ -72,7 +111,7 @@ public class ViewContactActivity extends Activity {
 						type = "";
 					}
 					tvTitle.setText("Email "+type);
-					tvDetails.setText(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)));
+					tvDetails.setText(emailAddress);
 				} else if (mimetype.equals(ExtraDataKinds.Inovex.CONTENT_ITEM_TYPE)) {
 					// Inovex
 					tvTitle.setText("Skills");
@@ -155,16 +194,5 @@ public class ViewContactActivity extends Activity {
 
 		initList();
 		loadListItems();
-
-		Button btnOpenCard = (Button) findViewById(R.id.view_contact_open_card);
-		btnOpenCard.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, String.valueOf(contactId));
-				intent.setData(uri);
-				startActivity(intent);
-			}
-		});
 	}
 }

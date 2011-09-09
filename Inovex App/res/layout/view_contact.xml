@@ -27,9 +27,4 @@
 		android:id="@+id/view_contact_list"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content" />
-	<Button
-		android:id="@+id/view_contact_open_card"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="Open Contact Card" />
 </LinearLayout>

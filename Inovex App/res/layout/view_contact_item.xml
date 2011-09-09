@@ -20,4 +20,22 @@
 		android:layout_below="@id/view_contact_item_title"
 		android:text=""
 		android:layout_margin="2dip" />
+	<ImageButton
+		android:id="@+id/view_contact_item_sms"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:src="@drawable/sym_action_chat" />
+	<ImageButton
+		android:id="@+id/view_contact_item_call"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toLeftOf="@id/view_contact_item_sms"
+		android:src="@drawable/sym_action_call" />
+	<ImageButton
+		android:id="@+id/view_contact_item_email"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:src="@drawable/sym_action_email" />
 </RelativeLayout>
