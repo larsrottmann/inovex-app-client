@@ -7,6 +7,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.widget.Toast;
+import de.inovex.app.R;
 import de.inovex.app.provider.InovexContentProvider.Columns;
 
 public class DataUtilities {
@@ -68,7 +70,9 @@ public class DataUtilities {
 			ContentValues v = makeContentValues(startLocation, destination, type, description, startDate, endDate, parentId);
 
 			client = c.getContentResolver().acquireContentProviderClient(InovexContentProvider.CONTENT_URI);
-			return client.insert(InovexContentProvider.CONTENT_URI, v);
+			Uri result = client.insert(InovexContentProvider.CONTENT_URI, v);
+			Toast.makeText(c, c.getText(R.string.success_saving_journey), Toast.LENGTH_LONG).show();
+			return result;
 		} finally {
 			if (client != null) {
 				client.release();

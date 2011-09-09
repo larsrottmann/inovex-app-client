@@ -64,4 +64,5 @@
     <string name="organization">Organization</string>
     <string name="skills">Skills</string>
     <string name="select_email_app">Select email application</string>
+    <string name="success_saving_journey">journey was successfully saved</string>
 </resources>
