@@ -35,6 +35,8 @@
     <string name="out_time">out</string>
     <string name="total_time_month">working time</string>
     <string name="total_time">total</string>
+    <string name="break_time">break</string>
+    <string name="saldo_time">saldo</string>
     <string name="check_in">check in now</string>
     <string name="check_out">check out now</string>
     <string name="journey_recording">manage your journeys</string>

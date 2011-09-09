@@ -20,7 +20,6 @@
 				>
 			</de.inovex.app.views.JourneyQuickMenu>
 
-
-
+	<include layout="@layout/time_quick_menu"/>
 
 </LinearLayout>
