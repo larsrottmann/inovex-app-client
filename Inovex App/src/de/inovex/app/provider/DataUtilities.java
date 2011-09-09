@@ -2,13 +2,11 @@ package de.inovex.app.provider;
 
 import java.util.Date;
 
-import android.R;
 import android.content.ContentProviderClient;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
 import android.os.RemoteException;
-import android.widget.Toast;
 import de.inovex.app.provider.InovexContentProvider.Columns;
 
 public class DataUtilities {
