@@ -62,4 +62,7 @@
     <string name="organization">Organization</string>
     <string name="skills">Skills</string>
     <string name="select_email_app">Select email application</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="preferences">Preferences</string>
 </resources>

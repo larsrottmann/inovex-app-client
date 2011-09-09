@@ -51,6 +51,7 @@
             android:name=".provider.InovexContentProvider"
             android:authorities="de.inovex.app" />
         <service android:name=".service.ContactsService"></service>
+        <activity android:name=".activities.InovexPreferenceActivity"></activity>
         
     </application>
 </manifest>
