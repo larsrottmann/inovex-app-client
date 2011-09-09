@@ -38,7 +38,7 @@ public class ViewContactActivity extends Activity {
 				btnEmail.setVisibility(View.GONE);
 
 				String mimetype = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.MIMETYPE));
-				if (mimetype.equals(ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)) {
+				if (mimetype.equals(ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)) {
 					// Organization
 					tvTitle.setText(R.string.organization);
 					tvDetails.setText(
@@ -116,6 +116,9 @@ public class ViewContactActivity extends Activity {
 					// Inovex
 					tvTitle.setText(R.string.skills);
 					tvDetails.setText(cursor.getString(cursor.getColumnIndex(ExtraDataKinds.Inovex.SKILLS)));
+				} else {
+					tvTitle.setText(cursor.getString(cursor.getColumnIndex(ContactsContract.Data.MIMETYPE)));
+					tvDetails.setText(cursor.getString(cursor.getColumnIndex(ContactsContract.Data.DATA1)));
 				}
 			}
 		});

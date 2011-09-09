@@ -18,7 +18,7 @@
 		"lob" : "AD",
 		"emailAddress" : "a.friedel@inovex.de",
 		"location" : "Pforzheim",
-		"skills" : ""
+		"skills" : "android bla"
 	}, {
 		"givenName" : "Frank",
 		"familyName" : "Grimm",
@@ -26,7 +26,7 @@
 		"lob" : "AD",
 		"emailAddress" : "f.grimm@inovex.de",
 		"location" : "Pforzheim",
-		"skills" : ""
+		"skills" : "blubb"
 	}, {
 		"givenName" : "Khalid",
 		"familyName" : "Maslouhy",
@@ -42,6 +42,6 @@
 		"lob" : "AD",
 		"emailAddress" : "m.wippert@inovex.de",
 		"location" : "Köln",
-		"skills" : ""
+		"skills" : "dadefe"
 	}
 ]

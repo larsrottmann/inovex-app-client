@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 import de.inovex.app.R;
+import de.inovex.app.provider.contact_contracts.ExtraDataKinds;
 import de.inovex.app.service.ContactsService;
 
 public class ListContactsActivity extends Activity {
@@ -105,19 +106,15 @@ public class ListContactsActivity extends Activity {
 		String selection;
 		String[] selectionArgs;
 		if (filter == null) {
-			selection = ContactsContract.Data.MIMETYPE+"= ? AND "+
-				ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID+"= ?";
+			selection = ContactsContract.Data.MIMETYPE+"=?";
 			selectionArgs = new String[] { // selectionArgs
-				ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE
-				, String.valueOf(ContactsService.getInovexGroupId(getContentResolver()))
+				ExtraDataKinds.Inovex.CONTENT_ITEM_TYPE
 			};
 		} else {
 			selection = ContactsContract.Data.MIMETYPE+"= ? AND "+
-				ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID+"= ? AND "+
 				ContactsContract.Data.DISPLAY_NAME+" LIKE ?";
 			selectionArgs = new String[] { // selectionArgs
-				ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE
-				, String.valueOf(ContactsService.getInovexGroupId(getContentResolver()))
+				ExtraDataKinds.Inovex.CONTENT_ITEM_TYPE
 				, "%"+filter+"%"
 			};
 		}
