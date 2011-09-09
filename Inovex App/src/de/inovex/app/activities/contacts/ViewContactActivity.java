@@ -40,7 +40,7 @@ public class ViewContactActivity extends Activity {
 				String mimetype = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.MIMETYPE));
 				if (mimetype.equals(ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)) {
 					// Organization
-					tvTitle.setText("Organization");
+					tvTitle.setText(R.string.organization);
 					tvDetails.setText(
 							cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Organization.DEPARTMENT))+", "
 							+ cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Organization.OFFICE_LOCATION))
@@ -71,18 +71,18 @@ public class ViewContactActivity extends Activity {
 					String type;
 					switch (cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))) {
 					case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
-						type = "mobile";
+						type = getResources().getString(R.string.mobile);
 						break;
 					case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
-						type = "work";
+						type = getResources().getString(R.string.work);
 						break;
 					case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
-						type = "home";
+						type = getResources().getString(R.string.home);
 						break;
 					default:
 						type = "";
 					}
-					tvTitle.setText("Call "+type);
+					tvTitle.setText(getResources().getString(R.string.call_type, type));
 					tvDetails.setText(number);
 				} else if (mimetype.equals(ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)) {
 					// Email
@@ -95,26 +95,26 @@ public class ViewContactActivity extends Activity {
 							Intent emailIntent = new Intent(Intent.ACTION_SEND);
 							emailIntent.setType("message/rfc822");
 							emailIntent.putExtra(Intent.EXTRA_EMAIL, emailAddress);
-							startActivity(Intent.createChooser(emailIntent, "Select email application"));
+							startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.select_email_app)));
 						}
 					});
 
 					String type;
 					switch (cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE))) {
 					case ContactsContract.CommonDataKinds.Email.TYPE_WORK:
-						type = "work";
+						type = getResources().getString(R.string.work);
 						break;
 					case ContactsContract.CommonDataKinds.Email.TYPE_HOME:
-						type = "home";
+						type = getResources().getString(R.string.home);
 						break;
 					default:
 						type = "";
 					}
-					tvTitle.setText("Email "+type);
+					tvTitle.setText(getResources().getString(R.string.email_type, type));
 					tvDetails.setText(emailAddress);
 				} else if (mimetype.equals(ExtraDataKinds.Inovex.CONTENT_ITEM_TYPE)) {
 					// Inovex
-					tvTitle.setText("Skills");
+					tvTitle.setText(R.string.skills);
 					tvDetails.setText(cursor.getString(cursor.getColumnIndex(ExtraDataKinds.Inovex.SKILLS)));
 				}
 			}
