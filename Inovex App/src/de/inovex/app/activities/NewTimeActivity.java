@@ -60,11 +60,10 @@ public class NewTimeActivity extends Activity {
 		int parentId = -1;
 
 		try {
-			DataUtilities.saveTime(this,desc, project, startDate, endDate, Types.TIME, parentId);
+			DataUtilities.saveTime(this, desc, project, startDate, endDate, Types.TIME, parentId);
 		} catch (RemoteException re) {
 			Toast.makeText(this, getText(R.string.error_saving_time), Toast.LENGTH_LONG);
 			re.printStackTrace();
 		}
 	}
-
 }
