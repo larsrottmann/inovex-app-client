@@ -10,7 +10,7 @@
     <color name="button_background">#88DDDDDD</color>
     <color name="button_background_selected">#88333333</color>
     <color name="grey_orange">#BB9966</color>
-  	<color name="inovex_dark_grey">#666666</color>
+  	<color name="inovex_dark_grey">#333333</color>
 	<color name="inovex_light_grey">#f4f4f4</color>  
 	<color name="inovex_blue">#603c7e</color>  
 	<color name="inovex_orange">#f46200</color>  
