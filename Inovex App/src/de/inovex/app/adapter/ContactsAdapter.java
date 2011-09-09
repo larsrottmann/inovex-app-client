@@ -1,5 +1,8 @@
 package de.inovex.app.adapter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
@@ -14,6 +17,8 @@ import de.inovex.app.R;
 
 public class ContactsAdapter extends ResourceCursorAdapter implements SectionIndexer {
 	private AlphabetIndexer alphaIndexer;
+	/** contact_id => item details */
+	private final Map<Integer, String> cacheItemDetails = new HashMap<Integer, String>();
 
 	public ContactsAdapter(Context arg0, int arg1, Cursor arg2) {
 		super(arg0, arg1, arg2);
@@ -22,39 +27,46 @@ public class ContactsAdapter extends ResourceCursorAdapter implements SectionInd
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 		// contact id im tag vom view speichern
-		view.setTag(cursor.getInt(cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID)));
+		int contactId = cursor.getInt(cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID));
+		view.setTag(contactId);
 
 		String displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-
-		// query organization data
-		Cursor oCur = context.getContentResolver().query(
-				ContactsContract.Data.CONTENT_URI
-				, null // projection
-				, ContactsContract.Data.MIMETYPE+"= ? AND "+ContactsContract.Data.CONTACT_ID+"= ?" // selection
-				, new String[] { // selectionArgs
-					ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE
-					, cursor.getString(cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID))
-				}
-				, null // sortOrder
-		);
-
-		String lob, location;
-		if (oCur.moveToFirst()) {
-			lob = oCur.getString(oCur.getColumnIndex(ContactsContract.CommonDataKinds.Organization.DEPARTMENT));
-			location = oCur.getString(oCur.getColumnIndex(ContactsContract.CommonDataKinds.Organization.OFFICE_LOCATION));
+		String itemDetails;
+		if (cacheItemDetails.get(contactId) != null) {
+			itemDetails = cacheItemDetails.get(contactId);
 		} else {
-			lob = location = "";
+			// query organization data
+			Cursor oCur = context.getContentResolver().query(
+					ContactsContract.Data.CONTENT_URI
+					, null // projection
+					, ContactsContract.Data.MIMETYPE+"= ? AND "+ContactsContract.Data.CONTACT_ID+"= ?" // selection
+					, new String[] { // selectionArgs
+						ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE
+						, cursor.getString(cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID))
+					}
+					, null // sortOrder
+			);
+
+			String lob, location;
+			if (oCur.moveToFirst()) {
+				lob = oCur.getString(oCur.getColumnIndex(ContactsContract.CommonDataKinds.Organization.DEPARTMENT));
+				location = oCur.getString(oCur.getColumnIndex(ContactsContract.CommonDataKinds.Organization.OFFICE_LOCATION));
+			} else {
+				lob = location = "";
+			}
+			oCur.close();
+
+			itemDetails = lob+", "+location;
 		}
-		oCur.close();
 
 		TextView tvTitle = (TextView) view.findViewById(R.id.contacts_item_title);
 		tvTitle.setText(displayName);
 
 		TextView tvDetails = (TextView) view.findViewById(R.id.contacts_item_details);
-		tvDetails.setText(lob+", "+location);
+		tvDetails.setText(itemDetails);
 
-		// photo
-		oCur = context.getContentResolver().query(
+		// photo TODO this is a performance lack
+		Cursor oCur = context.getContentResolver().query(
 				ContactsContract.Data.CONTENT_URI
 				, null // projection
 				, ContactsContract.Data.MIMETYPE+"= ? AND "+ContactsContract.Data.CONTACT_ID+"= ?" // selection
