@@ -28,9 +28,6 @@ public class TimePickerButton extends Button {
     private Handler mHandler;
     private boolean mTickerStopped = false;
 
-	private int mHour;
-	private int mMinute;
-	private Date mCustomDate = new Date();
 	private boolean useCustomTime=false;
 	
 	public synchronized void setUseCustomTime(boolean val){
@@ -43,13 +40,11 @@ public class TimePickerButton extends Button {
 	private TimePickerDialog.OnTimeSetListener mTimeSetListener =
 		    new TimePickerDialog.OnTimeSetListener() {
 		        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-			        	mHour = hourOfDay;
-			            mMinute = minute;
-			            mCustomDate.setHours(hourOfDay);
-			            mCustomDate.setMinutes(minute);
-			            setUseCustomTime(true);
-	                    setText(DateFormat.format(mFormat, mCustomDate));
-	                    invalidate();						
+		            mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+		            mCalendar.set(Calendar.MINUTE, minute);
+	        		setUseCustomTime(true);
+                    setText(DateFormat.format(mFormat, mCalendar));
+                    invalidate();						
 		        }
 		    };
     
@@ -65,30 +60,25 @@ public class TimePickerButton extends Button {
         initClock();
     }
     
-    public long getTime(){
-    	Date d;
-    	if (getUseCustomTime()){
-    		d = new Date();
-    		d.setHours(mHour);
-    		d.setMinutes(mMinute);
-    	} else {
-    		d = mCalendar.getTime();
+    public void setTime(long millis){
+    	if (mHandler!=null){
+    		mHandler.removeCallbacks(mTicker);
     	}
-    	return d.getTime();
+    	setUseCustomTime(true);
+    	mCalendar.setTimeInMillis(millis);
+    	CharSequence formattedText = DateFormat.format(mFormat, mCalendar); 
+        setText(formattedText);
     }
+    
+    public long getTime(){
+    	return mCalendar.getTimeInMillis();
+    }
+    
     public int getHours(){
-    	if (getUseCustomTime()){
-    		return mHour;
-    	} else {
-    		return mCalendar.getTime().getHours();
-    	}
+    	return mCalendar.get(Calendar.HOUR_OF_DAY);
     }
     public int getMinutes(){
-    	if (getUseCustomTime()){
-    		return mMinute;
-    	} else {
-    		return mCalendar.getTime().getMinutes();
-    	}
+    	return mCalendar.get(Calendar.MINUTE);
     }
     
     
@@ -100,13 +90,8 @@ public class TimePickerButton extends Button {
 			public void onClick(View v) {
 				boolean is24HourView = mFormat==m24;
 				int hour,minute;
-				if(getUseCustomTime()){
-					hour = mHour;
-					minute = mMinute;
-				} else {
-					hour = mCalendar.getTime().getHours();
-					minute= mCalendar.getTime().getMinutes();
-				}
+				hour = mCalendar.get(Calendar.HOUR_OF_DAY);
+				minute= mCalendar.get(Calendar.MINUTE);
 				
 				 TimePickerDialog dialog = new TimePickerDialog(getContext(), mTimeSetListener, hour, minute, is24HourView);
 				 dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getContext().getText(android.R.string.cancel),  (DialogInterface.OnClickListener) null);			
@@ -139,13 +124,11 @@ public class TimePickerButton extends Button {
         mTickerStopped = false;
         super.onAttachedToWindow();
         mHandler = new Handler();
-        startShowingCurrentTime();
-
+        startTicker();
     }
-
-    synchronized public void startShowingCurrentTime(){
-    	setUseCustomTime(false);
-        /**
+    
+    private void startTicker(){
+    	/**
          * requests a tick on the next hard-second boundary
          */
         mTicker = new Runnable() {
@@ -162,6 +145,11 @@ public class TimePickerButton extends Button {
                 }
             };
         mTicker.run();    	
+    }
+
+    synchronized public void startShowingCurrentTime(){
+    	setUseCustomTime(false);
+    	startTicker();
     }
     
     @Override

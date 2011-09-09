@@ -13,4 +13,13 @@ public class LocationSpinnerAdapter extends ArrayAdapter<String> {
 	}
 	
 
+	public int getIdByValue(String value){
+		for (int id = 0 ; id<elements.length;id++){
+			if (elements[id].equals(value)){
+				return id;
+			}
+		}
+		return -1;
+	}
+	
 }
