@@ -1,7 +1,9 @@
 package de.inovex.app.service;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -42,6 +44,8 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.xml.sax.SAXException;
 
+import android.util.Log;
+
 public class InovexPortalAPI {
 	public class Employee {
 		public String givenName;
@@ -51,6 +55,7 @@ public class InovexPortalAPI {
 		public String location;
 		public String photoMD5;
 		public String photoUrl;
+		public byte[] photoData;
 		public String numberMobile;
 		public String numberWork;
 		public String numberHome;
@@ -113,9 +118,30 @@ public class InovexPortalAPI {
 		HttpConnectionParams.setConnectionTimeout(params, 10000);
 	}
 
+	private void downloadPhoto(Employee emp) throws ClientProtocolException, IOException {
+		if (!emp.photoUrl.equals("/_layouts/images/person.gif")) {
+			if (emp.photoUrl.startsWith("/")) {
+				emp.photoUrl = "https://portal.inovex.de"+emp.photoUrl;
+			}
+			// download and store as byte array
+			HttpGet get = new HttpGet(emp.photoUrl);
+			HttpResponse resp = httpClient.execute(get);
+			if (resp.getStatusLine().getStatusCode() == 401) {
+				// http auth fehlgeschlagen
+				//TODO throw new HttpAuthorizationRequiredException();
+			}
+
+			InputStream is = resp.getEntity().getContent();
+			emp.photoData = getBytesFromInputStream(is);
+			emp.photoMD5 = ""+emp.photoData.length; // for performance
+			is.close();
+		}
+	}
+
 	private String emptyToNull(String group) {
 		return group.length()==0?null:group;
 	}
+
 
 	public List<Employee> getAllEmployees() throws ClientProtocolException, IOException, IllegalStateException, SAXException, ParserConfigurationException {
 		List<Employee> employees = new ArrayList<Employee>();
@@ -128,13 +154,15 @@ public class InovexPortalAPI {
 		}
 
 		StringBuilder total = new StringBuilder();
-		BufferedReader rd = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
+		InputStream is = resp.getEntity().getContent();
+		BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 		int chr;
 		while ((chr = rd.read()) != -1) {
 			total.append((char) chr);
 		}
-
-		// einzelne mitarbeiter per regex finden und exportieren
+		is.close();
+		rd.close();
+		// einzelne mitarbeiter per regex finden und importieren
 		Pattern p = Pattern.compile("<TR[^>]*><TD Class=\"ms-vb-user\"><table cellpadding=0 cellspacing=0 border=\"0\"><tr><td><a ONCLICK=\"GoToLink\\(this\\);return false;\" href=\"/mitarbeiter/_layouts/userdisp.aspx\\?ID=[^\"]+\"><IMG width=\"62\" height=\"62\" border=\"0\" SRC=\"([^\"]+)\" ALT=\"[^\"]*\"[ ]?>[ ]?</a></td></tr><tr><td class=\"ms-descriptiontext\"><table cellpadding=0 cellspacing=0 dir=\"\"><tr><td style=\"padding-right: 3px;\">.*?</td><td style=\"padding: 1px 0px 0px 0px;\" class=\"ms-vb\"><A ONCLICK=\"GoToLink\\(this\\);return false;\" HREF=\"/mitarbeiter/_layouts/userdisp.aspx\\?ID=[^\"]+\">([^<]+)</A></td></tr></table></td></tr></table></TD><TD Class=\"ms-vb-icon\"><a onfocus=\"OnLink\\(this\\)\" href=\"/mitarbeiter/Lists/Mitarbeiter/DispForm.aspx\\?ID=[^\"]+\" ONCLICK=\"GoToLink\\(this\\);return false;\" target=\"_self\"><IMG BORDER=0 ALT=\"\" title=\"\" SRC=\"/_layouts/images/icgen.gif\"></A></TD><TD Class=\"ms-vb2\">([^<]*)</TD><TD Class=\"ms-vb2\">([^<]*)</TD><TD Class=\"ms-vb2\"><A HREF=\"[^\"]*\">([^<]*)</A></TD><TD Class=\"ms-vb2\">([^<]*)</TD><TD Class=\"ms-vb2\">([^<]*)</TD><TD Class=\"ms-vb2\"><A HREF=\"[^\"]*\">([^<]*)</A></TD><TD Class=\"ms-vb2\"><NOBR>[^<]*</NOBR></TD><TD Class=\"ms-vb2\">[^<]*</TD></TR>", Pattern.CASE_INSENSITIVE);
 		Matcher m = p.matcher(total);
 		while (m.find()) {
@@ -145,15 +173,35 @@ public class InovexPortalAPI {
 			emp.familyName = fullname.substring(fullname.lastIndexOf(' ')+1);
 			emp.symbol = emptyToNull(m.group(4));
 			emp.lob = emptyToNull(m.group(5));
+			if (emp.symbol == null) {
+				//TODO
+				Log.w("InovexPortalAPI", "employees without symbol are not supported.");
+				continue;
+			}
 			emp.numberMobile = emptyToNull(m.group(6));
 			emp.numberWork = emptyToNull(m.group(7));
 			emp.location = emptyToNull(m.group(8));
+
+			downloadPhoto(emp);
 
 			employees.add(emp);
 		}
 
 
 		return employees;
+	}
+
+	private byte[] getBytesFromInputStream(InputStream is) throws IOException {
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+
+		int b;
+		while ((b = is.read()) != -1) {
+			outStream.write(b);
+		}
+		byte[] r = outStream.toByteArray();
+		outStream.close();
+
+		return r;
 	}
 
 	public DefaultHttpClient getNewHttpClient() {
