@@ -44,6 +44,7 @@ public class ContactsService extends IntentService {
 		static final int UPDATE_EMAIL_ADDRESS = 		2048;
 		static final int UPDATE_INOVEX = 				4096;
 		static final int UPDATE_INOVEX_PHOTO_URL = 		8192;
+		static final int INSERT_INOVEX = 				16384;
 	}
 
 	static private final int ACTION_IMPORT_CONTACTS = 1;
@@ -71,10 +72,10 @@ public class ContactsService extends IntentService {
 			String curLocation = cursorOrganization.getString(cursorOrganization.getColumnIndex(ContactsContract.CommonDataKinds.Organization.OFFICE_LOCATION));
 			String curCompany = cursorOrganization.getString(cursorOrganization.getColumnIndex(ContactsContract.CommonDataKinds.Organization.COMPANY));
 			if (
-					!curSymbol.equals(contact.symbol)
-					|| !curLob.equals(contact.lob)
-					|| !curLocation.equals(contact.location)
-					|| !curCompany.equals("inovex GmbH")
+					curSymbol == null || !curSymbol.equals(contact.symbol)
+					|| curLob == null || !curLob.equals(contact.lob)
+					|| curLocation == null || !curLocation.equals(contact.location)
+					|| curCompany == null || !curCompany.equals("inovex GmbH")
 			) {
 				r |= ImportContactOperations.UPDATE_ORGANIZATION;
 			}
@@ -96,9 +97,9 @@ public class ContactsService extends IntentService {
 				String curFamilyName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
 				String curDisplayName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME));
 				if (
-						!curGivenName.equals(contact.givenName)
-						|| !curFamilyName.equals(contact.familyName)
-						|| !curDisplayName.equals(contact.givenName+' '+contact.familyName)
+						curGivenName == null || !curGivenName.equals(contact.givenName)
+						|| curFamilyName == null || !curFamilyName.equals(contact.familyName)
+						|| curDisplayName == null || !curDisplayName.equals(contact.givenName+' '+contact.familyName)
 				) {
 					r |= ImportContactOperations.UPDATE_STRUCTURED_NAME;
 				}
@@ -122,7 +123,7 @@ public class ContactsService extends IntentService {
 				);
 				if (cursor.moveToFirst()) {
 					String curNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-					if (!curNumber.equals(contact.numberMobile)) {
+					if (curNumber == null || !curNumber.equals(contact.numberMobile)) {
 						r |= ImportContactOperations.UPDATE_PHONE_NUMBER_MOBILE;
 					}
 				} else {
@@ -148,7 +149,7 @@ public class ContactsService extends IntentService {
 				);
 				if (cursor.moveToFirst()) {
 					String curNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-					if (!curNumber.equals(contact.numberWork)) {
+					if (curNumber == null || !curNumber.equals(contact.numberWork)) {
 						r |= ImportContactOperations.UPDATE_PHONE_NUMBER_WORK;
 					}
 				} else {
@@ -174,7 +175,7 @@ public class ContactsService extends IntentService {
 				);
 				if (cursor.moveToFirst()) {
 					String curNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-					if (!curNumber.equals(contact.numberHome)) {
+					if (curNumber == null || !curNumber.equals(contact.numberHome)) {
 						r |= ImportContactOperations.UPDATE_PHONE_NUMBER_HOME;
 					}
 				} else {
@@ -229,13 +230,15 @@ public class ContactsService extends IntentService {
 				if (contact.photoUrl != null && !contact.photoUrl.equals(curPhotoUrl)) {
 					r |= ImportContactOperations.UPDATE_INOVEX|ImportContactOperations.UPDATE_INOVEX_PHOTO_URL;
 				}
+			} else {
+				r |= ImportContactOperations.INSERT_INOVEX;
 			}
 			cursor.close();
 
 			return r;
 		} else {
 			// alles insert
-			int r = ImportContactOperations.INSERT_RAW_CONTACT;
+			int r = ImportContactOperations.INSERT_RAW_CONTACT|ImportContactOperations.INSERT_INOVEX;
 			if (contact.photoUrl != null) {
 				r |= ImportContactOperations.UPDATE_INOVEX_PHOTO_URL;
 			}
@@ -257,7 +260,7 @@ public class ContactsService extends IntentService {
 
 		int width = bmp.getWidth();
 		int height = bmp.getHeight();
-		int newWidth = 150;
+		int newWidth = 80;
 		float scale = ((float) newWidth) / width;
 
 		matrix.postScale(scale, scale);
@@ -341,17 +344,23 @@ public class ContactsService extends IntentService {
 
 				// scale, compress
 				Bitmap bmp = BitmapFactory.decodeStream(photoStream);
-				byte[] photoData = compressBitmap(bmp);
+				if (bmp == null) {
+					Log.e(TAG, "photo could not be decoded.");
+				} else {
+					byte[] photoData = compressBitmap(bmp);
 
-				ops.add(builder
-						.withValue(ContactsContract.CommonDataKinds.Photo.PHOTO, photoData)
-						.build());
+					ops.add(builder
+							.withValue(ContactsContract.CommonDataKinds.Photo.PHOTO, photoData)
+							.build());
+				}
 				getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		cursor.close();
+
+		Log.i(TAG, "finished import contact photos");
 	}
 
 	private void importContacts() throws JsonParseException, JsonMappingException, IOException, IllegalStateException, SAXException, ParserConfigurationException {
@@ -596,13 +605,17 @@ public class ContactsService extends IntentService {
 		}
 
 		// inovex extra (skills), photoMD5
-		if ((operations & (ImportContactOperations.INSERT_RAW_CONTACT | ImportContactOperations.UPDATE_INOVEX)) > 0) {
+		if ((operations & (ImportContactOperations.INSERT_INOVEX | ImportContactOperations.UPDATE_INOVEX)) > 0) {
 			Builder builder;
-			if ((operations & ImportContactOperations.INSERT_RAW_CONTACT) > 0) {
+			if ((operations & ImportContactOperations.INSERT_INOVEX) > 0) {
 				builder = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
 					.withValue(ContactsContract.Data.MIMETYPE,
-						ExtraDataKinds.Inovex.CONTENT_ITEM_TYPE)
-					.withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0);
+							ExtraDataKinds.Inovex.CONTENT_ITEM_TYPE);
+				if ((operations & ImportContactOperations.INSERT_RAW_CONTACT) > 0) {
+					builder.withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0);
+				} else {
+					builder.withValue(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
+				}
 			} else {
 				builder = ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI);
 				builder.withSelection(

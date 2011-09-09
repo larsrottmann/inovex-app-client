@@ -205,7 +205,6 @@ public class InovexPortalAPI {
 			emp.skills = ""; // darf niemals null sein, TODO import
 
 			employees.add(emp);
-			if (i++ == 2) break;
 		}
 
 		Log.i("InovexPortalAPI", "getAlLEmployees: regex finished, objects finished");
