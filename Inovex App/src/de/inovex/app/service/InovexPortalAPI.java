@@ -1,7 +1,6 @@
 package de.inovex.app.service;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -118,24 +117,20 @@ public class InovexPortalAPI {
 		HttpConnectionParams.setConnectionTimeout(params, 10000);
 	}
 
-	private void downloadPhoto(Employee emp) throws ClientProtocolException, IOException {
-		if (!emp.photoUrl.equals("/_layouts/images/person.gif")) {
-			if (emp.photoUrl.startsWith("/")) {
-				emp.photoUrl = "https://portal.inovex.de"+emp.photoUrl;
-			}
-			// download and store as byte array
-			HttpGet get = new HttpGet(emp.photoUrl);
-			HttpResponse resp = httpClient.execute(get);
-			if (resp.getStatusLine().getStatusCode() == 401) {
-				// http auth fehlgeschlagen
-				//TODO throw new HttpAuthorizationRequiredException();
-			}
-
-			InputStream is = resp.getEntity().getContent();
-			emp.photoData = getBytesFromInputStream(is);
-			emp.photoMD5 = ""+emp.photoData.length; // for performance
-			is.close();
+	public InputStream downloadPhoto(String photoUrl) throws ClientProtocolException, IOException {
+		if (photoUrl.startsWith("/")) {
+			photoUrl = "https://portal.inovex.de"+photoUrl;
 		}
+		// download and store as byte array
+		HttpGet get = new HttpGet(photoUrl);
+		HttpResponse resp = httpClient.execute(get);
+		if (resp.getStatusLine().getStatusCode() == 401) {
+			// http auth fehlgeschlagen
+			//TODO throw new HttpAuthorizationRequiredException();
+		}
+
+		InputStream is = resp.getEntity().getContent();
+		return is;
 	}
 
 	private String emptyToNull(String group) {
@@ -186,10 +181,14 @@ public class InovexPortalAPI {
 		// einzelne mitarbeiter per regex finden und importieren
 		Pattern p = Pattern.compile("<TR[^>]*><TD Class=\"ms-vb-user\"><table cellpadding=0 cellspacing=0 border=\"0\"><tr><td><a ONCLICK=\"GoToLink\\(this\\);return false;\" href=\"/mitarbeiter/_layouts/userdisp.aspx\\?ID=[^\"]+\"><IMG width=\"62\" height=\"62\" border=\"0\" SRC=\"([^\"]+)\" ALT=\"[^\"]*\"[ ]?>[ ]?</a></td></tr><tr><td class=\"ms-descriptiontext\"><table cellpadding=0 cellspacing=0 dir=\"\"><tr><td style=\"padding-right: 3px;\">.*?=\"([^\"]+@inovex.de)\".*?</td><td style=\"padding: 1px 0px 0px 0px;\" class=\"ms-vb\"><A ONCLICK=\"GoToLink\\(this\\);return false;\" HREF=\"/mitarbeiter/_layouts/userdisp.aspx\\?ID=[^\"]+\">([^<]+)</A></td></tr></table></td></tr></table></TD><TD Class=\"ms-vb-icon\"><a onfocus=\"OnLink\\(this\\)\" href=\"/mitarbeiter/Lists/Mitarbeiter/DispForm.aspx\\?ID=[^\"]+\" ONCLICK=\"GoToLink\\(this\\);return false;\" target=\"_self\"><IMG BORDER=0 ALT=\"\" title=\"\" SRC=\"/_layouts/images/icgen.gif\"></A></TD><TD Class=\"ms-vb2\">([^<]*)</TD><TD Class=\"ms-vb2\">([^<]*)</TD><TD Class=\"ms-vb2\"><A HREF=\"[^\"]*\">([^<]*)</A></TD><TD Class=\"ms-vb2\">([^<]*)</TD><TD Class=\"ms-vb2\">([^<]*)</TD><TD Class=\"ms-vb2\"><A HREF=\"[^\"]*\">([^<]*)</A></TD><TD Class=\"ms-vb2\"><NOBR>[^<]*</NOBR></TD><TD Class=\"ms-vb2\">[^<]*</TD></TR>", Pattern.CASE_INSENSITIVE);
 		Matcher m = p.matcher(total);
+		int i=0;
 		while (m.find()) {
 			Employee emp = new Employee();
 			emp.photoUrl = m.group(1);
-			emp.emailAddress = "x"+m.group(2);//TODO
+			if (emp.photoUrl.equals("/_layouts/images/person.gif")) {
+				emp.photoUrl = null;
+			}
+			emp.emailAddress = m.group(2);
 			String fullname = m.group(3);
 			emp.givenName = fullname.substring(0, fullname.lastIndexOf(' '));
 			emp.familyName = fullname.substring(fullname.lastIndexOf(' ')+1);
@@ -200,32 +199,18 @@ public class InovexPortalAPI {
 				Log.w("InovexPortalAPI", "employees without symbol are not supported.");
 				continue;
 			}
-			emp.numberMobile = emptyToNull(m.group(7))+"2";
+			emp.numberMobile = emptyToNull(m.group(7));
 			emp.numberWork = emptyToNull(m.group(8));
 			emp.location = emptyToNull(m.group(9));
 			emp.skills = ""; // darf niemals null sein, TODO import
 
-			//downloadPhoto(emp);
-
 			employees.add(emp);
+			if (i++ == 2) break;
 		}
 
 		Log.i("InovexPortalAPI", "getAlLEmployees: regex finished, objects finished");
 
 		return employees;
-	}
-
-	private byte[] getBytesFromInputStream(InputStream is) throws IOException {
-		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-
-		int b;
-		while ((b = is.read()) != -1) {
-			outStream.write(b);
-		}
-		byte[] r = outStream.toByteArray();
-		outStream.close();
-
-		return r;
 	}
 
 	public DefaultHttpClient getNewHttpClient() {

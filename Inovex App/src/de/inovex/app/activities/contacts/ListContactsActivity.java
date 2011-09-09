@@ -80,8 +80,11 @@ public class ListContactsActivity extends Activity {
 
 		initList();
 
-		// import
+		// import contacts
 		Intent serviceIntent = new Intent(this, ContactsService.class);
+		startService(serviceIntent);
+		// import contact photos
+		serviceIntent.putExtra("action", ContactsService.ACTION_IMPORT_CONTACT_PHOTOS);
 		startService(serviceIntent);
 
 		// show/hide search ui elements

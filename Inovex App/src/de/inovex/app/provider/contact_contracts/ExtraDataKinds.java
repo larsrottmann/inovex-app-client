@@ -15,7 +15,9 @@ public final class ExtraDataKinds {
 		/**
 		 * TYPE: string
 		 */
-		public static final String PHOTO_MD5 = "data2";
+		public static final String PHOTO_URL = "data2";
+
+		public static final String PHOTO_CHANGED = "data3";
 	}
 
 	private ExtraDataKinds() {}
