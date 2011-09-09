@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
@@ -30,52 +29,92 @@ public class ViewContactActivity extends Activity {
 				TextView tvTitle = (TextView) view.findViewById(R.id.view_contact_item_title);
 				TextView tvDetails = (TextView) view.findViewById(R.id.view_contact_item_details);
 
+				View btnCall = view.findViewById(R.id.view_contact_item_call);
+				View btnSms = view.findViewById(R.id.view_contact_item_sms);
+				View btnEmail = view.findViewById(R.id.view_contact_item_email);
+
+				btnCall.setVisibility(View.GONE);
+				btnSms.setVisibility(View.GONE);
+				btnEmail.setVisibility(View.GONE);
+
 				String mimetype = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.MIMETYPE));
 				if (mimetype.equals(ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)) {
 					// Organization
-					tvTitle.setText("Organization");
+					tvTitle.setText(R.string.organization);
 					tvDetails.setText(
 							cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Organization.DEPARTMENT))+", "
 							+ cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Organization.OFFICE_LOCATION))
 					);
 				} else if (mimetype.equals(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)) {
 					// Phone
-					//TODO tel, sms buttons
+					final String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+					btnCall.setVisibility(View.VISIBLE);
+					btnCall.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent intent = new Intent(Intent.ACTION_CALL);
+							intent.setData(Uri.parse("tel:"+number));
+							startActivity(intent);
+						}
+					});
+					btnSms.setVisibility(View.VISIBLE);
+					btnSms.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+							sendIntent.setData(Uri.parse("sms:"+number));
+							startActivity(sendIntent);
+						}
+					});
+
 					String type;
 					switch (cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))) {
 					case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
-						type = "mobile";
+						type = getResources().getString(R.string.mobile);
 						break;
 					case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
-						type = "work";
+						type = getResources().getString(R.string.work);
 						break;
 					case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
-						type = "home";
+						type = getResources().getString(R.string.home);
 						break;
 					default:
 						type = "";
 					}
-					tvTitle.setText("Call "+type);
-					tvDetails.setText(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+					tvTitle.setText(getResources().getString(R.string.call_type, type));
+					tvDetails.setText(number);
 				} else if (mimetype.equals(ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)) {
 					// Email
-					//TODO email button
+					final String emailAddress = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+
+					btnEmail.setVisibility(View.VISIBLE);
+					btnEmail.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent emailIntent = new Intent(Intent.ACTION_SEND);
+							emailIntent.setType("message/rfc822");
+							emailIntent.putExtra(Intent.EXTRA_EMAIL, emailAddress);
+							startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.select_email_app)));
+						}
+					});
+
 					String type;
 					switch (cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE))) {
 					case ContactsContract.CommonDataKinds.Email.TYPE_WORK:
-						type = "work";
+						type = getResources().getString(R.string.work);
 						break;
 					case ContactsContract.CommonDataKinds.Email.TYPE_HOME:
-						type = "home";
+						type = getResources().getString(R.string.home);
 						break;
 					default:
 						type = "";
 					}
-					tvTitle.setText("Email "+type);
-					tvDetails.setText(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)));
+					tvTitle.setText(getResources().getString(R.string.email_type, type));
+					tvDetails.setText(emailAddress);
 				} else if (mimetype.equals(ExtraDataKinds.Inovex.CONTENT_ITEM_TYPE)) {
 					// Inovex
-					tvTitle.setText("Skills");
+					tvTitle.setText(R.string.skills);
 					tvDetails.setText(cursor.getString(cursor.getColumnIndex(ExtraDataKinds.Inovex.SKILLS)));
 				}
 			}
@@ -155,16 +194,5 @@ public class ViewContactActivity extends Activity {
 
 		initList();
 		loadListItems();
-
-		Button btnOpenCard = (Button) findViewById(R.id.view_contact_open_card);
-		btnOpenCard.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, String.valueOf(contactId));
-				intent.setData(uri);
-				startActivity(intent);
-			}
-		});
 	}
 }

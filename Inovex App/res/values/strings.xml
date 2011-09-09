@@ -54,4 +54,12 @@
     <string name="search_label">Search</string>
     <string name="search_results_for">Search results for \'%s\':</string>
     <string name="show_all">Show All</string>
+    <string name="email_type">Email %s</string>
+    <string name="call_type">Call %s</string>
+    <string name="home">home</string>
+    <string name="mobile">mobile</string>
+    <string name="work">work</string>
+    <string name="organization">Organization</string>
+    <string name="skills">Skills</string>
+    <string name="select_email_app">Select email application</string>
 </resources>
