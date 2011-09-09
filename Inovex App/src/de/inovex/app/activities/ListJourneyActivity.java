@@ -2,11 +2,14 @@ package de.inovex.app.activities;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import de.inovex.app.R;
 import de.inovex.app.adapter.JourneyAdapter;
+import de.inovex.app.provider.InovexContentProvider;
 
 public class ListJourneyActivity extends ListActivity {
 	
@@ -27,5 +30,14 @@ public class ListJourneyActivity extends ListActivity {
 				startActivity(i);
 			}
 		});
+	}
+	
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		Uri uri = Uri.withAppendedPath(InovexContentProvider.CONTENT_URI_JOURNEYS, String.valueOf(id));
+		Intent i = new Intent(this, NewJourneyActivity.class);
+		i.setData(uri);
+		startActivity(i);
 	}
 }

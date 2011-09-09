@@ -59,7 +59,7 @@ public class LocationTimePickerDialog extends AlertDialog  implements OnClickLis
 	    int mInitialMinute;
 	    boolean mIs24HourView;
 	    
-		public class OnLocationSelectedListener implements OnItemSelectedListener {
+		private class OnLocationSelectedListener implements OnItemSelectedListener {
 
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 				mCurrentLocationString = parent.getItemAtPosition(pos).toString();
@@ -165,8 +165,4 @@ public class LocationTimePickerDialog extends AlertDialog  implements OnClickLis
 	        mTimePicker.setIs24HourView(savedInstanceState.getBoolean(IS_24_HOUR));
 	        updateTitle(hour, minute);
 	    }
-
-
-	
-
 }

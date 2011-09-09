@@ -4,15 +4,12 @@
   android:orientation="horizontal"
   android:layout_width="match_parent"
   android:layout_height="wrap_content">
-  <Button 
+  <de.inovex.app.views.DatePickerButton 
   	android:id="@+id/buttonDate"
-  	android:text="28/08/2011"  
- 	style="@style/DateButton"> 	  	
-  </Button>
-  <Button 
+ 	style="@style/DateButton"/> 	  	
+  <de.inovex.app.views.TimePickerButton 
   	android:id="@+id/buttonTime"
   	android:text="14:35"  
- 	style="@style/TimeButton"> 	  	
-  </Button>    
+ 	style="@style/TimeButton"/> 	  	
 </LinearLayout>
 </merge>

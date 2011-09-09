@@ -36,18 +36,38 @@ public class DataUtilities {
 	}
 
 	
+	public static int updateJourney(Context c, Uri data,String startLocation, String destination, String type, String description, Date startDate,Date endDate, int parentId) throws RemoteException {
+		ContentProviderClient client = null;
+		try {
+			ContentValues v = makeContentValues(startLocation, destination, type, description, startDate, endDate, parentId);
+
+			client = c.getContentResolver().acquireContentProviderClient(InovexContentProvider.CONTENT_URI);
+			return client.update(data, v, null, null);
+		} finally {
+			if (client != null) {
+				client.release();
+			}
+		}
+
+	}
+
+	private static ContentValues makeContentValues(String startLocation, String destination, String type, String description, Date startDate,Date endDate, int parentId) {
+		ContentValues v = null;
+		v = new ContentValues();
+		v.put(Columns.START_LOCATION, startLocation);
+		v.put(Columns.DESTINATION, destination);
+		v.put(Columns.DESCRIPTION, description);
+		v.put(Columns.TYPE, Integer.parseInt(type));
+		v.put(Columns.START_DATE, startDate.getTime());
+		v.put(Columns.END_DATE, endDate.getTime());
+		v.put(Columns.PARENT_ID, parentId);
+		return v;
+	}
+	
 	public static Uri saveJourney(Context c, String startLocation, String destination, String type, String description, Date startDate,Date endDate, int parentId) throws RemoteException{
 		ContentProviderClient client = null;
 		try {
-			ContentValues v = null;
-			v = new ContentValues();
-			v.put(Columns.START_LOCATION, startLocation);
-			v.put(Columns.DESTINATION, destination);
-			v.put(Columns.DESCRIPTION, description);
-			v.put(Columns.TYPE, Integer.parseInt(type));
-			v.put(Columns.START_DATE, startDate.getTime());
-			v.put(Columns.END_DATE, endDate.getTime());
-			v.put(Columns.PARENT_ID, parentId);
+			ContentValues v = makeContentValues(startLocation, destination, type, description, startDate, endDate, parentId);
 
 			client = c.getContentResolver().acquireContentProviderClient(InovexContentProvider.CONTENT_URI);
 			return client.insert(InovexContentProvider.CONTENT_URI, v);
