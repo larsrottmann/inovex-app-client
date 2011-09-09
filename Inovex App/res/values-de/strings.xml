@@ -34,6 +34,8 @@
     <string name="out_time">Ende</string>
     <string name="total_time_month">arbeitszeit</string>
     <string name="total_time">Gesamt</string>
+    <string name="break_time">Pause</string>
+    <string name="saldo_time">Saldo</string>
     <string name="check_in">check in</string>
     <string name="check_out">jetzt auschecken</string>
     <string name="journey_recording">Erfasse eine Reise</string>

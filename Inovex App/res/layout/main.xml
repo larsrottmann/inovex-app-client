@@ -20,6 +20,8 @@
 				>
 			</de.inovex.app.views.JourneyQuickMenu>
 
+	<include layout="@layout/time_quick_menu"/>
+
 	<Button android:text="@string/list_contacts"  
     		android:id="@+id/button_list_contacts"
     		android:layout_width="match_parent" 
