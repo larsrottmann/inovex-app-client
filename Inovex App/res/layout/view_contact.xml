@@ -10,7 +10,7 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="#cecece">
+		android:background="@drawable/main_menu_section_heading">
 		<ImageView
 			android:id="@+id/view_contact_image"
 			android:layout_width="wrap_content"
@@ -21,7 +21,8 @@
 			android:layout_width="wrap_content"
 			android:layout_height="match_parent"
 			android:textStyle="bold"
-			android:gravity="center_vertical" />
+			android:gravity="center_vertical"
+			style="@style/medium_dark_text" />
 	</LinearLayout>
 	<ListView
 		android:id="@+id/view_contact_list"

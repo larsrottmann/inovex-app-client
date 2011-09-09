@@ -11,6 +11,11 @@ public final class ExtraDataKinds {
 		 * TYPE: string
 		 */
 		public static final String SKILLS = "data1";
+
+		/**
+		 * TYPE: string
+		 */
+		public static final String PHOTO_MD5 = "data2";
 	}
 
 	private ExtraDataKinds() {}
