@@ -25,12 +25,14 @@ import android.widget.Toast;
 import android.widget.ViewAnimator;
 import de.inovex.app.R;
 import de.inovex.app.adapter.LocationSpinnerAdapter;
+import de.inovex.app.dialogs.LocationTimePickerDialog;
+import de.inovex.app.dialogs.LocationTimePickerDialog.OnLocationTimeSetListener;
 import de.inovex.app.provider.DataUtilities;
 import de.inovex.app.provider.InovexContentProvider;
 import de.inovex.app.provider.InovexContentProvider.Columns;
 import de.inovex.app.provider.InovexContentProvider.Types;
 
-public class JourneyQuickMenu extends RelativeLayout {
+public class JourneyQuickMenu extends RelativeLayout implements OnLocationTimeSetListener {
 
 	private static final String PREF_NAME = "inovex_current_journey";
 	private static final String PREF_START_LOCATION = "start_location";
@@ -40,20 +42,21 @@ public class JourneyQuickMenu extends RelativeLayout {
 	private static final String[] PROJECTION = new String[] { InovexContentProvider.Columns.DESTINATION, InovexContentProvider.Columns.ID, InovexContentProvider.Columns.START_DATE,
 			InovexContentProvider.Columns.END_DATE, InovexContentProvider.Columns.START_LOCATION, InovexContentProvider.Columns.TYPE };
 
-	private Spinner mCurrentLocation;
-	private TimePickerButton mCurrentTime;
-	private OnLocationSelectedListener mLocationListener = new OnLocationSelectedListener();
+//	private Spinner mCurrentLocation;
+//	private TimePickerButton mCurrentTime;
+//	private OnLocationSelectedListener mLocationListener = new OnLocationSelectedListener();
 	private JourneyContentObserver mJourneyContentObserver = new JourneyContentObserver(new Handler());
 	private ViewAnimator mViewAnimator;
-	private String mCurrentLocationString;
+//	private String mCurrentLocationString;
 	private TextView mTextViewStartPlace;
 	private TextView mTextViewDestination;
 	private TextView mTextViewStartDate;
 	private TextView mTextViewEndDate;
-	private TextSwitcher mTextSwitcherTimeLabel;
-	private TextSwitcher mTextSwitcherLocationLabel;
+//	private TextSwitcher mTextSwitcherTimeLabel;
+//	private TextSwitcher mTextSwitcherLocationLabel;
 	private TextSwitcher mTextSwitcherJourneyType;
-
+	private String mCurrentType;
+	
 	private static class JourneyDataHolder {
 		String type;
 		long startdate;
@@ -62,16 +65,16 @@ public class JourneyQuickMenu extends RelativeLayout {
 		String destination;
 	}
 
-	public class OnLocationSelectedListener implements OnItemSelectedListener {
-
-		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-			mCurrentLocationString = parent.getItemAtPosition(pos).toString();
-		}
-
-		public void onNothingSelected(AdapterView<?> parent) {
-			mCurrentLocationString = parent.getItemAtPosition(0).toString();
-		}
-	}
+//	private class OnLocationSelectedListener implements OnItemSelectedListener {
+//
+//		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+//			mCurrentLocationString = parent.getItemAtPosition(pos).toString();
+//		}
+//
+//		public void onNothingSelected(AdapterView<?> parent) {
+//			mCurrentLocationString = parent.getItemAtPosition(0).toString();
+//		}
+//	}
 
 	public class JourneyContentObserver extends ContentObserver {
 		public JourneyContentObserver(Handler handler) {
@@ -91,24 +94,18 @@ public class JourneyQuickMenu extends RelativeLayout {
 		inflater.inflate(R.layout.journey_quick_menu, this);
 
 		mViewAnimator = (ViewAnimator) findViewById(R.id.viewanimator_new_journey);
-		try {
-			mCurrentTime = (TimePickerButton) findViewById(R.id.timepicker_start_time);
-		} catch (ClassCastException issue6894) {
-
-			System.out.println(issue6894);
-		} // ignore
-
-		mTextSwitcherLocationLabel = (TextSwitcher) findViewById(R.id.textSwitcher_location_label);
-		mTextSwitcherTimeLabel = (TextSwitcher) findViewById(R.id.textSwitcher_time_label);
+//		mCurrentTime = (TimePickerButton) findViewById(R.id.timepicker_start_time);
+//		mTextSwitcherLocationLabel = (TextSwitcher) findViewById(R.id.textSwitcher_location_label);
+//		mTextSwitcherTimeLabel = (TextSwitcher) findViewById(R.id.textSwitcher_time_label);
 		mTextSwitcherJourneyType = (TextSwitcher) findViewById(R.id.textSwitcher_type_of_journey);
 		mTextViewStartPlace = (TextView) findViewById(R.id.textview_start_place);
 		mTextViewDestination = (TextView) findViewById(R.id.textview_destination);
 		mTextViewStartDate = (TextView) findViewById(R.id.textView_start_time);
 		mTextViewEndDate = (TextView) findViewById(R.id.textView_end_time);
 
-		mCurrentLocation = (Spinner) findViewById(R.id.spinner_pick_location);
-		mCurrentLocation.setAdapter(new LocationSpinnerAdapter(activity));
-		mCurrentLocation.setOnItemSelectedListener(mLocationListener);
+//		mCurrentLocation = (Spinner) findViewById(R.id.spinner_pick_location);
+//		mCurrentLocation.setAdapter(new LocationSpinnerAdapter(activity));
+//		mCurrentLocation.setOnItemSelectedListener(mLocationListener);
 
 		updateView();
 	}
@@ -128,15 +125,15 @@ public class JourneyQuickMenu extends RelativeLayout {
 	private void updateView() {
 		if (isJourneyStoredInPreferences()) {
 			// user is currently on a journey
-			mTextSwitcherLocationLabel.setText(getContext().getText(R.string.end_place));
-			mTextSwitcherTimeLabel.setText(getContext().getText(R.string.end_time));
+//			mTextSwitcherLocationLabel.setText(getContext().getText(R.string.end_place));
+//			mTextSwitcherTimeLabel.setText(getContext().getText(R.string.end_time));
 
 			mViewAnimator.setDisplayedChild(2);
 			initFinishJourneyButton();
 			showLastJourney();
 		} else {
-			mTextSwitcherLocationLabel.setText(getContext().getText(R.string.starting_place));
-			mTextSwitcherTimeLabel.setText(getContext().getText(R.string.start_time));
+//			mTextSwitcherLocationLabel.setText(getContext().getText(R.string.starting_place));
+//			mTextSwitcherTimeLabel.setText(getContext().getText(R.string.start_time));
 			String type = getTypeOfLastJourney();
 			if (type.equals(Types.JOURNEY_END)) {
 				// user can start a new journey
@@ -159,20 +156,22 @@ public class JourneyQuickMenu extends RelativeLayout {
 			final String startLocation = prefs.getString(PREF_START_LOCATION, "");
 			long time = prefs.getLong(PREF_START_DATE, 0);
 			String type = prefs.getString(PREF_TYPE, "");
-			CharSequence formattedDate = DateFormat.format("MMM dd, hh:mm", new Date(time));
+			CharSequence formattedDate = DateFormat.format("MMM dd, k:mm", new Date(time));
 			mTextViewStartDate.setText(formattedDate);
 			mTextViewStartPlace.setText(startLocation);
 			mTextViewDestination.setText("?");
+			mTextViewEndDate.setVisibility(View.INVISIBLE);
 			CharSequence typeString = InovexContentProvider.Types.getDisplayStringFromType(getContext(), type);
 			mTextSwitcherJourneyType.setText(typeString);
 		} else {
 			JourneyDataHolder holder = getLastJourney();
 			if (holder != null) {
-				CharSequence formattedDate = DateFormat.format("MMM dd, hh:mm", new Date(holder.startdate));
+				CharSequence formattedDate = DateFormat.format("MMM dd, k:mm", new Date(holder.startdate));
 				mTextViewStartDate.setText(formattedDate);
 				mTextViewStartPlace.setText(holder.startLocation);
 				mTextViewDestination.setText(holder.destination);
-				formattedDate = DateFormat.format("MMM dd, hh:mm", new Date(holder.enddate));
+				formattedDate = DateFormat.format("MMM dd, k:mm", new Date(holder.enddate));
+				mTextViewEndDate.setVisibility(View.VISIBLE);
 				mTextViewEndDate.setText(formattedDate);
 				CharSequence typeString = InovexContentProvider.Types.getDisplayStringFromType(getContext(), holder.type);
 				mTextSwitcherJourneyType.setText(typeString);
@@ -185,10 +184,13 @@ public class JourneyQuickMenu extends RelativeLayout {
 		b.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				long time = mCurrentTime.getTime();
-				String location = mCurrentLocationString;
-				saveJourneyIntoPreferences(time, location, InovexContentProvider.Types.JOURNEY_END);
-				updateView();
+//				long time = mCurrentTime.getTime();
+//				String location = mCurrentLocationString;
+//				saveJourneyIntoPreferences(time, location, InovexContentProvider.Types.JOURNEY_END);
+//				updateView();
+				mCurrentType = InovexContentProvider.Types.JOURNEY_END;
+				LocationTimePickerDialog dialog = new LocationTimePickerDialog(getContext(), JourneyQuickMenu.this,LocationTimePickerDialog.DEPARTURE);
+				dialog.show();				
 			}
 		});
 	}
@@ -198,10 +200,14 @@ public class JourneyQuickMenu extends RelativeLayout {
 		b.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				long time = mCurrentTime.getTime();
-				String location = mCurrentLocationString;
-				saveJourneyIntoPreferences(time, location, InovexContentProvider.Types.JOURNEY_CONTINUATION);
-				updateView();
+//				long time = mCurrentTime.getTime();
+//				String location = mCurrentLocationString;
+//				saveJourneyIntoPreferences(time, location, InovexContentProvider.Types.JOURNEY_CONTINUATION);
+//				updateView();
+				mCurrentType = InovexContentProvider.Types.JOURNEY_CONTINUATION;
+				LocationTimePickerDialog dialog = new LocationTimePickerDialog(getContext(), JourneyQuickMenu.this,LocationTimePickerDialog.DEPARTURE);
+				dialog.show();				
+
 			}
 		});
 	}
@@ -211,11 +217,13 @@ public class JourneyQuickMenu extends RelativeLayout {
 		b.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
-				long time = mCurrentTime.getTime();
-				String location = mCurrentLocationString;
-				saveJourneyIntoPreferences(time, location, InovexContentProvider.Types.JOURNEY_START);
-				updateView();
+//				long time = mCurrentTime.getTime();
+//				String location = mCurrentLocationString;
+//				saveJourneyIntoPreferences(time, location, InovexContentProvider.Types.JOURNEY_START);
+//				updateView();
+				mCurrentType = InovexContentProvider.Types.JOURNEY_START;
+				LocationTimePickerDialog dialog = new LocationTimePickerDialog(getContext(), JourneyQuickMenu.this,LocationTimePickerDialog.DEPARTURE);
+				dialog.show();				
 			}
 		});
 	}
@@ -226,22 +234,10 @@ public class JourneyQuickMenu extends RelativeLayout {
 		b.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				final SharedPreferences prefs = getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-				final Date startDate = new Date(prefs.getLong(PREF_START_DATE, 1));
-				final String startLocation = prefs.getString(PREF_START_LOCATION, "");
-				final String type = prefs.getString(PREF_TYPE, "");
-				final int parentId = prefs.getInt(PREF_PARENT_ID, -1);
+				LocationTimePickerDialog dialog = new LocationTimePickerDialog(getContext(), JourneyQuickMenu.this,LocationTimePickerDialog.ARRIVAL);
+				dialog.show();				
 
-				long time = mCurrentTime.getTime();
-				String destination = mCurrentLocationString;
-				try {
-					DataUtilities.saveJourney(getContext(), startLocation, destination, type, "", startDate, new Date(time), parentId);
-				} catch (RemoteException e) {
-					Toast.makeText(getContext(), getContext().getText(R.string.error_saving_journey), Toast.LENGTH_LONG);
-					e.printStackTrace();
-				}
-				prefs.edit().clear().apply();
-				updateView();
+				
 			}
 		});
 	}
@@ -298,6 +294,35 @@ public class JourneyQuickMenu extends RelativeLayout {
 			return holder.type;
 		}
 		return InovexContentProvider.Types.JOURNEY_END;
+	}
+
+	@Override
+	public void onTimeLocationSet(String location, int hourOfDay, int minute, int type) {
+		if (type==LocationTimePickerDialog.ARRIVAL) {
+			final SharedPreferences prefs = getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+			final Date startDate = new Date(prefs.getLong(PREF_START_DATE, 1));
+			final String startLocation = prefs.getString(PREF_START_LOCATION, "");
+			final String journeyType = prefs.getString(PREF_TYPE, "");
+			final int parentId = prefs.getInt(PREF_PARENT_ID, -1);
+
+			Date endDate = new Date();
+			endDate.setHours(hourOfDay);
+			endDate.setMinutes(minute);
+			try {
+				DataUtilities.saveJourney(getContext(), startLocation, location, journeyType, "", startDate, endDate, parentId);
+			} catch (RemoteException e) {
+				Toast.makeText(getContext(), getContext().getText(R.string.error_saving_journey), Toast.LENGTH_LONG);
+				e.printStackTrace();
+			}
+			prefs.edit().clear().apply();
+			updateView();
+		} else if (type == LocationTimePickerDialog.DEPARTURE) {
+			Date startDate = new Date();
+			startDate.setHours(hourOfDay);
+			startDate.setMinutes(minute);
+			saveJourneyIntoPreferences(startDate.getTime(), location, mCurrentType);
+			updateView();
+		}
 	}
 
 }

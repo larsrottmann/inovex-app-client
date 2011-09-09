@@ -21,7 +21,7 @@ public class TimePickerButton extends Button {
 
 	Calendar mCalendar;
     private final static String m12 = "h:mm:ss aa";
-    private final static String m24 = "hh:mm:ss";
+    private final static String m24 = "k:mm:ss";
     private FormatChangeObserver mFormatChangeObserver;
 
     private Runnable mTicker;
