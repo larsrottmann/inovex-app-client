@@ -60,11 +60,19 @@ public class JourneyAdapter extends CursorAdapter {
 		
 		String type = cursor.getString(mIndexType);
 		holder.type.setText(InovexContentProvider.Types.getDisplayStringFromType(context, type));
-		CharSequence formattedDate = DateFormat.format("MMM dd, yyyy h:mmaa", new Date(cursor.getLong(mIndexStartDate)));
-		holder.date.setText(formattedDate);
+		CharSequence formattedDate = DateFormat.format("MMM dd, yy k:mm", new Date(cursor.getLong(mIndexStartDate)));
+		holder.startDate.setText(formattedDate);
 		holder.start.setText(cursor.getString(mIndexStartLocation));
+		formattedDate = DateFormat.format("MMM dd, yy k:mm", new Date(cursor.getLong(mIndexEndDate)));
+		holder.endDate.setText(formattedDate);		
 		holder.destination.setText(cursor.getString(mIndexDestination));
-		holder.description.setText(cursor.getString(mIndexDescription));		
+		String descr = cursor.getString(mIndexDescription);
+		if (descr!=null && !descr.isEmpty()) {
+			holder.description.setVisibility(View.VISIBLE);
+			holder.description.setText(descr);		
+		} else {
+			holder.description.setVisibility(View.GONE);			
+		}
 	}
 
 	@Override

@@ -58,7 +58,7 @@
     </style>  
    <style name="small_light_text">
    <item name="android:textStyle">bold</item>
-    <item name="android:textSize">15dip</item>
+    <item name="android:textSize">13dip</item>
     <item name="android:textColor">#fff4f4f4</item>
     </style>  
    <style name="medium_light_text">
