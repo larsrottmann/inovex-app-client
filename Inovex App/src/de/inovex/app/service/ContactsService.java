@@ -191,7 +191,7 @@ public class ContactsService extends IntentService {
 			);
 			if (cursor.moveToFirst()) {
 				String curAddress = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
-				if (!curAddress.equals(contact.emailAddress)) {
+				if (curAddress == null || !curAddress.equals(contact.emailAddress)) {
 					r |= ImportContactOperations.UPDATE_EMAIL_ADDRESS;
 				}
 			}
@@ -215,7 +215,8 @@ public class ContactsService extends IntentService {
 				String curSkills = cursor.getString(cursor.getColumnIndex(ExtraDataKinds.Inovex.SKILLS));
 				curPhotoMD5 = cursor.getString(cursor.getColumnIndex(ExtraDataKinds.Inovex.PHOTO_MD5));
 				if (
-						!curSkills.equals(contact.skills)
+						curSkills == null
+						|| !curSkills.equals(contact.skills)
 						|| (contact.photoMD5 != null && !contact.photoMD5.equals(curPhotoMD5))
 				) {
 					r |= ImportContactOperations.UPDATE_INOVEX;
@@ -264,14 +265,24 @@ public class ContactsService extends IntentService {
 	}
 
 	private void importContacts() throws JsonParseException, JsonMappingException, IOException, IllegalStateException, SAXException, ParserConfigurationException {
+		ContentResolver cr = getContentResolver();
+		ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+
 		for (Employee contact : api.getAllEmployees()) {
-			insertUpdateContact(contact);
+			insertUpdateContact(cr, ops, contact);
+		}
+		// zum schluss go
+		if (! ops.isEmpty()) {
+			try {
+				cr.applyBatch(ContactsContract.AUTHORITY, ops);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	private void insertUpdateContact(Employee contact) {
+	private void insertUpdateContact(ContentResolver cr, ArrayList<ContentProviderOperation> ops, Employee contact) {
 		// bestehenden finden
-		ContentResolver cr = getContentResolver();
 		Cursor cursor = cr.query(
 				ContactsContract.Data.CONTENT_URI
 				, null // projection
@@ -291,8 +302,6 @@ public class ContactsService extends IntentService {
 
 		if (operations == 0) return;
 		Log.i(TAG, "operations="+operations);
-
-		ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
 
 		// raw contact
 		if ((operations & ImportContactOperations.INSERT_RAW_CONTACT) > 0) {
@@ -386,7 +395,7 @@ public class ContactsService extends IntentService {
 						ContactsContract.CommonDataKinds.Phone.TYPE+"=?"
 						, new String[] {
 								String.valueOf(rawContactId)
-								, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE
+								, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE
 								, String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
 						}
 				);
@@ -544,12 +553,7 @@ public class ContactsService extends IntentService {
 		}
 
 
-		Log.i(TAG, "inserting/updating contact: "+displayName);
-		try {
-			cr.applyBatch(ContactsContract.AUTHORITY, ops);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Log.i(TAG, "[ops] inserting/updating contact: "+displayName);
 	}
 
 	@Override
@@ -571,7 +575,7 @@ public class ContactsService extends IntentService {
 		}
 
 		try {
-			//importContacts();
+			importContacts();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
