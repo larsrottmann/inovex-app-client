@@ -55,4 +55,18 @@
     <string name="success_saving_journey">Reise wurde gespeichert</string>
     <string name="error_creating_file">Belegdatei konnte nicht erstellt werden.</string>
     <string name="success_saving_receipt">Ihr Beleg wurde gespeichert!</string>
+    <string name="search_label">Suche</string>
+    <string name="search_results_for">Suchergebnisse für \'%s\':</string>
+    <string name="show_all">Alle anzeigen</string>
+    <string name="email_type">Email %s</string>
+    <string name="call_type">Anruf (%s)</string>
+    <string name="home">Zu Hause</string>
+    <string name="mobile">Mobil</string>
+    <string name="work">Arbeit</string>
+    <string name="organization">Organisation</string>
+    <string name="skills">Erfahrungen</string>
+    <string name="select_email_app">Emailprogramm auswählen</string>
+    <string name="username">Benutzername</string>
+    <string name="password">Passwort</string>
+    <string name="preferences">Einstellungen</string>
 </resources>
