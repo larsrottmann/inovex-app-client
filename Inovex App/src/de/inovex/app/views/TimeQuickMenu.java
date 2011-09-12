@@ -69,7 +69,7 @@ public class TimeQuickMenu extends RelativeLayout {
 		mTimePickerButton = (TimePickerButton) findViewById(R.id.timepicker_enter_time);
 
 		mTimePickerButton.setTextPrefix(getContext().getText(R.string.enter_time).toString() + " ");
-		mTimePickerButton.setFormat("hh:mm");
+		mTimePickerButton.setFormat("k:mm");
 
 		updateView();
 	}
@@ -99,31 +99,32 @@ public class TimeQuickMenu extends RelativeLayout {
 			if (holder.morningStartTime == 0) {
 				formattedMorningStartTime = noTime;
 			} else {
-				formattedMorningStartTime = DateFormat.format("hh:mm", new Date(holder.morningStartTime));
+				formattedMorningStartTime = DateFormat.format("k:mm", new Date(holder.morningStartTime));
 			}
 			mTextViewMorningStartTime.setText(formattedMorningStartTime);
 			CharSequence formattedMorningEndTime;
 			if (holder.morningEndTime == 0) {
 				formattedMorningEndTime = noTime;
 			} else {
-				formattedMorningEndTime = DateFormat.format("hh:mm", new Date(holder.morningEndTime));
+				formattedMorningEndTime = DateFormat.format("k:mm", new Date(holder.morningEndTime));
 			}
 			mTextViewMorningEndTime.setText(formattedMorningEndTime);
 			CharSequence formattedNoonStartTime;
 			if (holder.noonStartTime == 0) {
 				formattedNoonStartTime = noTime;
 			} else {
-				formattedNoonStartTime = DateFormat.format("hh:mm", new Date(holder.noonStartTime));
+				formattedNoonStartTime = DateFormat.format("k:mm", new Date(holder.noonStartTime));
 			}
 			mTextViewNoonStartTime.setText(formattedNoonStartTime);
 			CharSequence formattedNoonEndTime;
 			if (holder.noonEndTime == 0) {
 				formattedNoonEndTime = noTime;
 			} else {
-				formattedNoonEndTime = DateFormat.format("hh:mm", new Date(holder.noonEndTime));
+				formattedNoonEndTime = DateFormat.format("k:mm", new Date(holder.noonEndTime));
 			}
 			mTextViewNoonEndTime.setText(formattedNoonEndTime);
-
+			// calculate times
+			
 			//TODO: calculate times
 			mTextViewSaldoTime.setText(noTime);
 			mTextViewBreakTime.setText(noTime);
@@ -136,15 +137,19 @@ public class TimeQuickMenu extends RelativeLayout {
 
 		try {
 			TimeDataHolder holder = new TimeDataHolder();
-			String selection = Columns.START_DATE + ">?";
-			Date now = new Date();
-			now.setHours(0);
-			now.setMinutes(0);
-			now.setSeconds(0);
-			String[] selectionArgs = { "" + now.getTime() };
+			String selection = Columns.START_DATE + ">? AND " + Columns.END_DATE + "<?";
+			Date fromDate = new Date();
+			fromDate.setHours(0);
+			fromDate.setMinutes(0);
+			fromDate.setSeconds(0);
+			Date toDate = new Date();
+			toDate.setDate(toDate.getDate() + 1);
+			toDate.setHours(0);
+			toDate.setMinutes(0);
+			toDate.setSeconds(0);
+			String[] selectionArgs = { "" + fromDate.getTime(), "" + toDate.getTime() };
 			Cursor c = client.query(InovexContentProvider.CONTENT_URI_TIMES, PROJECTION, selection, selectionArgs, Columns.START_DATE + " ASC");
-			Log.d(TAG, "Cursor count: " + c.getCount());
-
+			Log.d(TAG, "Todays time records: " + c.getCount());
 			boolean hasData = c.moveToFirst();
 			if (!hasData) {
 				c.close();
@@ -152,11 +157,11 @@ public class TimeQuickMenu extends RelativeLayout {
 			}
 			int startDateIndex = c.getColumnIndex(Columns.START_DATE);
 			int endDateIndex = c.getColumnIndex(Columns.END_DATE);
-			holder.morningStartTime = c.getInt(startDateIndex);
-			holder.morningEndTime = c.getInt(endDateIndex);
+			holder.morningStartTime = c.getLong(startDateIndex);
+			holder.morningEndTime = c.getLong(endDateIndex);
 			if (c.moveToNext()) {
-				holder.noonStartTime = c.getInt(startDateIndex);
-				holder.noonEndTime = c.getInt(endDateIndex);
+				holder.noonStartTime = c.getLong(startDateIndex);
+				holder.noonEndTime = c.getLong(endDateIndex);
 			}
 			c.close();
 			return holder;
