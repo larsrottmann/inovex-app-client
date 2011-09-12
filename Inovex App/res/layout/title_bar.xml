@@ -2,31 +2,51 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:padding="4dip"
 	android:background="@drawable/titlebar_background"
 	>
 	
 		<TextView android:id="@+id/textview_logo"
-		    android:layout_marginBottom="14dip"
-        	android:layout_marginTop="6dip"
-        	android:layout_marginLeft="12dip"
         	android:drawableLeft="@drawable/inovex_logo_ohne_rahmen" 
         	android:layout_width="wrap_content" 
         	android:layout_height="wrap_content"
         	android:layout_alignParentLeft="true"
         	style="@style/InovexLogoText"
+			android:layout_marginTop="8dip"
+			android:layout_marginLeft="4dip"
+			android:layout_marginRight="4dip"
         	android:text="@string/company_name"		/>
+        	
+        <ImageButton 
+      		android:id="@+id/button_list_contacts"
+  			android:scaleType="center"
+    		android:layout_width="wrap_content" 
+    		android:layout_alignParentRight="true"
+    		android:src="@drawable/ic_menu_contacts"
+    		android:background="@drawable/titlebar_button"        	    		
+			android:layout_marginTop="4dip"
+			android:layout_marginLeft="4dip"
+			android:layout_marginRight="4dip"
+    		android:layout_height="wrap_content" />
 
-        <ImageButton android:id="@+id/imagebutton_new_content"
+        <ImageButton 
+        	android:id="@+id/imagebutton_new_content"
 			android:src="@drawable/create_new_content_titlebar"
-			android:layout_marginBottom="4dip"
-			android:layout_marginLeft="3dip"
   			android:scaleType="center"
   			android:visibility="gone"
   			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true"
+			android:layout_toLeftOf="@+id/button_list_contacts"
 			android:background="@drawable/titlebar_button"        	
+			android:layout_marginTop="1dip"
+			android:layout_marginLeft="4dip"
+			android:layout_marginRight="4dip"
 		/>
 
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="10dip"
+			android:layout_marginTop="2dip"
+			android:layout_below="@+id/textview_logo"
+			android:background="@drawable/titlebar_fader"
+			/>
 </RelativeLayout>

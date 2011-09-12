@@ -8,6 +8,7 @@ import de.inovex.app.provider.InovexContentProvider;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.widget.CursorAdapter;
 import android.widget.RelativeLayout;
 
 public class TimeAdapter extends CursorAdapter {
+
+	private static final String TAG = "TimeAdapter";
 
 	private static final String[] PROJECTION_IDS_AND_TITLE = new String[] {
         InovexContentProvider.Columns.ID, 
@@ -43,13 +46,15 @@ public class TimeAdapter extends CursorAdapter {
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 		TimeViewHolder holder = (TimeViewHolder) view.getTag();
-		CharSequence formattedDate = DateFormat.format("MMM dd, yyyy", new Date(cursor.getLong(mIndexStartDate)));
+		CharSequence formattedDate = DateFormat.format("dd.MM.yyyy", new Date(cursor.getLong(mIndexStartDate)));
 		holder.date.setText(formattedDate);
-		CharSequence formattedStartTime = DateFormat.format("h:mmaa", new Date(cursor.getLong(mIndexStartDate)));
+		CharSequence formattedStartTime = DateFormat.format("hh:mm", new Date(cursor.getLong(mIndexStartDate)));
 		holder.startTime.setText(formattedStartTime);
-		CharSequence formattedEndTime = DateFormat.format("h:mmaa", new Date(cursor.getLong(mIndexEndDate)));
+		CharSequence formattedEndTime = DateFormat.format("hh:mm", new Date(cursor.getLong(mIndexEndDate)));
 		holder.endTime.setText(formattedEndTime);
-		CharSequence formattedTotalTime = DateFormat.format("h:mmaa", new Date(cursor.getLong(mIndexEndDate) - cursor.getLong(mIndexStartDate)));
+		Log.d(TAG, "end time: " + cursor.getLong(mIndexEndDate) + ", start time: " 
+				+ cursor.getLong(mIndexStartDate) + ", total time: " + (cursor.getLong(mIndexEndDate) - cursor.getLong(mIndexStartDate)));
+		CharSequence formattedTotalTime = DateFormat.format("hh:mm", new Date(cursor.getLong(mIndexEndDate) - cursor.getLong(mIndexStartDate)));
 		holder.totalTime.setText(formattedTotalTime);
 		holder.description.setText(cursor.getString(mIndexDescription));		
 	}

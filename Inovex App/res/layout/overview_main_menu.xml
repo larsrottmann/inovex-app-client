@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical"
+  android:paddingBottom="5dip"
   android:layout_width="match_parent"
+  android:background="@drawable/overview_section_background"
   android:layout_height="wrap_content">
 	<LinearLayout 
+		android:id="@+id/overview"
 		android:orientation="horizontal"
+		android:layout_alignParentTop="true"
+		android:background="@drawable/main_menu_section_heading" 	 		
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 	>
 		<TextView 	
 			android:id="@+id/textview_date"
-			android:text="Aug 2011"
+			style="@style/medium_dark_text"
+			android:text="Sep 2011"
 			android:layout_weight="2"		
 			android:layout_width="0dip"
 			android:textSize="22dip"
+			android:layout_gravity="center"
+			android:gravity="center"
 			android:layout_height="wrap_content"
 		>
 		</TextView>
@@ -30,11 +38,13 @@
 				android:text="@string/total_time_month"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:textSize="15dip"
+				style="@style/small_dark_text"
 			/>
 			<TextView 	
 				android:id="@+id/textview_total_time"
-				android:text="18:00h"
+				android:text="+3:15h"
+				android:textColor="#11aa11"
+				style="@style/small_dark_text"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 			/>
@@ -50,42 +60,24 @@
 				android:text="@string/sum_of_receipts"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:textSize="15dip"
+				style="@style/small_dark_text"
 			/>
 			<TextView 	
 				android:id="@+id/textview_receipt_sum"
 				android:text="14€"
+				style="@style/small_dark_text"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 			/>
 		</LinearLayout>
 	</LinearLayout>
-	<ViewFlipper
-				android:id="@+id/viewswitcher_new_journey"
-				android:layout_width="fill_parent"
-				android:background="@drawable/main_menu_section_background"
-   			 	android:layout_height="match_parent">
-   			 	<TextView 
-   			 		android:layout_width="match_parent"
-   			 		android:layout_height="wrap_content"
-   			 		android:text="@string/data_is_ok"
-   			 		android:gravity="center_vertical"/>
-   		<LinearLayout android:layout_width="match_parent"
-   			android:layout_height="match_parent" 
-   			android:orientation="horizontal">
-			<TextView 	
-					android:id="@+id/textview_tasks_label"
-					android:text="@string/open_tasks"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:textSize="22dip"
-					android:background="@drawable/main_menu_section_background"
-				/>
-			<ListView 
-				android:id="@+id/listview_tasks" 
-				android:layout_width="match_parent"
-				android:layout_height="100dip"
-			></ListView>
-		</LinearLayout> 			
-	</ViewFlipper>
-</LinearLayout>
+	<ListView 
+		android:id="@+id/listview_tasks" 
+		android:layout_marginLeft="3dip"
+		android:layout_marginRight="3dip"
+		android:layout_marginBottom="2dip"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_below="@+id/overview"
+	></ListView>
+</RelativeLayout>

@@ -33,13 +33,12 @@
 	    		android:layout_width="0dip"
 	    		style="@style/small_light_text"
 	    		android:layout_weight="5"
-	    		android:gravity="center_horizontal"		    		
+	    		android:layout_marginLeft="10dip"
 	    		android:layout_height="wrap_content"
 	    		android:text="13:45h"/>
 		    	 <TextView 
 		    	 	android:id="@+id/textView_journey_type"
-			    	android:layout_width="wrap_content"
-			    	android:layout_weight="1"
+			    	android:layout_width="75dip"
 			    	android:layout_height="wrap_content"
 	 				android:text="Anreise"	 				
 	 				style="@style/small_light_text"
@@ -48,7 +47,7 @@
 	    	<TextView 
 	    		android:id="@+id/textView_end_time"
 	    		android:layout_width="0dip"
-	    		android:gravity="center_horizontal"		    		
+	    		android:layout_marginLeft="10dip"
 	    		android:layout_weight="5"
 	    		style="@style/small_light_text"
 	    		android:layout_height="wrap_content"
@@ -66,19 +65,20 @@
 		    	android:layout_weight="5" 
 	    		style="@style/medium_light_text"
 		    	android:layout_height="wrap_content" 
-	    		android:gravity="center_horizontal"		    		
+	    		android:layout_marginLeft="10dip"
 		    	android:text="düsseldorf"
 		    />
 		   	<ImageView 
 		    	android:id="@+id/imageview_arrow"
 		    	android:src="@drawable/ic_menu_forward"
-		    	android:layout_width="wrap_content"
+		    	android:layout_width="75dip"
+		    	android:scaleType="center"
 		    	android:layout_height="wrap_content"
 		    	android:layout_gravity="center_vertical"
 		    />
 		    <TextView 
 		    	android:id="@+id/textview_destination"
-	    		android:gravity="center_horizontal"		    		
+	    		android:layout_marginLeft="10dip"
 		    	android:layout_weight="5"
 		    	android:layout_width="0dip"
 	    		style="@style/medium_light_text"
@@ -91,8 +91,10 @@
     	android:id="@+id/textview_description" 
     	android:layout_below="@+id/layout_container"
     	android:layout_toRightOf="@+id/button_show_receipts"
-    	android:textAppearance="?android:attr/textAppearanceMedium" 
     	android:layout_width="match_parent" 
+	    android:layout_marginLeft="10dip"
+	    style="@style/small_light_text"
+	    android:textStyle="normal"    	
     	android:layout_height="wrap_content" 
     	android:text="description">
     </TextView>
