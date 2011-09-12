@@ -654,7 +654,7 @@ public class ContactsService extends IntentService {
 			handler.post(new Runnable() {
 				@Override
 				public void run() {
-					Toast.makeText(getApplicationContext(), "start importing contacts", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "start importing all contacts", Toast.LENGTH_LONG).show();
 				}
 			});
 
@@ -671,11 +671,11 @@ public class ContactsService extends IntentService {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
-			getContentResolver().notifyChange(ContactsContract.Contacts.CONTENT_URI, null);
 		} else if (intent.getIntExtra("action", ACTION_IMPORT_CONTACTS) == ACTION_IMPORT_CONTACT_PHOTOS) {
 			importContactPhoto();
 		}
+
+		getContentResolver().notifyChange(ExtraDataKinds.Inovex.NOTIFICATION_URI, null);
 	}
 
 	@Override

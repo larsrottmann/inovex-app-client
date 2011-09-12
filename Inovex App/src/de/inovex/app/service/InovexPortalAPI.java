@@ -271,6 +271,15 @@ public class InovexPortalAPI {
 
 			Log.i("InvoexPortalAPI", "skills: "+skills);
 			emp.skills = skills;
+
+			// etwas luft für mehr performance in der UI
+			synchronized (this) {
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }
