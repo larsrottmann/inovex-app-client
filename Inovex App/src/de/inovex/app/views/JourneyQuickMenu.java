@@ -259,6 +259,7 @@ public class JourneyQuickMenu extends RelativeLayout implements OnLocationTimeSe
 			Cursor c = client.query(InovexContentProvider.CONTENT_URI_JOURNEYS, PROJECTION, null, null, Columns.START_DATE + " DESC");
 			boolean hasData = c.moveToFirst();
 			if (!hasData) {
+				c.close();
 				return null;
 			}
 			int index = c.getColumnIndex(Columns.TYPE);

@@ -14,12 +14,10 @@ import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 import de.inovex.app.R;
 import de.inovex.app.activities.contacts.ListContactsActivity;
@@ -35,7 +33,7 @@ public class MainMenuActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		ImageButton contacts = (ImageButton) findViewById(R.id.button_list_contacts);
+		View contacts = findViewById(R.id.button_list_contacts);
 		contacts.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -90,15 +88,13 @@ public class MainMenuActivity extends Activity {
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.main_options_menu, menu);
-	    return true;
+		getMenuInflater().inflate(R.menu.main_options_menu, menu);
+		return true;
 	}
-	
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent i = null;
@@ -112,6 +108,9 @@ public class MainMenuActivity extends Activity {
 	    case R.id.list_times:
 	    	 i = new Intent(this,ListTimeActivity.class);
 	    	 break;
+	    case R.id.menu_item_preferences:
+	    	i = new Intent(this, InovexPreferenceActivity.class);
+	    	break;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
