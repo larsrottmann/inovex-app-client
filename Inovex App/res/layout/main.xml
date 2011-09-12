@@ -8,8 +8,20 @@
 		layout="@layout/title_bar" 
 		android:id="@+id/titleBar"
 	/>
+	<TextView 
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"		
+		android:layout_marginTop="10dip"		
+		android:text="@string/time_recording"
+	/>
 	<include layout="@layout/time_quick_menu"/>
 
+	<TextView 
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"		
+		android:layout_marginTop="10dip"		
+		android:text="@string/journey_recording"
+	/>
 	<de.inovex.app.views.JourneyQuickMenu
 		android:id="@+id/journeyquickmenu" 
 		android:layout_width="match_parent"

@@ -11,7 +11,7 @@
         	android:layout_height="wrap_content"
         	android:layout_alignParentLeft="true"
         	style="@style/InovexLogoText"
-			android:layout_marginTop="4dip"
+			android:layout_marginTop="8dip"
 			android:layout_marginLeft="4dip"
 			android:layout_marginRight="4dip"
         	android:text="@string/company_name"		/>
@@ -37,7 +37,7 @@
 			android:layout_height="wrap_content"
 			android:layout_toLeftOf="@+id/button_list_contacts"
 			android:background="@drawable/titlebar_button"        	
-			android:layout_marginTop="4dip"
+			android:layout_marginTop="1dip"
 			android:layout_marginLeft="4dip"
 			android:layout_marginRight="4dip"
 		/>
@@ -45,6 +45,7 @@
 		<View
 			android:layout_width="match_parent"
 			android:layout_height="10dip"
+			android:layout_marginTop="2dip"
 			android:layout_below="@+id/textview_logo"
 			android:background="@drawable/titlebar_fader"
 			/>

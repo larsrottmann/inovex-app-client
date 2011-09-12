@@ -2,8 +2,9 @@
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical"
+  android:paddingBottom="5dip"
   android:layout_width="match_parent"
-  android:background="@drawable/main_menu_section_background"
+  android:background="@drawable/overview_section_background"
   android:layout_height="wrap_content">
 	<LinearLayout 
 		android:id="@+id/overview"

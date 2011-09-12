@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical"
-  android:layout_marginTop="10dip"
   android:layout_width="match_parent"
 
   android:layout_height="wrap_content">
@@ -156,63 +155,6 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
    			 			android:text="@string/finish_journey"/>						
-	    	</ViewAnimator>
-	    		
-	    	<!-- allow user to pick date and location
-			<TextSwitcher 
-				android:inAnimation="@android:anim/fade_in"
-				android:outAnimation="@android:anim/fade_out"
-				android:id="@+id/textSwitcher_time_label"
-				android:layout_below="@+id/viewanimator_new_journey"
-	 			android:layout_alignParentLeft="true"
-	 			android:layout_width="100dip" 
-	 			android:layout_height="wrap_content">
-	 			<TextView 
-	 				android:layout_width="wrap_content" 
-	 				android:layout_height="wrap_content" 
-	 				android:text="start time"	 				
-	 			/>
-	 			<TextView 
-	 				android:layout_width="wrap_content" 
-	 				android:layout_height="wrap_content" 
-	 				android:text="end time"	 				
-	 			/>
-	 		</TextSwitcher>
-	 		<de.inovex.app.views.TimePickerButton
-	 			android:id="@+id/timepicker_start_time"	 		
-	 			android:inAnimation="@android:anim/fade_in"
-				android:outAnimation="@android:anim/fade_out"	 			 
-	 			android:layout_width="100dip" 
-	 			android:layout_height="wrap_content" 
-	 			android:layout_below="@+id/textSwitcher_time_label" 
-	 			android:layout_alignParentLeft="true">
-	 		</de.inovex.app.views.TimePickerButton>	
-	 		<TextSwitcher 
-				android:id="@+id/textSwitcher_location_label"
-				android:inAnimation="@android:anim/fade_in"
-				android:outAnimation="@android:anim/fade_out"				
-	 			android:layout_width="wrap_content" 
-				android:layout_below="@+id/viewanimator_new_journey"
-	 			android:layout_toRightOf="@+id/textSwitcher_time_label"
-	 			android:layout_height="wrap_content" >
-	 			<TextView 
-	 				android:text="start place"
-	 				android:layout_width="wrap_content" 
-	 				android:layout_height="wrap_content" 
-	 			/>
-	 			<TextView 
-	 				android:text="end place"
-	 				android:layout_width="wrap_content" 
-	 				android:layout_height="wrap_content" 
-	 			/>
-	 		</TextSwitcher>	 		
-	 		<Spinner 
-		 			android:id="@+id/spinner_pick_location" 
-		 			android:layout_height="wrap_content" 
-		 			android:layout_width="match_parent" 
-		 			android:layout_below="@+id/textSwitcher_location_label" 
-		 			android:layout_toRightOf="@+id/timepicker_start_time">
-		 	</Spinner>	    	
-		 		-->
+	    	</ViewAnimator>	    	
 	    </RelativeLayout>
 	</RelativeLayout>
