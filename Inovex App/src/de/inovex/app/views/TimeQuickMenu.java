@@ -1,7 +1,6 @@
 package de.inovex.app.views;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import android.content.ContentProviderClient;
 import android.content.Context;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 import de.inovex.app.R;
 import de.inovex.app.provider.InovexContentProvider;
 import de.inovex.app.provider.InovexContentProvider.Columns;
+import de.inovex.app.util.TimeUtil;
 
 public class TimeQuickMenu extends RelativeLayout {
 
@@ -130,11 +130,21 @@ public class TimeQuickMenu extends RelativeLayout {
 			String formattedBreakTime = noTime;
 			String formattedTotalTime = noTime;
 			if (holder.morningStartTime != 0 && holder.morningEndTime != 0) {
+				long totalTime = holder.morningEndTime - holder.morningStartTime;
+				long totalHours = TimeUtil.MILLISECONDS.toHours(totalTime);
+				long totalMinutes = TimeUtil.MILLISECONDS.toMinutes(totalTime);
+				formattedTotalTime = totalHours + ":" + totalMinutes;
 				if (holder.noonStartTime != 0) {
-					long diffTime = holder.noonStartTime - holder.morningEndTime;
-					long breakHours = TimeUnit.MILLISECONDS.toHours(diffTime);
-					long breakMinutes = TimeUnit.MILLISECONDS.toMinutes(diffTime);
+					long breakTime = holder.noonStartTime - holder.morningEndTime;
+					long breakHours = TimeUtil.MILLISECONDS.toHours(breakTime);
+					long breakMinutes = TimeUtil.MILLISECONDS.toMinutes(breakTime);
 					formattedBreakTime = breakHours + ":" + breakMinutes;
+					if (holder.noonEndTime != 0) {
+						 totalTime = (holder.morningEndTime - holder.morningStartTime) + (holder.noonEndTime - holder.noonStartTime);
+						 totalHours = TimeUtil.MILLISECONDS.toHours(totalTime);
+						 totalMinutes = TimeUtil.MILLISECONDS.toMinutes(totalTime);
+						 formattedTotalTime = totalHours + ":" + totalMinutes;
+					}
 				}
 			}
 			mTextViewSaldoTime.setText(formattedSaldoTime);
