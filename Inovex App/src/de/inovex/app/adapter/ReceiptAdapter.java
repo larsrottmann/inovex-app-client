@@ -8,15 +8,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import de.inovex.app.R;
 import de.inovex.app.activities.ListReceiptActivity;
+import de.inovex.app.drawable.FastBitmapDrawable;
 import de.inovex.app.provider.DataUtilities;
 import de.inovex.app.provider.InovexContentProvider;
 
@@ -30,28 +31,29 @@ public class ReceiptAdapter extends CursorAdapter {
 	private int mIndexId;
 	private int mIndexCreated;
 	private int mIndexImageUri;
-	private BitmapDrawable mDefaultThumbnail;
-	private BitmapDrawable NULL_DRAWABLE = new BitmapDrawable((Bitmap)null);
+	private FastBitmapDrawable mDefaultThumbnail;
+	private FastBitmapDrawable NULL_DRAWABLE = new FastBitmapDrawable((Bitmap)null);
 
-	private final HashMap<String, SoftReference<BitmapDrawable>> mThumbCache = new HashMap<String, SoftReference<BitmapDrawable>>();
+	private final HashMap<String, SoftReference<FastBitmapDrawable>> mThumbCache = new HashMap<String, SoftReference<FastBitmapDrawable>>();
 
 	private Drawable getCachedReceipt(String id, Drawable defaulThumb) {
-		BitmapDrawable drawable = null;
+		FastBitmapDrawable drawable = null;
 
-		SoftReference<BitmapDrawable> reference = mThumbCache.get(id);
+		SoftReference<FastBitmapDrawable> reference = mThumbCache.get(id);
 		if (reference != null) {
 			drawable = reference.get();
 		}
 
 		if (drawable == null) {
+			Log.i("Receipts", "Cache miss!");
 			Bitmap bitmap = DataUtilities.loadThumbnail(id);
 			if (bitmap == null) {
 				drawable = NULL_DRAWABLE;
 			} else {
-				drawable = new BitmapDrawable(bitmap);
+				drawable = new FastBitmapDrawable(bitmap);
 			}
 
-			mThumbCache.put(id, new SoftReference<BitmapDrawable>(drawable));
+			mThumbCache.put(id, new SoftReference<FastBitmapDrawable>(drawable));
 		}
 
         return drawable == NULL_DRAWABLE ? defaulThumb : drawable;
@@ -69,7 +71,7 @@ public class ReceiptAdapter extends CursorAdapter {
 		mIndexId = c.getColumnIndex(InovexContentProvider.Columns.ID);
 		mIndexImageUri = c.getColumnIndex(InovexContentProvider.Columns.IMAGE_PATH_URI);
 		mInflater = LayoutInflater.from(activity);		
-		mDefaultThumbnail = new BitmapDrawable( BitmapFactory.decodeResource(activity.getResources(), R.drawable.receipt_icon));
+		mDefaultThumbnail = new FastBitmapDrawable( BitmapFactory.decodeResource(activity.getResources(), R.drawable.receipt_icon));
 	}
 
 	@Override
@@ -81,6 +83,7 @@ public class ReceiptAdapter extends CursorAdapter {
 		
 		String id = cursor.getString(mIndexId);
 		Drawable thumb = getCachedReceipt(id, mDefaultThumbnail);
+		Log.i("ReceiptAdapter","setCompundDrawable");
 		holder.mThumbnail.setCompoundDrawablesWithIntrinsicBounds(null,thumb, null,null);
 	}
 

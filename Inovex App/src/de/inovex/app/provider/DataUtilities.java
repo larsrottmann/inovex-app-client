@@ -113,8 +113,11 @@ public class DataUtilities {
 		uri = new URI(fileUri.toString());
 		File file = new File(uri);
 		Bitmap thumb = decodeFile(file.getPath(), 150, 150);
-		File thumbFile = new File(CACHE_DIRECTORY, id);
-		thumbFile.mkdirs();
+		File thumbDir = new File(Environment.getExternalStorageDirectory(), CACHE_DIRECTORY);		
+		if (!thumbDir.exists()){
+			thumbDir.mkdirs();
+		}
+		File thumbFile = new File(thumbDir, id);
 		FileOutputStream out = new FileOutputStream(thumbFile);
 		thumb.compress(CompressFormat.JPEG, 75, out);
 		out.close();
