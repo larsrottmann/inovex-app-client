@@ -10,9 +10,10 @@
     <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"></uses-permission>
 
-    <application android:icon="@drawable/icon2" android:label="@string/app_name">
+    <application android:icon="@drawable/icon" android:label="@string/app_name">
         <activity android:name=".activities.MainMenuActivity"
                   android:label="@string/app_name"
+                  android:screenOrientation="portrait"
                   android:theme="@style/InovexAppTheme"
                   >
             <intent-filter>
@@ -51,6 +52,7 @@
             android:name=".provider.InovexContentProvider"
             android:authorities="de.inovex.app" />
         <service android:name=".service.ContactsService"></service>
+        <activity android:name=".activities.InovexPreferenceActivity"></activity>
         
     </application>
 </manifest>

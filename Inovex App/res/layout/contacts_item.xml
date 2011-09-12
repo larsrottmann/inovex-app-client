@@ -5,7 +5,7 @@
 	android:padding="6dip">
 	<ImageView
 		android:id="@+id/contacts_item_image"
-		android:layout_width="wrap_content"
+		android:layout_width="40dip"
 		android:layout_height="fill_parent"
 		android:layout_alignParentTop="true"
 		android:layout_alignParentBottom="true"
