@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
 import de.inovex.app.R;
 import de.inovex.app.activities.contacts.ListContactsActivity;
 
@@ -28,7 +27,7 @@ public class MainMenuActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		ImageButton contacts = (ImageButton) findViewById(R.id.button_list_contacts);
+		View contacts = findViewById(R.id.button_list_contacts);
 		contacts.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -36,6 +35,7 @@ public class MainMenuActivity extends Activity {
 				startActivity(i);
 			}
 		});
+
 
 		// initButton(this, ListTimeActivity.class, R.id.button_list_times);
 		// initButton(this, ListJourneyActivity.class,
@@ -76,6 +76,9 @@ public class MainMenuActivity extends Activity {
 	    case R.id.list_times:
 	    	 i = new Intent(this,ListTimeActivity.class);
 	    	 break;
+	    case R.id.menu_item_preferences:
+	    	i = new Intent(this, InovexPreferenceActivity.class);
+	    	break;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
