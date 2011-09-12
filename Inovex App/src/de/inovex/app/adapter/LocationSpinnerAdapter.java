@@ -5,7 +5,7 @@ import android.widget.ArrayAdapter;
 
 public class LocationSpinnerAdapter extends ArrayAdapter<String> {
 
-	private static String[] elements = {"DŸsseldorf", "Karlsruhe", "Pforzheim", "MŸnchen","Kšln"};
+	private static String[] elements = {"DÃ¼sseldorf", "Karlsruhe", "Pforzheim", "MÃ¼nchen","KÃ¶ln"};
 	
 	public LocationSpinnerAdapter(Context context){
 		super(context,android.R.layout.simple_spinner_item, elements);
