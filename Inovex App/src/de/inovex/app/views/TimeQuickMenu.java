@@ -8,6 +8,7 @@ import android.content.ContentProviderClient;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.RemoteException;
@@ -186,6 +187,17 @@ public class TimeQuickMenu extends RelativeLayout {
 				long totalTime = holder.morningEndTime - holder.morningStartTime;
 				cal.setTimeInMillis(totalTime);
 				formattedTotalTime = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
+				long saldoTime = totalTime - 8 * 60 * 60 * 1000;
+				if (saldoTime < 0) {
+					saldoTime *= -1;
+					formattedSaldoTime = "-";
+					mTextViewSaldoTime.setTextColor(0xffaa1111);
+				} else {
+					formattedSaldoTime = "+";
+					mTextViewSaldoTime.setTextColor(0xff11aa11);
+				}
+				cal.setTimeInMillis(saldoTime);
+				formattedSaldoTime += DateFormat.format("k:mm", cal).toString();
 				if (holder.noonStartTime != 0) {
 					long breakTime = holder.noonStartTime - holder.morningEndTime;
 					cal.setTimeInMillis(breakTime);
@@ -194,6 +206,17 @@ public class TimeQuickMenu extends RelativeLayout {
 						totalTime = (holder.morningEndTime - holder.morningStartTime) + (holder.noonEndTime - holder.noonStartTime);
 						cal.setTimeInMillis(totalTime);
 						formattedTotalTime = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
+						saldoTime = totalTime - 8 * 60 * 60 * 1000;
+						if (saldoTime < 0) {
+							saldoTime *= -1;
+							formattedSaldoTime = "-";
+							mTextViewSaldoTime.setTextColor(0xffaa1111);
+						} else {
+							formattedSaldoTime = "+";
+							mTextViewSaldoTime.setTextColor(0xff11aa11);
+						}
+						cal.setTimeInMillis(saldoTime);
+						formattedSaldoTime += DateFormat.format("k:mm", cal).toString();
 					}
 				}
 			}
