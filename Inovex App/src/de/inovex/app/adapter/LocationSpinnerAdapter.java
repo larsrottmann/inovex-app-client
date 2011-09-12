@@ -1,5 +1,7 @@
 package de.inovex.app.adapter;
 
+import java.util.concurrent.TimeUnit;
+
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
