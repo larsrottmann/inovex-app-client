@@ -3,6 +3,8 @@ package de.inovex.app.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -20,6 +22,8 @@ public class MonthOverview extends LinearLayout {
 		mListView = (ListView) findViewById(R.id.listview_tasks);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,tasks);
 		mListView.setAdapter(adapter);
+		  LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation( this.getContext(), R.anim.grid_layout_controller);
+		  mListView.setLayoutAnimation(controller);
 	}
 
 }

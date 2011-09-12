@@ -14,6 +14,8 @@ import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
@@ -61,16 +63,6 @@ public class JourneyQuickMenu extends RelativeLayout implements OnLocationTimeSe
 		String destination;
 	}
 
-//	private class OnLocationSelectedListener implements OnItemSelectedListener {
-//
-//		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-//			mCurrentLocationString = parent.getItemAtPosition(pos).toString();
-//		}
-//
-//		public void onNothingSelected(AdapterView<?> parent) {
-//			mCurrentLocationString = parent.getItemAtPosition(0).toString();
-//		}
-//	}
 
 	public class JourneyContentObserver extends ContentObserver {
 		public JourneyContentObserver(Handler handler) {
@@ -90,20 +82,16 @@ public class JourneyQuickMenu extends RelativeLayout implements OnLocationTimeSe
 		inflater.inflate(R.layout.journey_quick_menu, this);
 
 		mViewAnimator = (ViewAnimator) findViewById(R.id.viewanimator_new_journey);
-//		mCurrentTime = (TimePickerButton) findViewById(R.id.timepicker_start_time);
-//		mTextSwitcherLocationLabel = (TextSwitcher) findViewById(R.id.textSwitcher_location_label);
-//		mTextSwitcherTimeLabel = (TextSwitcher) findViewById(R.id.textSwitcher_time_label);
 		mTextSwitcherJourneyType = (TextSwitcher) findViewById(R.id.textSwitcher_type_of_journey);
 		mTextViewStartPlace = (TextView) findViewById(R.id.textview_start_place);
 		mTextViewDestination = (TextView) findViewById(R.id.textview_destination);
 		mTextViewStartDate = (TextView) findViewById(R.id.textView_start_time);
 		mTextViewEndDate = (TextView) findViewById(R.id.textView_end_time);
 
-//		mCurrentLocation = (Spinner) findViewById(R.id.spinner_pick_location);
-//		mCurrentLocation.setAdapter(new LocationSpinnerAdapter(activity));
-//		mCurrentLocation.setOnItemSelectedListener(mLocationListener);
-
 		updateView();
+		  LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation( this.getContext(), R.anim.main_layout_controller);
+		  this.setLayoutAnimation(controller);
+
 	}
 
 	@Override

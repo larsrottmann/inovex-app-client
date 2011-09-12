@@ -168,9 +168,9 @@ public class InovexContentProvider extends ContentProvider {
 		} else {
 			orderBy = sortOrder;
 		}
-
-		Log.d(TAG, "DB query projection: " + Arrays.asList(projection) + ", selection: " + selection + ", selectionArgs: " + args +
-				", orderBy: " + orderBy + ", limit: " + limit);
+		if (projection!=null){
+			Log.d(TAG, "DB query projection: " + Arrays.asList(projection) + ", selection: " + selection + ", selectionArgs: " + args +", orderBy: " + orderBy + ", limit: " + limit);
+		}
 		// Get the database and run the query
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 		Cursor c = qb.query(db, projection, selection, args.toArray(new String[] {}), Columns.ID, null, orderBy, limit);
