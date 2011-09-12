@@ -94,7 +94,7 @@ public class TimePickerButton extends Button {
 
 			@Override
 			public void onClick(View v) {
-				boolean is24HourView = mFormat == m24;
+				boolean is24HourView = get24HourMode();
 				int hour, minute;
 				hour = mCalendar.get(Calendar.HOUR_OF_DAY);
 				minute = mCalendar.get(Calendar.MINUTE);
