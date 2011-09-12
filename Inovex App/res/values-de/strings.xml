@@ -40,7 +40,7 @@
     <string name="check_out">jetzt auschecken</string>
     <string name="journey_recording">Erfasse eine Reise</string>
     <string name="new_return_journey">neue Rückreise</string>
-    <string name="new_continuation_journey">neue Weiterreise</string>
+    <string name="new_continuation_journey">Weiterreise</string>
     <string name="finish_journey">beende Reise</string>
     <string name="data_is_ok">Alle deine Zeit- und Reiseerfassungen sind aktuell und konsistent!</string>
     <string name="manage_records">Datenübersicht</string>
@@ -53,4 +53,6 @@
     <string name="end_time">Ankunftszeit</string>
     <string name="end_place">Ankunftsort</string>
     <string name="success_saving_journey">Reise wurde gespeichert</string>
+    <string name="error_creating_file">Belegdatei konnte nicht erstellt werden.</string>
+    <string name="success_saving_receipt">Ihr Beleg wurde gespeichert!</string>
 </resources>

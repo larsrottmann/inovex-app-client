@@ -7,7 +7,7 @@
     <item android:id="@+id/list_journeys"
           android:icon="@drawable/travel_icon"
           android:title="@string/list_journeys" />
-    <item android:id="@+id/list_receipts"
+    <item android:id="@+id/list_receipts"    	
           android:icon="@drawable/receipt_icon"
           android:title="@string/list_receipts" />
 </menu>
