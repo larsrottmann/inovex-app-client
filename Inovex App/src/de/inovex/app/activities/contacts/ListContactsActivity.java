@@ -1,11 +1,15 @@
 package de.inovex.app.activities.contacts;
 
+import java.util.Date;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -21,6 +25,24 @@ import de.inovex.app.service.ContactsService;
 public class ListContactsActivity extends Activity {
 	private static final String TAG = "ListContactsActivity";
 	private ListView listContacts;
+
+	private void importContacts() {
+		// nicht jedes mal importieren
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		long lastImport = prefs.getLong("lastImport", 0);
+		long now = new Date().getTime();
+		if (now - lastImport > 24*60*60*1000) { // 24h cache
+			Intent serviceIntent = new Intent(this, ContactsService.class);
+			startService(serviceIntent);
+			// import contact photos
+			serviceIntent.putExtra("action", ContactsService.ACTION_IMPORT_CONTACT_PHOTOS);
+			startService(serviceIntent);
+
+			Editor editor = prefs.edit();
+			editor.putLong("lastImport", now);
+			editor.commit();
+		}
+	}
 
 	private void initList() {
 		listContacts = (ListView) findViewById(R.id.list_contacts);
@@ -60,16 +82,18 @@ public class ListContactsActivity extends Activity {
 				, selectionArgs
 				, ContactsContract.Data.DISPLAY_NAME // sortOrder
 		);
-		cursor.setNotificationUri(getContentResolver(), ContactsContract.Contacts.CONTENT_URI);
+		cursor.setNotificationUri(getContentResolver(), ExtraDataKinds.Inovex.NOTIFICATION_URI);
 		startManagingCursor(cursor);
 
-		while (cursor.moveToNext()) {
+		/*while (cursor.moveToNext()) {
 			Log.i(TAG, "---------------- entry ---------------");
 			Log.i(TAG, "DisplayName:         "+cursor.getString(cursor.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)));
 			Log.i(TAG, "--------------------------------------");
 		}
 
 		cursor.moveToFirst();
+		*/
+
 		((CursorAdapter) listContacts.getAdapter()).changeCursor(cursor);
 	}
 
@@ -81,11 +105,18 @@ public class ListContactsActivity extends Activity {
 		initList();
 
 		// import contacts
-		Intent serviceIntent = new Intent(this, ContactsService.class);
-		startService(serviceIntent);
-		// import contact photos
-		serviceIntent.putExtra("action", ContactsService.ACTION_IMPORT_CONTACT_PHOTOS);
-		startService(serviceIntent);
+		importContacts();
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
 
 		// show/hide search ui elements
 		String query = getIntent().getStringExtra("query");

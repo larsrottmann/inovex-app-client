@@ -8,18 +8,27 @@
 		layout="@layout/title_bar" 
 		android:id="@+id/titleBar" 
 	/>
-	<TextView
-		android:id="@+id/contacts_search_label"
+	<RelativeLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:gravity="center_horizontal" />
-	<ListView
-		android:id="@+id/list_contacts"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content" />
-	<Button
-		android:id="@+id/contacts_show_all"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/show_all" />
+		android:layout_height="match_parent">
+		<TextView
+			android:id="@+id/contacts_search_label"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_horizontal"
+			android:layout_alignParentTop="true" />
+		<Button
+			android:id="@+id/contacts_show_all"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/show_all"
+			android:layout_alignParentBottom="true" />
+		<ListView
+			android:id="@+id/list_contacts"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/contacts_search_label"
+			android:layout_alignWithParentIfMissing="true"
+			android:layout_above="@id/contacts_show_all" />
+	</RelativeLayout>
 </LinearLayout>
