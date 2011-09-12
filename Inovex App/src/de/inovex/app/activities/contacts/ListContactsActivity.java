@@ -106,6 +106,17 @@ public class ListContactsActivity extends Activity {
 
 		// import contacts
 		importContacts();
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
 
 		// show/hide search ui elements
 		String query = getIntent().getStringExtra("query");
