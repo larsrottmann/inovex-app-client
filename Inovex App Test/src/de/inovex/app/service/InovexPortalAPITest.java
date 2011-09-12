@@ -8,6 +8,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.client.ClientProtocolException;
 import org.xml.sax.SAXException;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.test.AndroidTestCase;
 import de.inovex.app.service.InovexPortalAPI.Employee;
 
@@ -17,20 +19,25 @@ public class InovexPortalAPITest extends AndroidTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		api = new InovexPortalAPI("jogehring", "xT93qb");
+
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+		String user = prefs.getString("username", "");
+		String pwd = prefs.getString("password", "");
+		api = new InovexPortalAPI(user, pwd);
 	}
 
 	public void testGetAllEmployees() throws ClientProtocolException, IllegalStateException, IOException, SAXException, ParserConfigurationException {
 		List<Employee> employees = api.getAllEmployees();
-		assertEquals(68, employees.size());
+		assertEquals(62, employees.size());
 
-		Employee test = employees.get(0);
-		assertEquals("Alexander", test.givenName);
-		assertEquals("Gabert", test.familyName);
-		assertEquals("alga", test.symbol);
-		assertEquals("BI", test.lob);
-		assertEquals("0173 3181 028", test.numberMobile);
+		Employee test = employees.get(3);
+		assertEquals("Andreas", test.givenName);
+		assertEquals("Friedel", test.familyName);
+		assertEquals("afri", test.symbol);
+		assertEquals("AD", test.lob);
+		assertEquals("0173 3181 034", test.numberMobile);
 		assertNull(test.numberWork);
 		assertEquals("Pforzheim", test.location);
+		assertEquals("Spring, SCRUM, PostgreSQL, maven, Linux, JSP, JSON, Java, Liferay, hibernate..., Eclipse, etc. (siehe XING)", test.skills);
 	}
 }

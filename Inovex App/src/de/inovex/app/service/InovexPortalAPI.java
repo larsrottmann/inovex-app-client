@@ -267,9 +267,9 @@ public class InovexPortalAPI {
 			rd.close();
 
 			// html entities, und whitespaces entfernen
-			String skills = total.toString().replaceAll("<[^>]+>", "").replaceAll("[\\t|\\n]", "");
+			String skills = total.toString().replaceAll("<[^>]+>", "").replaceAll("[\\t|\\n|\\r]", "");
 
-			Log.i("InvoexPortalAPI", "skills: "+skills);
+			Log.i("InvoexPortalAPI", "skills: "+skills.trim());
 			emp.skills = skills;
 
 			// etwas luft für mehr performance in der UI

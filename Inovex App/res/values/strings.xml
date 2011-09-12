@@ -68,4 +68,6 @@
     <string name="password">Password</string>
     <string name="preferences">Preferences</string>
     <string name="success_saving_journey">journey was successfully saved</string>
+    <string name="error_creating_file">Could not create new file.</string>
+    <string name="success_saving_receipt">Receipt successfully saved!</string>
 </resources>

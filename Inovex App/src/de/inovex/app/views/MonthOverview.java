@@ -10,7 +10,7 @@ import de.inovex.app.R;
 
 public class MonthOverview extends LinearLayout {
 	
-	private static final String[] tasks = {"Dominik Helleberg hat morgen Geburtstag ","FŸr deine Anreise nach DŸsseldorf vom 14.06 fehlt die RŸckreise!","Am Montag den 05.09 hast du noch keine Zeit erfasst","inovex Newsletter August 2011","inovex NewsLetter Juli 2011", "Renard Wellnitz hat heute Geburtstag","Ein Beleg vom 08.06 ist keiner Reise zugeordnet", "Du hast letzten Monat 3 †berstunden gemacht"};
+	private static final String[] tasks = {"Dominik Helleberg hat morgen Geburtstag ","FÃ¼r deine Anreise nach DÃ¼sseldorf vom 14.06 fehlt die RÃ¼ckreise!","Am Montag den 05.09 hast du noch keine Zeit erfasst","inovex Newsletter August 2011","inovex NewsLetter Juli 2011", "Renard Wellnitz hat heute Geburtstag","Ein Beleg vom 08.06 ist keiner Reise zugeordnet", "Du hast letzten Monat 3 Ãœberstunden gemacht"};
 
 	private ListView mListView;
 	public MonthOverview(Context context, AttributeSet attrs) {
