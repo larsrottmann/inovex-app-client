@@ -1,5 +1,6 @@
 package de.inovex.app.views;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import android.content.ContentProviderClient;
@@ -17,7 +18,6 @@ import android.widget.TextView;
 import de.inovex.app.R;
 import de.inovex.app.provider.InovexContentProvider;
 import de.inovex.app.provider.InovexContentProvider.Columns;
-import de.inovex.app.util.TimeUtil;
 
 public class TimeQuickMenu extends RelativeLayout {
 
@@ -126,24 +126,22 @@ public class TimeQuickMenu extends RelativeLayout {
 			mTextViewNoonEndTime.setText(formattedNoonEndTime);
 
 			// calculate times
+			Calendar cal = Calendar.getInstance();
 			String formattedSaldoTime = noTime;
 			String formattedBreakTime = noTime;
 			String formattedTotalTime = noTime;
 			if (holder.morningStartTime != 0 && holder.morningEndTime != 0) {
 				long totalTime = holder.morningEndTime - holder.morningStartTime;
-				long totalHours = TimeUtil.MILLISECONDS.toHours(totalTime);
-				long totalMinutes = TimeUtil.MILLISECONDS.toMinutes(totalTime);
-				formattedTotalTime = totalHours + ":" + totalMinutes;
+				cal.setTimeInMillis(totalTime);
+				formattedTotalTime = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
 				if (holder.noonStartTime != 0) {
 					long breakTime = holder.noonStartTime - holder.morningEndTime;
-					long breakHours = TimeUtil.MILLISECONDS.toHours(breakTime);
-					long breakMinutes = TimeUtil.MILLISECONDS.toMinutes(breakTime);
-					formattedBreakTime = breakHours + ":" + breakMinutes;
+					cal.setTimeInMillis(breakTime);
+					formattedBreakTime = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
 					if (holder.noonEndTime != 0) {
-						 totalTime = (holder.morningEndTime - holder.morningStartTime) + (holder.noonEndTime - holder.noonStartTime);
-						 totalHours = TimeUtil.MILLISECONDS.toHours(totalTime);
-						 totalMinutes = TimeUtil.MILLISECONDS.toMinutes(totalTime);
-						 formattedTotalTime = totalHours + ":" + totalMinutes;
+						totalTime = (holder.morningEndTime - holder.morningStartTime) + (holder.noonEndTime - holder.noonStartTime);
+						cal.setTimeInMillis(totalTime);
+						formattedTotalTime = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
 					}
 				}
 			}

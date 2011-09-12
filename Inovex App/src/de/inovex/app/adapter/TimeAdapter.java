@@ -1,5 +1,6 @@
 package de.inovex.app.adapter;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import android.content.Context;
@@ -14,7 +15,6 @@ import android.widget.RelativeLayout;
 import de.inovex.app.R;
 import de.inovex.app.activities.ListTimeActivity;
 import de.inovex.app.provider.InovexContentProvider;
-import de.inovex.app.util.TimeUtil;
 
 public class TimeAdapter extends CursorAdapter {
 
@@ -50,9 +50,9 @@ public class TimeAdapter extends CursorAdapter {
 		Date startDate = new Date(cursor.getLong(mIndexStartDate));
 		Date endDate = new Date(cursor.getLong(mIndexEndDate));
 		long diffTime = cursor.getLong(mIndexEndDate) - cursor.getLong(mIndexStartDate);
-		long totalHours = TimeUtil.MILLISECONDS.toHours(diffTime);
-		long totalMinutes = TimeUtil.MILLISECONDS.toMinutes(diffTime);
-		String formattedTotalTime = totalHours + ":" + totalMinutes;
+		Calendar diffCal = Calendar.getInstance();
+		diffCal.setTimeInMillis(diffTime);
+		String formattedTotalTime = diffCal.get(Calendar.HOUR_OF_DAY) + ":" + diffCal.get(Calendar.MINUTE);
 		CharSequence formattedDate = DateFormat.format("dd.MM.yyyy", startDate);
 		holder.date.setText(formattedDate);
 		CharSequence formattedStartTime = DateFormat.format("k:mm", startDate);
