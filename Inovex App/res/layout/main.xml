@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-    	<include 
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	>
+	<include 
 		layout="@layout/title_bar" 
 		android:id="@+id/titleBar"
 	/>
@@ -13,27 +13,33 @@
 		android:layout_height="wrap_content"		
 		android:layout_marginTop="10dip"		
 		android:text="@string/time_recording"
+		android:layout_below="@id/titleBar"
+		android:id="@+id/tv_time_recording"
 	/>
 	<de.inovex.app.views.TimeQuickMenu
 		android:id="@+id/timequickmenu" 
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_below="@id/tv_time_recording"
 	/>
-		<TextView 
+	<TextView 
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"		
 		android:layout_marginTop="10dip"		
-		android:text="@string/journey_recording"/>
+		android:text="@string/journey_recording"
+		android:layout_below="@id/timequickmenu"
+		android:id="@+id/tv_journey_recording" />
 	
 	<de.inovex.app.views.JourneyQuickMenu
 		android:id="@+id/journeyquickmenu" 
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_below="@id/tv_journey_recording"
 	/>
 	<de.inovex.app.views.MonthOverview
 		android:id="@+id/monthOverview"			
-		android:layout_marginTop="8dip"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		android:layout_height="55px"
+		android:layout_alignParentBottom="true"
 	/>
-</LinearLayout>
+</RelativeLayout>
