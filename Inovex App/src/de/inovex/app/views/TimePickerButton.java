@@ -28,6 +28,8 @@ public class TimePickerButton extends Button {
 
 	private boolean useCustomTime = false;
 
+	private String textPrefix = "";
+	
 	private synchronized void setUseCustomTime(boolean val) {
 		useCustomTime = val;
 	}
@@ -41,7 +43,7 @@ public class TimePickerButton extends Button {
 			mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
 			mCalendar.set(Calendar.MINUTE, minute);
 			setUseCustomTime(true);
-			setText(DateFormat.format(mFormat, mCalendar));
+			setText(textPrefix + DateFormat.format(mFormat, mCalendar));
 			invalidate();
 		}
 	};
@@ -65,7 +67,7 @@ public class TimePickerButton extends Button {
 		setUseCustomTime(true);
 		mCalendar.setTimeInMillis(millis);
 		CharSequence formattedText = DateFormat.format(mFormat, mCalendar);
-		setText(formattedText);
+		setText(textPrefix + formattedText);
 	}
 
 	public long getTime() {
@@ -137,7 +139,7 @@ public class TimePickerButton extends Button {
 					return;
 				}
 				mCalendar.setTimeInMillis(System.currentTimeMillis());
-				setText(DateFormat.format(mFormat, mCalendar));
+				setText(textPrefix + DateFormat.format(mFormat, mCalendar));
 				invalidate();
 				long now = SystemClock.uptimeMillis();
 				long next = now + (1000 - now % 1000);
@@ -173,6 +175,10 @@ public class TimePickerButton extends Button {
 		}
 	}
 
+	public void setFormat(String format) {
+		mFormat = format;
+	}
+
 	private class FormatChangeObserver extends ContentObserver {
 		public FormatChangeObserver() {
 			super(new Handler());
@@ -182,5 +188,13 @@ public class TimePickerButton extends Button {
 		public void onChange(boolean selfChange) {
 			setFormat();
 		}
+	}
+
+	public String getTextPrefix() {
+		return textPrefix;
+	}
+
+	public void setTextPrefix(String textPrefix) {
+		this.textPrefix = textPrefix;
 	}
 }

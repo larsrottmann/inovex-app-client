@@ -14,14 +14,17 @@
 		android:layout_marginTop="10dip"		
 		android:text="@string/time_recording"
 	/>
-	<include layout="@layout/time_quick_menu"/>
-
-	<TextView 
+	<de.inovex.app.views.TimeQuickMenu
+		android:id="@+id/timequickmenu" 
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+	/>
+		<TextView 
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"		
 		android:layout_marginTop="10dip"		
-		android:text="@string/journey_recording"
-	/>
+		android:text="@string/journey_recording"/>
+	
 	<de.inovex.app.views.JourneyQuickMenu
 		android:id="@+id/journeyquickmenu" 
 		android:layout_width="match_parent"
