@@ -2,9 +2,6 @@ package de.inovex.app.provider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
-import de.inovex.app.R;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -16,10 +13,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.graphics.Paint.Join;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+import de.inovex.app.R;
 
 public class InovexContentProvider extends ContentProvider {
 
@@ -29,6 +26,7 @@ public class InovexContentProvider extends ContentProvider {
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 	public static final Uri CONTENT_URI_JOURNEYS = Uri.parse("content://" + AUTHORITY+ "/journeys");
 	public static final Uri CONTENT_URI_TIMES = Uri.parse("content://" + AUTHORITY+ "/times");
+	public static final Uri CONTENT_URI_RECEIPTS = Uri.parse("content://" + AUTHORITY+ "/receipts");
 
 	public static class Types {
 		public static final String JOURNEY_START = "0";

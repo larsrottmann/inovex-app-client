@@ -109,7 +109,7 @@
 			>			 	
 			<ViewAnimator
 					android:id="@+id/viewanimator_new_journey"
-					android:layout_width="fill_parent"
+					android:layout_width="250dip"
 					android:layout_marginTop="3dip"
 					android:layout_alignParentTop="true"
 	   			 	android:layout_height="wrap_content"> 	
@@ -122,6 +122,7 @@
 						android:layout_alignParentTop="true"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
+						style="@style/MainMenuButton"
 						android:text="@string/enter_journey"
 					/>
 	   			 	<!-- no journey in progress and last journey is no return journey 
@@ -136,14 +137,16 @@
 							android:id="@+id/button_start_return_journey"
 							android:layout_width="0dip"
 							android:layout_weight="1"
-							android:layout_height="match_parent"
+							style="@style/MainMenuButton"							
+							android:layout_height="wrap_content"
 							android:text="@string/new_return_journey"
 						/>
 						<Button 
 							android:id="@+id/button_start_continuation_journey"
 							android:layout_width="0dip"
 							android:layout_weight="1"
-							android:layout_height="match_parent"
+							style="@style/MainMenuButton"
+							android:layout_height="wrap_content"
 							android:text="@string/new_continuation_journey"
 						/>
 					</LinearLayout>
@@ -153,8 +156,18 @@
 					<Button 
 						android:id="@+id/button_finish_journey"
 						android:layout_width="match_parent"
+						style="@style/MainMenuButton"						
 						android:layout_height="wrap_content"
    			 			android:text="@string/finish_journey"/>						
 	    	</ViewAnimator>	    	
+			<Button 
+				android:id="@+id/button_add_receipt"
+				android:layout_marginTop="3dip"						
+				android:layout_marginLeft="10dip"
+				style="@style/MainMenuButton"
+				android:layout_width="85dip"
+				android:layout_toRightOf="@+id/viewanimator_new_journey"
+				android:layout_height="wrap_content"
+ 			 	android:text="@string/receipt"/>						
 	    </RelativeLayout>
 	</RelativeLayout>
