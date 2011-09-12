@@ -4,6 +4,8 @@
     <string name="enter_receipt">Erfasse Beleg</string>
     <string name="enter_journey">starte neue Reise</string>
     <string name="enter_time">Erfasse Zeit</string>
+    <string name="enter_start_time">Kommen</string>
+    <string name="enter_end_time">Gehen</string>
     <string name="list_journeys">Meine Reisen</string>
     <string name="list_receipts">Meine Belege</string>
     <string name="starting_place">Startort</string>

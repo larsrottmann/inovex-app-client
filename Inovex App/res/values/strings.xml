@@ -4,6 +4,8 @@
     <string name="enter_receipt">enter receipt</string>
     <string name="enter_journey">start new journey</string>
     <string name="enter_time">enter time</string>
+    <string name="enter_start_time">enter start time</string>
+    <string name="enter_end_time">enter end time</string>
     <string name="list_journeys">my journeys</string>
     <string name="list_receipts">my receipts</string>
     <string name="list_contacts">contacts</string>

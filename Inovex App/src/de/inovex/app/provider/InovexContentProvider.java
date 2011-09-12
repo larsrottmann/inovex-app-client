@@ -216,7 +216,8 @@ public class InovexContentProvider extends ContentProvider {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		long rowId = db.insert(DBHelper.TABLE_NAME, null, values);
 		if (rowId > 0) {
-			Uri entryUri = ContentUris.withAppendedId(CONTENT_URI, rowId);
+			Uri entryUri = ContentUris.withAppendedId(uri, rowId);
+			getContext().getContentResolver().notifyChange(uri, null);
 			getContext().getContentResolver().notifyChange(CONTENT_URI, null);
 			return entryUri;
 		} else {
