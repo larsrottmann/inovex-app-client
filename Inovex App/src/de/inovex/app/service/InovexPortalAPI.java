@@ -60,17 +60,7 @@ public class InovexPortalAPI {
 		public String numberHome;
 		public String emailAddress;
 		public String skills;
-
-		@Override
-		public String toString() {
-			return "Employee [givenName=" + givenName + ", familyName="
-					+ familyName + ", symbol=" + symbol + ", lob=" + lob
-					+ ", location=" + location + ", photoMD5=" + photoMD5
-					+ ", photoUrl=" + photoUrl + ", numberMobile="
-					+ numberMobile + ", numberWork=" + numberWork
-					+ ", numberHome=" + numberHome + ", emailAddress="
-					+ emailAddress + ", skills=" + skills + "]";
-		}
+		public String detailsId;
 	}
 
 	public class MySSLSocketFactory extends SSLSocketFactory {
@@ -179,33 +169,36 @@ public class InovexPortalAPI {
 		Log.i("InovexPortalAPI", "getAlLEmployees: query finished / regex");
 
 		// einzelne mitarbeiter per regex finden und importieren
-		Pattern p = Pattern.compile("<TR[^>]*><TD Class=\"ms-vb-user\"><table cellpadding=0 cellspacing=0 border=\"0\"><tr><td><a ONCLICK=\"GoToLink\\(this\\);return false;\" href=\"/mitarbeiter/_layouts/userdisp.aspx\\?ID=[^\"]+\"><IMG width=\"62\" height=\"62\" border=\"0\" SRC=\"([^\"]+)\" ALT=\"[^\"]*\"[ ]?>[ ]?</a></td></tr><tr><td class=\"ms-descriptiontext\"><table cellpadding=0 cellspacing=0 dir=\"\"><tr><td style=\"padding-right: 3px;\">.*?=\"([^\"]+@inovex.de)\".*?</td><td style=\"padding: 1px 0px 0px 0px;\" class=\"ms-vb\"><A ONCLICK=\"GoToLink\\(this\\);return false;\" HREF=\"/mitarbeiter/_layouts/userdisp.aspx\\?ID=[^\"]+\">([^<]+)</A></td></tr></table></td></tr></table></TD><TD Class=\"ms-vb-icon\"><a onfocus=\"OnLink\\(this\\)\" href=\"/mitarbeiter/Lists/Mitarbeiter/DispForm.aspx\\?ID=[^\"]+\" ONCLICK=\"GoToLink\\(this\\);return false;\" target=\"_self\"><IMG BORDER=0 ALT=\"\" title=\"\" SRC=\"/_layouts/images/icgen.gif\"></A></TD><TD Class=\"ms-vb2\">([^<]*)</TD><TD Class=\"ms-vb2\">([^<]*)</TD><TD Class=\"ms-vb2\"><A HREF=\"[^\"]*\">([^<]*)</A></TD><TD Class=\"ms-vb2\">([^<]*)</TD><TD Class=\"ms-vb2\">([^<]*)</TD><TD Class=\"ms-vb2\"><A HREF=\"[^\"]*\">([^<]*)</A></TD><TD Class=\"ms-vb2\"><NOBR>[^<]*</NOBR></TD><TD Class=\"ms-vb2\">[^<]*</TD></TR>", Pattern.CASE_INSENSITIVE);
+		Pattern p = Pattern.compile("<TR[^>]*><TD Class=\"ms-vb-user\"><table cellpadding=0 cellspacing=0 border=\"0\"><tr><td><a ONCLICK=\"GoToLink\\(this\\);return false;\" href=\"/mitarbeiter/_layouts/userdisp.aspx\\?ID=([^\"]+)\"><IMG width=\"62\" height=\"62\" border=\"0\" SRC=\"([^\"]+)\" ALT=\"[^\"]*\"[ ]?>[ ]?</a></td></tr><tr><td class=\"ms-descriptiontext\"><table cellpadding=0 cellspacing=0 dir=\"\"><tr><td style=\"padding-right: 3px;\">.*?=\"([^\"]+@inovex.de)\".*?</td><td style=\"padding: 1px 0px 0px 0px;\" class=\"ms-vb\"><A ONCLICK=\"GoToLink\\(this\\);return false;\" HREF=\"/mitarbeiter/_layouts/userdisp.aspx\\?ID=[^\"]+\">([^<]+)</A></td></tr></table></td></tr></table></TD><TD Class=\"ms-vb-icon\"><a onfocus=\"OnLink\\(this\\)\" href=\"/mitarbeiter/Lists/Mitarbeiter/DispForm.aspx\\?ID=[^\"]+\" ONCLICK=\"GoToLink\\(this\\);return false;\" target=\"_self\"><IMG BORDER=0 ALT=\"\" title=\"\" SRC=\"/_layouts/images/icgen.gif\"></A></TD><TD Class=\"ms-vb2\">([^<]*)</TD><TD Class=\"ms-vb2\">([^<]*)</TD><TD Class=\"ms-vb2\"><A HREF=\"[^\"]*\">([^<]*)</A></TD><TD Class=\"ms-vb2\">([^<]*)</TD><TD Class=\"ms-vb2\">([^<]*)</TD><TD Class=\"ms-vb2\"><A HREF=\"[^\"]*\">([^<]*)</A></TD><TD Class=\"ms-vb2\"><NOBR>[^<]*</NOBR></TD><TD Class=\"ms-vb2\">[^<]*</TD></TR>", Pattern.CASE_INSENSITIVE);
 		Matcher m = p.matcher(total);
 		int i=0;
 		while (m.find()) {
 			Employee emp = new Employee();
-			emp.photoUrl = m.group(1);
+			emp.detailsId = m.group(1);
+			emp.photoUrl = m.group(2);
 			if (emp.photoUrl.equals("/_layouts/images/person.gif")) {
 				emp.photoUrl = null;
 			}
-			emp.emailAddress = m.group(2);
-			String fullname = m.group(3);
+			emp.emailAddress = m.group(3);
+			String fullname = m.group(4);
 			emp.givenName = fullname.substring(0, fullname.lastIndexOf(' '));
 			emp.familyName = fullname.substring(fullname.lastIndexOf(' ')+1);
-			emp.symbol = emptyToNull(m.group(5));
-			emp.lob = emptyToNull(m.group(6));
+			emp.symbol = emptyToNull(m.group(6));
+			emp.lob = emptyToNull(m.group(7));
 			if (emp.symbol == null) {
 				//TODO
 				Log.w("InovexPortalAPI", "employees without symbol are not supported.");
 				continue;
 			}
-			emp.numberMobile = emptyToNull(m.group(7));
-			emp.numberWork = emptyToNull(m.group(8));
-			emp.location = emptyToNull(m.group(9));
-			emp.skills = ""; // darf niemals null sein, TODO import
+			emp.numberMobile = emptyToNull(m.group(8));
+			emp.numberWork = emptyToNull(m.group(9));
+			emp.location = emptyToNull(m.group(10));
 
 			employees.add(emp);
 		}
+
+		Log.i("InovexPortalAPI", "getSkills");
+		getSkills(employees);
 
 		Log.i("InovexPortalAPI", "getAlLEmployees: regex finished, objects finished");
 
@@ -233,6 +226,51 @@ public class InovexPortalAPI {
 			return new DefaultHttpClient(ccm, params);
 		} catch (Exception e) {
 			return new DefaultHttpClient();
+		}
+	}
+
+	private void getSkills(List<Employee> employees) throws ClientProtocolException, IOException {
+		for (Employee emp : employees) {
+			HttpGet get = new HttpGet("https://portal.inovex.de/mitarbeiter/_layouts/userdisp.aspx?ID="+emp.detailsId);
+			HttpResponse resp = httpClient.execute(get);
+			if (resp.getStatusLine().getStatusCode() == 401) {
+				// http auth fehlgeschlagen
+				//TODO throw new HttpAuthorizationRequiredException();
+			}
+
+			StringBuilder total = new StringBuilder();
+			// erst anfangen aufzuzeichnen wenn Fähigkeiten: kommt, um speicher zu sparen
+			// F&#228;higkeiten:
+			char[] buffer = new char[] {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '};
+			InputStream is = resp.getEntity().getContent();
+			BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+			int chr;
+			boolean build=false;
+			while ((chr = rd.read()) != -1) {
+				if (!build) {
+					// left shift
+					for (int i=0; i<buffer.length-1; i++) {
+						buffer[i] = buffer[i+1];
+					}
+					buffer[buffer.length-1] = (char) chr;
+					if (new String(buffer).equals("F&#228;higkeiten:")) {
+						// ab jetzt aufzeichnen
+						build=true;
+					}
+				} else {
+					int l = total.length();
+					if (l > 10 && total.substring(l-8, l).equals("</table>")) break;
+					total.append((char) chr);
+				}
+			}
+			is.close();
+			rd.close();
+
+			// html entities, und whitespaces entfernen
+			String skills = total.toString().replaceAll("<[^>]+>", "").replaceAll("[\\t|\\n]", "");
+
+			Log.i("InvoexPortalAPI", "skills: "+skills);
+			emp.skills = skills;
 		}
 	}
 }

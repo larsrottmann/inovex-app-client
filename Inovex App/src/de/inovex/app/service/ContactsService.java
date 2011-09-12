@@ -18,12 +18,14 @@ import android.content.ContentProviderOperation;
 import android.content.ContentProviderOperation.Builder;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
@@ -53,12 +55,10 @@ public class ContactsService extends IntentService {
 	static private final String TAG = "ContactsService";
 
 	private Handler handler;
-	private final InovexPortalAPI api;
+	private InovexPortalAPI api;
 
 	public ContactsService() {
 		super(TAG);
-		//TODO read from preferences
-		api = new InovexPortalAPI("jogehring", "xT93qb");
 	}
 
 	private int checkImportOperations(Cursor cursorOrganization, Employee contact) {
@@ -260,8 +260,8 @@ public class ContactsService extends IntentService {
 
 		int width = bmp.getWidth();
 		int height = bmp.getHeight();
-		int newWidth = 80;
-		float scale = ((float) newWidth) / width;
+		int newHeight = 80;
+		float scale = ((float) newHeight) / height;
 
 		matrix.postScale(scale, scale);
 		Bitmap resizedBitmap = Bitmap.createBitmap(bmp, 0, 0, width, height, matrix, true);
@@ -644,6 +644,11 @@ public class ContactsService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		String user = prefs.getString("username", "");
+		String pwd = prefs.getString("password", "");
+		api = new InovexPortalAPI(user, pwd);
+
 		if (intent.getIntExtra("action", ACTION_IMPORT_CONTACTS) == ACTION_IMPORT_CONTACTS) {
 			// import contacts
 			handler.post(new Runnable() {
