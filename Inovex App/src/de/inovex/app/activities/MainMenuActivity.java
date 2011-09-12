@@ -48,16 +48,10 @@ public class MainMenuActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 			    Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-			    String fileName =  "Beleg_"+ DateFormat.format("MMDDyyyy", new Date()) + ".jpg";
+			    String fileName =  "Beleg_"+ DateFormat.format("MMddyyyy_hhmmss", new Date()) + ".jpg";
 			    mReceiptImage = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),  fileName);
-			    try {
-			    	mReceiptImage.createNewFile();
-			    	mReceiptImage.getParentFile().mkdirs();
-				} catch (IOException e) {
-					Toast.makeText(MainMenuActivity.this, getText(R.string.error_creating_file), Toast.LENGTH_LONG);
-					e.printStackTrace();
-				}
-			    
+			    mReceiptImage.getParentFile().mkdirs();
+
 			    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mReceiptImage));
 			    startActivityForResult(intent, REQUEST_CODE_MAKE_PHOTO);			
 			}
