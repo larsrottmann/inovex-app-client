@@ -16,6 +16,8 @@ import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -122,6 +124,8 @@ public class TimeQuickMenu extends RelativeLayout {
 		});
 
 		updateView();
+		  LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation( this.getContext(), R.anim.main_layout_controller);
+		  this.setLayoutAnimation(controller);
 	}
 
 	@Override

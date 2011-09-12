@@ -39,7 +39,7 @@
 	<de.inovex.app.views.MonthOverview
 		android:id="@+id/monthOverview"			
 		android:layout_width="match_parent"
-		android:layout_height="55px"
-		android:layout_alignParentBottom="true"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/journeyquickmenu"
 	/>
 </RelativeLayout>

@@ -23,6 +23,8 @@ import android.widget.Toast;
 import de.inovex.app.R;
 import de.inovex.app.activities.contacts.ListContactsActivity;
 import de.inovex.app.provider.DataUtilities;
+import de.inovex.app.views.JourneyQuickMenu;
+import de.inovex.app.views.MonthOverview;
 
 public class MainMenuActivity extends Activity {
 
@@ -57,8 +59,12 @@ public class MainMenuActivity extends Activity {
 			    startActivityForResult(intent, REQUEST_CODE_MAKE_PHOTO);			
 			}
 		});
-
+		
+		MonthOverview dock = (MonthOverview) findViewById(R.id.monthOverview);
+		JourneyQuickMenu journey = (JourneyQuickMenu) findViewById(R.id.journeyquickmenu);
+		int dockheight = journey.getBottom();
 	}
+
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
