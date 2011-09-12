@@ -1,6 +1,7 @@
 package de.inovex.app.views;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import android.content.ContentProviderClient;
 import android.content.Context;
@@ -123,12 +124,22 @@ public class TimeQuickMenu extends RelativeLayout {
 				formattedNoonEndTime = DateFormat.format("k:mm", new Date(holder.noonEndTime));
 			}
 			mTextViewNoonEndTime.setText(formattedNoonEndTime);
+
 			// calculate times
-			
-			//TODO: calculate times
-			mTextViewSaldoTime.setText(noTime);
-			mTextViewBreakTime.setText(noTime);
-			mTextViewTotalTime.setText(noTime);
+			String formattedSaldoTime = noTime;
+			String formattedBreakTime = noTime;
+			String formattedTotalTime = noTime;
+			if (holder.morningStartTime != 0 && holder.morningEndTime != 0) {
+				if (holder.noonStartTime != 0) {
+					long diffTime = holder.noonStartTime - holder.morningEndTime;
+					long breakHours = TimeUnit.MILLISECONDS.toHours(diffTime);
+					long breakMinutes = TimeUnit.MILLISECONDS.toMinutes(diffTime);
+					formattedBreakTime = breakHours + ":" + breakMinutes;
+				}
+			}
+			mTextViewSaldoTime.setText(formattedSaldoTime);
+			mTextViewBreakTime.setText(formattedBreakTime);
+			mTextViewTotalTime.setText(formattedTotalTime);
 		}
 	}
 

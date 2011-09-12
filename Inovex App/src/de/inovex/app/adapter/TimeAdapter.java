@@ -1,22 +1,20 @@
 package de.inovex.app.adapter;
 
-import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
-import de.inovex.app.R;
-import de.inovex.app.activities.ListTimeActivity;
-import de.inovex.app.provider.InovexContentProvider;
-import de.inovex.app.util.DateUtil;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.format.DateFormat;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.RelativeLayout;
+import de.inovex.app.R;
+import de.inovex.app.activities.ListTimeActivity;
+import de.inovex.app.provider.InovexContentProvider;
 
 public class TimeAdapter extends CursorAdapter {
 
@@ -51,7 +49,10 @@ public class TimeAdapter extends CursorAdapter {
 		TimeViewHolder holder = (TimeViewHolder) view.getTag();
 		Date startDate = new Date(cursor.getLong(mIndexStartDate));
 		Date endDate = new Date(cursor.getLong(mIndexEndDate));
-		String formattedTotalTime = DateUtil.getFormattedTimeSaldo(startDate, endDate);
+		long diffTime = cursor.getLong(mIndexEndDate) - cursor.getLong(mIndexStartDate);
+		long totalHours = TimeUnit.MILLISECONDS.toHours(diffTime);
+		long totalMinutes = TimeUnit.MILLISECONDS.toMinutes(diffTime);
+		String formattedTotalTime = totalHours + ":" + totalMinutes;
 		CharSequence formattedDate = DateFormat.format("dd.MM.yyyy", startDate);
 		holder.date.setText(formattedDate);
 		CharSequence formattedStartTime = DateFormat.format("k:mm", startDate);
