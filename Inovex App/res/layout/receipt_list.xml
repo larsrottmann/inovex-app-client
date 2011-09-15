@@ -15,11 +15,9 @@
 		android:layout_below="@+id/titleBar"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:scrollingCache="false"
-        
-        android:cacheColorHint="#00000000"
         android:listSelector="@android:color/transparent"
-
+        android:scrollingCache="false"        
+        android:cacheColorHint="#00000000"
         android:numColumns="auto_fit"
         android:columnWidth="160px"/>
 

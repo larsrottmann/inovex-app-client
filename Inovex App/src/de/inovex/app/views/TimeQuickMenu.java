@@ -3,19 +3,28 @@ package de.inovex.app.views;
 import java.util.Calendar;
 import java.util.Date;
 
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.ContentProviderClient;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
+import android.widget.ViewAnimator;
 import de.inovex.app.R;
+import de.inovex.app.provider.DataUtilities;
 import de.inovex.app.provider.InovexContentProvider;
 import de.inovex.app.provider.InovexContentProvider.Columns;
 
@@ -34,7 +43,10 @@ public class TimeQuickMenu extends RelativeLayout {
 	private TextView mTextViewMorningEndTime;
 	private TextView mTextViewNoonStartTime;
 	private TextView mTextViewNoonEndTime;
-	private TimePickerButton mTimePickerButton;
+	private TimePickerButton mTimePickerButtonStart;
+	private TimePickerButton mTimePickerButtonEnd;
+	private ViewAnimator mViewAnimatorNewTime;
+	private Uri mCurrentTimeEntry;
 
 	private static class TimeDataHolder {
 		long morningStartTime;
@@ -67,12 +79,53 @@ public class TimeQuickMenu extends RelativeLayout {
 		mTextViewMorningEndTime = (TextView) findViewById(R.id.textView_morning_end_time);
 		mTextViewNoonStartTime = (TextView) findViewById(R.id.textView_noon_start_time);
 		mTextViewNoonEndTime = (TextView) findViewById(R.id.textView_noon_end_time);
-		mTimePickerButton = (TimePickerButton) findViewById(R.id.timepicker_enter_time);
+		mTimePickerButtonStart = (TimePickerButton) findViewById(R.id.timepicker_enter_start_time);
+		mTimePickerButtonEnd = (TimePickerButton) findViewById(R.id.timepicker_enter_end_time);
+		mViewAnimatorNewTime = (ViewAnimator) findViewById(R.id.viewanimator_new_time);
 
-		mTimePickerButton.setTextPrefix(getContext().getText(R.string.enter_time).toString() + " ");
-		mTimePickerButton.setFormat("k:mm");
+		mTimePickerButtonStart.setTextPrefix(getContext().getText(R.string.enter_start_time).toString() + " ");
+		mTimePickerButtonStart.setFormat("k:mm");
+		mTimePickerButtonStart.setTimeSetCallbackListener(new OnTimeSetListener() {
+			@Override
+			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+				Date date = new Date();
+				date.setHours(hourOfDay);
+				date.setMinutes(minute);
+				try {
+					//TODO: remove Mock
+					mCurrentTimeEntry = DataUtilities.saveTime(getContext(), "Kick off", "Mobile B2E", date, null, InovexContentProvider.Types.TIME, -1);
+				} catch (RemoteException e) {
+					Toast.makeText(getContext(), getContext().getText(R.string.error_saving_time), Toast.LENGTH_LONG);
+					e.printStackTrace();
+				}
+				updateView();
+			}
+		});
+
+		mTimePickerButtonEnd.setTextPrefix(getContext().getText(R.string.enter_end_time).toString() + " ");
+		mTimePickerButtonEnd.setFormat("k:mm");
+		mTimePickerButtonEnd.setTimeSetCallbackListener(new OnTimeSetListener() {
+			@Override
+			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+				Date date = new Date();
+				date.setHours(hourOfDay);
+				date.setMinutes(minute);
+				try {
+					//TODO: remove Mock
+					int updateCount = DataUtilities.updateTime(getContext(), mCurrentTimeEntry, "Kick off", "Mobile B2E", null, date, InovexContentProvider.Types.TIME, -1);
+					System.out.println("update count: " + updateCount);
+					mCurrentTimeEntry = null;
+				} catch (RemoteException e) {
+					Toast.makeText(getContext(), getContext().getText(R.string.error_saving_time), Toast.LENGTH_LONG);
+					e.printStackTrace();
+				}
+				updateView();
+			}
+		});
 
 		updateView();
+		  LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation( this.getContext(), R.anim.main_layout_controller);
+		  this.setLayoutAnimation(controller);
 	}
 
 	@Override
@@ -88,7 +141,11 @@ public class TimeQuickMenu extends RelativeLayout {
 	}
 
 	private void updateView() {
-		Log.d(TAG, "updateView()");
+		if (mCurrentTimeEntry != null) {
+			mViewAnimatorNewTime.setDisplayedChild(1);
+		} else {
+			mViewAnimatorNewTime.setDisplayedChild(0);
+		}
 		showTimes();
 	}
 
@@ -134,6 +191,17 @@ public class TimeQuickMenu extends RelativeLayout {
 				long totalTime = holder.morningEndTime - holder.morningStartTime;
 				cal.setTimeInMillis(totalTime);
 				formattedTotalTime = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
+				long saldoTime = totalTime - 8 * 60 * 60 * 1000;
+				if (saldoTime < 0) {
+					saldoTime *= -1;
+					formattedSaldoTime = "-";
+					mTextViewSaldoTime.setTextColor(0xffaa1111);
+				} else {
+					formattedSaldoTime = "+";
+					mTextViewSaldoTime.setTextColor(0xff11aa11);
+				}
+				cal.setTimeInMillis(saldoTime);
+				formattedSaldoTime += DateFormat.format("k:mm", cal).toString();
 				if (holder.noonStartTime != 0) {
 					long breakTime = holder.noonStartTime - holder.morningEndTime;
 					cal.setTimeInMillis(breakTime);
@@ -142,6 +210,17 @@ public class TimeQuickMenu extends RelativeLayout {
 						totalTime = (holder.morningEndTime - holder.morningStartTime) + (holder.noonEndTime - holder.noonStartTime);
 						cal.setTimeInMillis(totalTime);
 						formattedTotalTime = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
+						saldoTime = totalTime - 8 * 60 * 60 * 1000;
+						if (saldoTime < 0) {
+							saldoTime *= -1;
+							formattedSaldoTime = "-";
+							mTextViewSaldoTime.setTextColor(0xffaa1111);
+						} else {
+							formattedSaldoTime = "+";
+							mTextViewSaldoTime.setTextColor(0xff11aa11);
+						}
+						cal.setTimeInMillis(saldoTime);
+						formattedSaldoTime += DateFormat.format("k:mm", cal).toString();
 					}
 				}
 			}
@@ -156,7 +235,7 @@ public class TimeQuickMenu extends RelativeLayout {
 
 		try {
 			TimeDataHolder holder = new TimeDataHolder();
-			String selection = Columns.START_DATE + ">? AND " + Columns.END_DATE + "<?";
+			String selection = Columns.START_DATE + ">? AND " + Columns.START_DATE + "<?";
 			Date fromDate = new Date();
 			fromDate.setHours(0);
 			fromDate.setMinutes(0);

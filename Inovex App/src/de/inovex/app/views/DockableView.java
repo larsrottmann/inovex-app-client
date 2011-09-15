@@ -23,7 +23,7 @@ public abstract class DockableView extends LinearLayout {
 		public SlideAnimation(boolean slideDown) {
 			this.sourceHeight = getHeight();
 			this.targetHeight = slideDown?getDockedSize():getExpandedHeight();
-			setDuration(1000);
+			setDuration(200);
 		}
 
 		@Override
@@ -66,7 +66,11 @@ public abstract class DockableView extends LinearLayout {
 	 * @return
 	 */
 	protected int getDockedSize() {
-		return 55;
+		return mDockedSize;
+	}
+	private int mDockedSize=255;
+	public void setDockedSize(int size){
+		mDockedSize=size;
 	}
 
 	/**

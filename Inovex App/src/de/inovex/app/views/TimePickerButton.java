@@ -3,6 +3,7 @@ package de.inovex.app.views;
 import java.util.Calendar;
 
 import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.ContentObserver;
@@ -38,6 +39,8 @@ public class TimePickerButton extends Button {
 		return useCustomTime;
 	}
 
+	private OnTimeSetListener mTimeSetCallbackListener;
+
 	private TimePickerDialog.OnTimeSetListener mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
 		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 			mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -45,6 +48,9 @@ public class TimePickerButton extends Button {
 			setUseCustomTime(true);
 			setText(textPrefix + DateFormat.format(mFormat, mCalendar));
 			invalidate();
+			if (mTimeSetCallbackListener != null) {
+				mTimeSetCallbackListener.onTimeSet(view, hourOfDay, minute);
+			}
 		}
 	};
 
@@ -88,7 +94,7 @@ public class TimePickerButton extends Button {
 
 			@Override
 			public void onClick(View v) {
-				boolean is24HourView = mFormat == m24;
+				boolean is24HourView = get24HourMode();
 				int hour, minute;
 				hour = mCalendar.get(Calendar.HOUR_OF_DAY);
 				minute = mCalendar.get(Calendar.MINUTE);
@@ -196,5 +202,9 @@ public class TimePickerButton extends Button {
 
 	public void setTextPrefix(String textPrefix) {
 		this.textPrefix = textPrefix;
+	}
+
+	public void setTimeSetCallbackListener(OnTimeSetListener mTimeSetCallbackListener) {
+		this.mTimeSetCallbackListener = mTimeSetCallbackListener;
 	}
 }

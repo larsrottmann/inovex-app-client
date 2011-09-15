@@ -168,9 +168,9 @@ public class InovexContentProvider extends ContentProvider {
 		} else {
 			orderBy = sortOrder;
 		}
-
-		Log.d(TAG, "DB query projection: " + Arrays.asList(projection) + ", selection: " + selection + ", selectionArgs: " + args +
-				", orderBy: " + orderBy + ", limit: " + limit);
+		if (projection!=null){
+			Log.d(TAG, "DB query projection: " + Arrays.asList(projection) + ", selection: " + selection + ", selectionArgs: " + args +", orderBy: " + orderBy + ", limit: " + limit);
+		}
 		// Get the database and run the query
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 		Cursor c = qb.query(db, projection, selection, args.toArray(new String[] {}), Columns.ID, null, orderBy, limit);
@@ -216,7 +216,8 @@ public class InovexContentProvider extends ContentProvider {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		long rowId = db.insert(DBHelper.TABLE_NAME, null, values);
 		if (rowId > 0) {
-			Uri entryUri = ContentUris.withAppendedId(CONTENT_URI, rowId);
+			Uri entryUri = ContentUris.withAppendedId(uri, rowId);
+			getContext().getContentResolver().notifyChange(uri, null);
 			getContext().getContentResolver().notifyChange(CONTENT_URI, null);
 			return entryUri;
 		} else {

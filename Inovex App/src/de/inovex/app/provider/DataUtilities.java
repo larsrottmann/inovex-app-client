@@ -35,26 +35,20 @@ public class DataUtilities {
 	public static Uri saveTime(Context c, String desc, String project, Date startDate, Date endDate, String type, int parentId) throws RemoteException {
 		ContentProviderClient client = null;
 		try {
-			ContentValues v = new ContentValues();
-			v.put(Columns.DESCRIPTION, desc);
-			v.put(Columns.PROJECT, project);
-			v.put(Columns.START_DATE, startDate.getTime());
-			v.put(Columns.END_DATE, endDate.getTime());
-			v.put(Columns.TYPE, Integer.valueOf(type));
-			v.put(Columns.PARENT_ID, parentId);
+			ContentValues v = makeContentValues(null, null, InovexContentProvider.Types.TIME, desc, startDate, endDate, null, project, parentId);
 
 			client = c.getContentResolver().acquireContentProviderClient(InovexContentProvider.CONTENT_URI);
-			return client.insert(InovexContentProvider.CONTENT_URI, v);
+			return client.insert(InovexContentProvider.CONTENT_URI_TIMES, v);
 		} finally {
 			if (client != null)
 				client.release();
 		}
 	}
 
-	public static int updateJourney(Context c, Uri data, String startLocation, String destination, String type, String description, Date startDate, Date endDate, int parentId) throws RemoteException {
+	public static int updateTime(Context c, Uri data, String desc, String project, Date startDate, Date endDate, String type, int parentId) throws RemoteException {
 		ContentProviderClient client = null;
 		try {
-			ContentValues v = makeContentValues(startLocation, destination, type, description, startDate, endDate, null, parentId);
+			ContentValues v = makeContentValues(null, null, InovexContentProvider.Types.TIME, desc, startDate, endDate, null, project, parentId);
 
 			client = c.getContentResolver().acquireContentProviderClient(InovexContentProvider.CONTENT_URI);
 			return client.update(data, v, null, null);
@@ -66,7 +60,22 @@ public class DataUtilities {
 
 	}
 
-	private static ContentValues makeContentValues(String startLocation, String destination, String type, String description, Date startDate, Date endDate, Uri imageUri, int parentId) {
+	public static int updateJourney(Context c, Uri data, String startLocation, String destination, String type, String description, Date startDate, Date endDate, int parentId) throws RemoteException {
+		ContentProviderClient client = null;
+		try {
+			ContentValues v = makeContentValues(startLocation, destination, type, description, startDate, endDate, null, null, parentId);
+
+			client = c.getContentResolver().acquireContentProviderClient(InovexContentProvider.CONTENT_URI);
+			return client.update(data, v, null, null);
+		} finally {
+			if (client != null) {
+				client.release();
+			}
+		}
+
+	}
+
+	private static ContentValues makeContentValues(String startLocation, String destination, String type, String description, Date startDate, Date endDate, Uri imageUri, String project, int parentId) {
 		ContentValues v = null;
 		v = new ContentValues();
 		if (startLocation != null) {
@@ -89,15 +98,18 @@ public class DataUtilities {
 		if (imageUri != null) {
 			v.put(Columns.IMAGE_PATH_URI, imageUri.toString());
 		}
+		if (project != null) {
+			v.put(Columns.PROJECT, project);
+		}
 		return v;
 	}
 
 	public static Uri saveReceipt(Context c, Uri fileUri, int parentId) throws RemoteException, URISyntaxException, IOException {
 		ContentProviderClient client = null;
 		try {
-			ContentValues v = makeContentValues(null, null, InovexContentProvider.Types.RECEIPT, null, null, null, fileUri, parentId);
+			ContentValues v = makeContentValues(null, null, InovexContentProvider.Types.RECEIPT, null, null, null, fileUri, null, parentId);
 			client = c.getContentResolver().acquireContentProviderClient(InovexContentProvider.CONTENT_URI);
-			Uri result = client.insert(InovexContentProvider.CONTENT_URI, v);
+			Uri result = client.insert(InovexContentProvider.CONTENT_URI_RECEIPTS, v);
 			makeThumb(result.getLastPathSegment(), fileUri);
 			Toast.makeText(c, c.getText(R.string.success_saving_receipt), Toast.LENGTH_LONG).show();
 			return result;
@@ -172,10 +184,10 @@ public class DataUtilities {
 	public static Uri saveJourney(Context c, String startLocation, String destination, String type, String description, Date startDate, Date endDate, int parentId) throws RemoteException {
 		ContentProviderClient client = null;
 		try {
-			ContentValues v = makeContentValues(startLocation, destination, type, description, startDate, endDate, null, parentId);
+			ContentValues v = makeContentValues(startLocation, destination, type, description, startDate, endDate, null, null, parentId);
 
 			client = c.getContentResolver().acquireContentProviderClient(InovexContentProvider.CONTENT_URI);
-			Uri result = client.insert(InovexContentProvider.CONTENT_URI, v);
+			Uri result = client.insert(InovexContentProvider.CONTENT_URI_JOURNEYS, v);
 			Toast.makeText(c, c.getText(R.string.success_saving_journey), Toast.LENGTH_LONG).show();
 			return result;
 		} finally {
